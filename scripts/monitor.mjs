@@ -22,7 +22,7 @@ async function probe(url) {
     const res = await fetch(target.origin + '/', {
       redirect: 'follow',
       signal: AbortSignal.timeout(15000),
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; xziti-monitor/1.0; +https://xziti.com/jiance/)' },
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; xtizi-monitor/1.0; +https://xtizi.com/jiance/)' },
     });
     const ms = Date.now() - started;
     // 2xx/3xx = 正常打开；401/403/429 = 服务器有响应但拦截了自动请求（记为"有响应"）；5xx = 服务器报错

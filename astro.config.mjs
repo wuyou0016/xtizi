@@ -93,7 +93,7 @@ function isSitemapExcluded(pageUrl) {
 // https://astro.build/config
 export default defineConfig({
   // sitemap 需要绝对域名才能生成 canonical 绝对 URL，正式 canonical host 见 CLAUDE.md / SEO Foundation。
-  site: 'https://xziti.com',
+  site: 'https://xtizi.com',
   integrations: [
     sitemap({
       filter: (page) => !isSitemapExcluded(page),

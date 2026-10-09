@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
-const BASE = 'https://xziti.com';
+const BASE = 'https://xtizi.com';
 const WUYOU = 'https://vip02.worryfreeaff.com/#/?code=XT1WDPvr';
 
 function walk(dir) {
@@ -99,7 +99,7 @@ for (const f of pages) {
   for (const m of html.matchAll(/<img\b[^>]*>/g)) if (!/\balt=/.test(m[0])) problems.push(`${route}: img 缺 alt`);
   for (const m of html.matchAll(/<a [^>]*href="(https?:\/\/[^"]+)"[^>]*>/g)) {
     const tag = m[0];
-    if (!/xziti\.com/.test(m[1]) && !/rel="[^"]*noopener/.test(tag)) problems.push(`${route}: 外链缺 rel=noopener ${m[1]}`);
+    if (!/xtizi\.com/.test(m[1]) && !/rel="[^"]*noopener/.test(tag)) problems.push(`${route}: 外链缺 rel=noopener ${m[1]}`);
   }
   // 品牌官网入口（推广链接）必须带 nofollow sponsored
   for (const m of html.matchAll(/<a [^>]*href="(https:\/\/[^"]*#\/\?code=[^"]*)"[^>]*>/g)) {

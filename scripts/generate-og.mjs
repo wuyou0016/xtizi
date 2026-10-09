@@ -58,7 +58,7 @@ for (const [key, [headline, line1, line2]] of Object.entries(SECTIONS)) {
   <text x="74" y="326" font-size="28" font-weight="600" fill="#a3afd6" font-family="${font}">${esc(line1)}</text>
   <text x="74" y="374" font-size="28" font-weight="600" fill="#a3afd6" font-family="${font}">${esc(line2)}</text>
   <rect x="74" y="446" width="280" height="64" rx="18" fill="#141d42" stroke="#6b96ff" stroke-opacity=".6" stroke-width="2"/>
-  <text x="214" y="489" text-anchor="middle" font-size="30" font-weight="800" fill="#22d3ee" font-family="SF Mono, Menlo, monospace">xziti.com</text>
+  <text x="214" y="489" text-anchor="middle" font-size="30" font-weight="800" fill="#22d3ee" font-family="SF Mono, Menlo, monospace">xtizi.com</text>
   ${bar(790, 330, '#fff1b8', '#ffbf3c', '#d9730d', '1')}
   ${bar(858, 264, '#a8c1ff', '#5b8cff', '#2643b8', '2')}
   ${bar(926, 204, '#8be9fb', '#22b8d8', '#0b6c8a', '3')}

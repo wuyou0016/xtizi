@@ -20,7 +20,7 @@ let tables = 0;
 for (const file of walk(dist).filter((f) => f.endsWith('.html'))) {
   const html = fs.readFileSync(file, 'utf8');
   const out = html.replace(/<a ([^>]*?)href="(https?:\/\/[^"]+)"([^>]*)>/g, (tag, before, href, after) => {
-    if (href.startsWith('https://xziti.com')) return tag;
+    if (href.startsWith('https://xtizi.com')) return tag;
     const attrs = `${before}${after}`;
     if (/\brel=/.test(attrs)) return tag;
     patched++;

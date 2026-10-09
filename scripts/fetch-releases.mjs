@@ -9,7 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const clients = JSON.parse(fs.readFileSync(path.join(root, 'src/data/live/clients.json'), 'utf8'));
 const outFile = path.join(root, 'src/data/live/releases.json');
 const prev = fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, 'utf8')) : { items: {} };
-const headers = { 'User-Agent': 'xziti-release-check', Accept: 'application/vnd.github+json' };
+const headers = { 'User-Agent': 'xtizi-release-check', Accept: 'application/vnd.github+json' };
 if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 
 const items = { ...prev.items };

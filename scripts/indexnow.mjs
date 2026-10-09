@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const host = 'xziti.com';
+const host = 'xtizi.com';
 const key = '0175f9ea32311ab38b30219e61520f7b';
 const sitemap = fs.readFileSync(path.join(root, 'dist/sitemap-0.xml'), 'utf8');
 const urlList = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);

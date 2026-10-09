@@ -7,7 +7,7 @@ import { CLIENTS, MONITOR, RELEASES_CHECKED_AT } from '../data/utils/live';
 export const GET: APIRoute = async () => {
   const board = await getBoard();
   const base = siteConfig.url;
-  const body = `# ${siteConfig.brandName}（xziti.com）
+  const body = `# ${siteConfig.brandName}（xtizi.com）
 
 > 梯子选购指南站：整理 ${board.rows.length} 家机场的价格、流量、线路、协议、节点地区资料并逐项标注来源，提供 ${CLIENTS.length} 款梯子客户端的官方下载地址与版本核验，按使用场景讲清怎么选、怎么用、出问题怎么查。
 

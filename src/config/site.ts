@@ -6,7 +6,7 @@ export const siteConfig = {
   brandName: '选梯子',
   brandNameShort: '选梯子',
   brandNameEn: 'XuanTizi',
-  url: 'https://xziti.com',
+  url: 'https://xtizi.com',
   locale: 'zh-CN',
   language: 'zh-CN',
 
