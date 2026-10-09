@@ -1,0 +1,41 @@
+# 定时刷新两份自动采集的数据：客户端最新版本（GitHub 官方接口）与机场官网可访问性检测。
+# 数据有变化时提交到 main，Cloudflare Workers Builds 会自动重新构建部署。
+name: refresh-data
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 读取客户端最新版本
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/fetch-releases.mjs
+      - name: 检测机场官网可访问性
+        run: node scripts/monitor.mjs "GitHub Actions 海外检测点"
+      - name: 提交变更
+        run: |
+          git config user.name "xziti-bot"
+          git config user.email "xziti-bot@users.noreply.github.com"
+          git add src/data/live/releases.json src/data/live/monitor.json
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: 刷新客户端版本与官网检测"
+            git push
+          fi
