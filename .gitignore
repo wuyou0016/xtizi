@@ -32,8 +32,9 @@ pnpm-debug.log*
 .wrangler/
 
 # 内部写作规则文档与本机助手配置：不进公开仓库
-AGENTS.md
-CLAUDE.md
+# 只忽略仓库根目录的这两份。不加斜杠的话，Windows 下大小写不敏感会连 src/content/articles/claude.md 一起忽略。
+/AGENTS.md
+/CLAUDE.md
 docs/
 .claude/
 .vscode/
