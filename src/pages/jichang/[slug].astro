@@ -1,0 +1,456 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import TagChips from '../../components/TagChips.astro';
+import SourceBadge from '../../components/SourceBadge.astro';
+import { resolveCanonicalUrl } from '../../config/seo';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { getBoard } from '../../data/utils/board';
+import { bestPerGb, cheapestMonthly, cleanList, completeness, planFacts } from '../../data/utils/provider-facts';
+import { PAIR_COUNT_TOP, pairSlug } from '../../data/utils/compare';
+import { getArticleHref } from '../../data/utils/article-routing';
+import { COUPONS, buildProviderFaq } from '../../data/seo/provider-faq';
+import { getTagsForProvider } from '../../data/seo/seo-tags';
+import { MONITOR, STATE_LABEL, fmtDate, fmtDateTime, monitorFor } from '../../data/utils/live';
+
+export async function getStaticPaths() {
+  const board = await getBoard();
+  return board.rows.map((row) => ({ params: { slug: row.provider.data.slug } }));
+}
+
+const slug = Astro.params.slug!;
+const board = await getBoard();
+const row = board.rows.find((r) => r.provider.data.slug === slug)!;
+const provider = row.provider;
+const p = provider.data;
+const v = p.vendor;
+const tier = board.tiers.find((t) => t.id === row.tier)!;
+const isFirst = row.rank === 1;
+
+const plans = planFacts(provider);
+const cheapest = cheapestMonthly(provider);
+const perGb = bestPerGb(provider);
+const routes = cleanList(v.routes);
+const protocols = cleanList(v.protocols);
+const regions = v.regions ?? [];
+const clients = v.clientSupport ?? [];
+const comp = completeness(provider);
+const monitor = monitorFor(provider.id);
+const verified = fmtDate(p.lastVerified);
+const notes = p.thirdPartyNotes ?? [];
+const coupons = COUPONS.filter((item) => item.providerId === provider.id && notes[item.noteIndex]);
+
+const sourceHost = v.source.sourceUrl ? new URL(v.source.sourceUrl).hostname : '';
+const sourceNote =
+  v.source.type === 'editorial'
+    ? `${p.name}的关键资料由站长直接向品牌确认，其余栏位来自下方列出的第三方页面。`
+    : v.source.type === 'vendor'
+      ? `${p.name}的资料来自品牌官网的公开页面。`
+      : `本页关于${p.name}的价格、线路等资料整理自第三方页面${sourceHost ? `（${sourceHost}）` : ''}，选梯子没有通过官网逐项复核，标为“资料暂缺”的栏位是该来源也没有记录的。`;
+const STATUS_LABEL: Record<string, string> = { active: '运营中', watch: '观察中', inactive: '暂停服务', discontinued: '已停运' };
+const SOURCE_TEXT: Record<string, string> = { vendor: '官网公开信息', 'third-party': '第三方资料', editorial: '站长确认', 'in-house': '选梯子自有记录' };
+
+const lineWord = routes[0] ? `${routes[0]}线路` : protocols[0] ? `${protocols[0]} 协议` : '';
+const title = cheapest
+  ? `${p.name}怎么样？2026 ${p.name}机场价格、${routes.length ? '线路' : '套餐'}与官网资料核对`
+  : `${p.name}怎么样？2026 ${p.name}机场官网、套餐资料与购买前核对`;
+const priceBit = cheapest ? `资料里最低一档 ${cheapest.plan.price}${cheapest.plan.quota ? `、${cheapest.plan.quota}` : ''}${cheapest.plan.cycle ? `（${cheapest.plan.cycle}）` : ''}` : '价格资料暂缺';
+let description = `${p.name}怎么样？选梯子整理的${p.name}机场资料：${priceBit}${lineWord ? `，${lineWord}` : ''}${regions.length ? `，节点含${regions.slice(0, 4).join('、')}` : ''}。推荐榜第 ${row.rank} 名，逐项标注资料来源，并附官网可访问性检测与购买前核对清单。`;
+if (description.length > 150) description = `${p.name}怎么样？选梯子整理的${p.name}机场资料：${priceBit}${lineWord ? `，${lineWord}` : ''}。推荐榜第 ${row.rank} 名，逐项标注来源，附官网检测与购买前核对清单。`;
+if (description.length < 110) {
+  const base = description.replace(/。$/, '');
+  const long = `${base}。页面把${p.name}还缺哪些资料逐项列出，说明付款前该到官网核对哪几处，并回答它的官网现在还能不能打开。`;
+  description = long.length <= 152 ? long : `${base}。资料缺口与付款前的核对项逐条列出。`;
+}
+
+const canonicalUrl = resolveCanonicalUrl(`/jichang/${slug}/`);
+const faq = buildProviderFaq(row, { tierLabel: tier.label, total: board.rows.length, monitor, monitorCheckedAt: MONITOR.checkedAt, vantage: MONITOR.vantage });
+const tags = getTagsForProvider(provider);
+
+// 购买前要自己核对的缺口：只列资料里确实缺的项。
+const gaps: { title: string; hint: string }[] = [];
+if (plans.length === 0) gaps.push({ title: '套餐与价格', hint: '资料里没有可核对的价格。到官网套餐页看清每一档的价格、流量和付费周期，再决定。' });
+if (routes.length === 0) gaps.push({ title: '线路类型', hint: '资料里没写是专线、中转还是直连。可以在套餐说明里找，或直接问客服。' });
+else if ((v.routes ?? []).some((r) => /第三方|转述/.test(r))) gaps.push({ title: '线路说法的官方出处', hint: '线路记录来自第三方转述。到官网确认是否逐条标注了线路类型。' });
+if (protocols.length === 0) gaps.push({ title: '支持的协议', hint: '资料里没有协议记录。导入订阅前确认你的客户端内核支持它提供的协议。' });
+if (regions.length === 0) gaps.push({ title: '节点地区', hint: '资料里没有节点地区。要用对地区有要求的服务，先在官网节点列表里确认。' });
+if (clients.length === 0) gaps.push({ title: '客户端与订阅格式', hint: '没有写明支持哪些客户端。确认它提供 Clash 格式还是通用格式的订阅。' });
+if (plans.length > 0 && !plans.some((plan) => plan.cycleId === 'monthly')) gaps.push({ title: '有没有月付', hint: '资料里的档位都是年付。想先试一个月的话，到官网看是否有月付或短周期套餐。' });
+gaps.push({ title: '退款与续费规则', hint: '资料里没有收录各家的退款条款和续费价格，这两项一律以官网服务条款和结算页为准。' });
+
+const top = board.rows.slice(0, PAIR_COUNT_TOP);
+const inTop = top.some((r) => r.provider.data.slug === slug);
+const pairLinks = inTop
+  ? top
+      .filter((r) => r.provider.data.slug !== slug)
+      .map((r) => {
+        const [a, b] = row.rank < r.rank ? [row, r] : [r, row];
+        return { label: `${a.provider.data.name} vs ${b.provider.data.name}`, href: `/duibi/${pairSlug(a.provider.data.slug, b.provider.data.slug)}/` };
+      })
+  : [];
+const prev = board.rows.find((r) => r.rank === row.rank - 1);
+const next = board.rows.find((r) => r.rank === row.rank + 1);
+const sameTier = board.rows.filter((r) => r.tier === row.tier && r.provider.data.slug !== slug).slice(0, 6);
+
+const articles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const guideIds = [
+  routes.length ? 'zhongzhuan-jichang' : 'jichang-zenme-xuan',
+  plans.some((plan) => plan.cycleId === 'monthly') ? 'xinshou-mai-tizi' : 'nianfu-haishi-yuefu',
+  'dingyue-daoru',
+  'jichang-paolu-qianzhao',
+  regions.length ? 'jiedian-diqu' : 'tizi-zenme-xuan',
+];
+const guides = guideIds.map((id) => articles.find((a) => a.id === id)).filter((a) => a !== undefined);
+
+const serviceJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: p.name,
+  serviceType: '机场（代理订阅服务）',
+  description: v.description,
+  url: canonicalUrl,
+  provider: { '@type': 'Organization', name: p.name },
+};
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: canonicalUrl,
+  inLanguage: 'zh-CN',
+  dateModified: fmtDate(p.updatedAt),
+  about: { '@type': 'Thing', name: p.name },
+};
+---
+
+<BaseLayout title={title} description={description} keywords={[p.name, `${p.name}怎么样`, `${p.name}机场`, `${p.name}官网`, `${p.name}价格`, `${p.name}优惠码`, `${p.name}跑路`, ...(p.aliases ?? [])]} modifiedTime={fmtDate(p.updatedAt)}>
+  <Breadcrumbs
+    items={[
+      { name: '机场大全', href: '/jichang/' },
+      { name: p.name, href: `/jichang/${slug}/` },
+    ]}
+  />
+
+  <header class:list={['card', 'tilt', 'brand-head', { 'card--gold': isFirst, 'glow-border': !isFirst }]}>
+    <div class:list={['num3d', { 'num3d--gold': isFirst }]} aria-label={`推荐榜第 ${row.rank} 名`}>{row.rank}</div>
+    <div>
+      <h1 style="margin-bottom:0.6rem">{p.name}怎么样？{p.name}机场资料核对</h1>
+      <p class="btn-row" style="gap:0.5rem;margin-bottom:0.8rem">
+        {
+          isFirst && (
+            <span class="badge badge--gold">
+              <span>首推 · 综合推荐第一</span>
+            </span>
+          )
+        }
+        {!isFirst && <span class={`tier-pill tier-pill--${row.tier}`}>{tier.label}</span>}
+        <span class="chip">推荐榜第 {row.rank} / {board.rows.length} 名</span>
+        <span class:list={['chip', { 'chip--empty': p.status === 'watch' }]}>状态：{STATUS_LABEL[p.status]}</span>
+        <span class="chip">资料完整度 {comp.have.length}/5</span>
+        <span class="chip">核对于 {verified}</span>
+      </p>
+      <p class="lead" style="margin-bottom:1rem">{row.reason}</p>
+      <div class="btn-row">
+        <a class:list={['btn', { 'btn--gold': isFirst }]} href={v.officialWebsite} target="_blank" rel="nofollow sponsored noopener">前往{p.name}官网</a>
+        <a class="btn btn--ghost" href="#taocan">看套餐与价格</a>
+        <a class="btn btn--ghost" href="#hedui">购买前核对</a>
+      </div>
+      <p class="muted small" style="margin:0.9rem 0 0">名次不是测速名次；价格与套餐以官网结账页面显示的为准。</p>
+    </div>
+  </header>
+
+  {
+    row.tier === 'daibu' && (
+      <div class="callout callout--warn" style="margin-top:1.5rem">
+        <p class="callout__title">{p.name}的价格与套餐资料还没有核实到</p>
+        <p>
+          选梯子目前只确认了{p.name}的官网入口可以打开，价格、套餐等关键资料为空或存疑，所以排在榜单最后一档“资料待核实”。付款之前，请先到官网套餐页把价格、流量、付费周期和退款规则看清楚；这一页下方列出了你需要逐项核对的内容。
+        </p>
+      </div>
+    )
+  }
+
+  <div class="article-layout" style="margin-top:2rem">
+    <div class="prose">
+      <h2 id="ziliaoka">{p.name}资料卡</h2>
+      <p>{v.description}</p>
+      <dl class="facts">
+        <div>
+          <dt>最低月均价</dt>
+          <dd>
+            <span class="price">{cheapest ? cheapest.plan.price : '资料暂缺'}</span>
+            {cheapest && <small>{[cheapest.plan.name, cheapest.plan.quota, cheapest.plan.cycle].filter(Boolean).join(' · ')}</small>}
+          </dd>
+        </div>
+        <div>
+          <dt>每 GB 折算价（最低）</dt>
+          <dd>
+            {perGb ? `约 ¥${perGb.perGb.toFixed(3)}` : '无法折算'}
+            {perGb && <small>{perGb.plan.name} · 月均价 ÷ 流量</small>}
+          </dd>
+        </div>
+        <div>
+          <dt>线路</dt>
+          <dd>{routes.length ? routes.join('、') : '资料暂缺'}</dd>
+        </div>
+        <div>
+          <dt>协议</dt>
+          <dd>{protocols.length ? protocols.join('、') : '资料暂缺'}</dd>
+        </div>
+        <div>
+          <dt>节点地区</dt>
+          <dd>{regions.length ? regions.join('、') : '资料暂缺'}</dd>
+        </div>
+        <div>
+          <dt>客户端支持</dt>
+          <dd>{clients.length ? clients.join('、') : '资料暂缺'}</dd>
+        </div>
+        <div>
+          <dt>速度 / 延迟 / 解锁</dt>
+          <dd><span class="live-tag">实时检测中</span></dd>
+        </div>
+        <div>
+          <dt>资料主要来源</dt>
+          <dd>
+            <SourceBadge type={v.source.type} />
+            <small>获取于 {fmtDate(v.source.retrievedAt)}</small>
+          </dd>
+        </div>
+      </dl>
+
+      <h2 id="taocan">{p.name}价格与套餐</h2>
+      {
+        plans.length > 0 ? (
+          <>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>套餐</th>
+                    <th>资料里的价格</th>
+                    <th>付费周期</th>
+                    <th class="num">流量</th>
+                    <th class="num">月均价</th>
+                    <th class="num">每 GB 折算</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {plans.map((plan) => (
+                    <tr>
+                      <td><strong>{plan.name}</strong></td>
+                      <td>{plan.price}</td>
+                      <td>{plan.cycle || '资料未写'}</td>
+                      <td class="num">{plan.quota || '—'}</td>
+                      <td class="num">{plan.monthly !== null ? `¥${plan.monthly}` : '—'}</td>
+                      <td class="num">{plan.perGb !== null ? `¥${plan.perGb.toFixed(3)}` : '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p class="table-note">
+              价格来自{SOURCE_TEXT[v.source.type]}，核对日期 {verified}。年付套餐的月均价是折算值，实际要一次付清；每 GB 折算 = 月均价 ÷ 每月流量 <SourceBadge type="calculated" />。付款前到官网结账页面再核对一遍。
+            </p>
+          </>
+        ) : (
+          <div class="empty-state">
+            <p class="empty-state__title">没有可核对的公开价格</p>
+            <p>选梯子没有查到{p.name}的套餐价格，这里不写任何推测数字。请到官网套餐页查看，并同时确认付费周期、流量和续费价格。</p>
+          </div>
+        )
+      }
+
+      <h2 id="kanfa">选梯子怎么看{p.name}</h2>
+      <p>{p.editorial.summary}</p>
+      <div class="grid grid--2">
+        <div class="card">
+          <h3>资料里的优点</h3>
+          <ul>{p.editorial.pros.map((item) => <li>{item}</li>)}</ul>
+        </div>
+        <div class="card">
+          <h3>需要注意的地方</h3>
+          <ul>{p.editorial.cons.map((item) => <li>{item}</li>)}</ul>
+        </div>
+        <div class="card">
+          <h3>比较适合</h3>
+          <ul>{p.editorial.suitableFor.map((item) => <li>{item}</li>)}</ul>
+        </div>
+        <div class="card">
+          <h3>不太适合</h3>
+          <ul>{p.editorial.notSuitableFor.map((item) => <li>{item}</li>)}</ul>
+        </div>
+      </div>
+      <p class="muted small" style="margin-top:0.8rem">以上是选梯子根据公开资料给出的看法 <SourceBadge type="editorial" />，不含任何测速结论。</p>
+
+      <h2 id="guanwang">{p.name}官网还能打开吗？</h2>
+      {
+        monitor.result ? (
+          <>
+            <dl class="facts">
+              <div>
+                <dt>最近一次检测</dt>
+                <dd><span class={`state state--${monitor.result.state}`}>{STATE_LABEL[monitor.result.state]}</span></dd>
+              </div>
+              <div>
+                <dt>状态码 / 耗时</dt>
+                <dd class="mono">{monitor.result.status || '无响应'} · {monitor.result.ms} ms</dd>
+              </div>
+              <div>
+                <dt>检测时间</dt>
+                <dd>{fmtDateTime(MONITOR.checkedAt)}</dd>
+              </div>
+              <div>
+                <dt>累计有响应 / 检测次数</dt>
+                <dd class="mono">{monitor.reachable} / {monitor.checks}<small>记录 {monitor.days} 天</small></dd>
+              </div>
+            </dl>
+            <p>
+              这是选梯子的脚本从{MONITOR.vantage}请求{p.name}官网入口（{monitor.result.host}）得到的结果。它只说明检测点当时能否打开官网，<strong>不能证明节点可用，也不代表你所在网络下的情况</strong>。如果你那边打不开而这里显示可以打开，多半是域名在本地网络下不可达，可以换网络或开着代理再试；判断方法见<a href="/paicha/guanwang-dabukai/">机场官网打不开怎么办</a>。全部品牌的记录在<a href="/jiance/">机场官网检测</a>。
+            </p>
+          </>
+        ) : (
+          <p>这家还没有检测记录，下次检测后会显示在<a href="/jiance/">机场官网检测</a>页面。</p>
+        )
+      }
+
+      <h2 id="laiyuan">资料来源与第三方说法</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>来源</th>
+              <th>内容</th>
+              <th>日期</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <SourceBadge type={v.source.type} />
+                {v.source.sourceUrl && <><br /><span class="muted small">{new URL(v.source.sourceUrl).hostname}</span></>}
+              </td>
+              <td>{sourceNote}</td>
+              <td class="num">{fmtDate(v.source.retrievedAt)}</td>
+            </tr>
+            {
+              notes.map((note) => (
+                <tr>
+                  <td>
+                    <SourceBadge type="third-party" />
+                    <br />
+                    <span class="muted small">{note.source}</span>
+                  </td>
+                  <td>{note.claim}</td>
+                  <td class="num">{fmtDate(note.date)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">第三方说法是转述，不是选梯子的结论。来源之间说法不一致时，这里如实并列，不替品牌取舍。</p>
+
+      {
+        coupons.length > 0 && (
+          <>
+            <h2 id="youhuima">{p.name}优惠码</h2>
+            <p>
+              资料里记录过的{p.name}优惠码：
+              {coupons.map((item) => (
+                <code style="margin-right:0.5rem">{item.code}</code>
+              ))}
+              。优惠码可能已经过期或带有使用条件，原文说明见上表，是否有效以官网结账页面显示的为准。更多记录见<a href="/youhuima/">机场优惠码</a>。
+            </p>
+          </>
+        )
+      }
+
+      <h2 id="hedui">买{p.name}之前，自己核对这几项</h2>
+      <ul class="check-list" style="padding:0">
+        {
+          gaps.map((gap) => (
+            <li>
+              <label>
+                <input type="checkbox" />
+                <span>
+                  <strong>{gap.title}</strong>：{gap.hint}
+                </span>
+              </label>
+            </li>
+          ))
+        }
+      </ul>
+      <p>完整清单见<a href="/gongju/xuangou-qingdan/">下单前核对清单</a>；拿不准时，先买最短周期，在晚高峰用几天再决定是否续费。</p>
+
+      <FaqBlock heading={`${p.name}常见问题`} items={faq} id="changjian-wenti" />
+
+      {
+        pairLinks.length > 0 && (
+          <>
+            <h2 id="duibi">{p.name}和其他机场对比</h2>
+            <ul class="chips" style="padding:0">
+              {pairLinks.map((link) => (
+                <li><a class="chip" href={link.href}>{link.label}</a></li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      {
+        guides.length > 0 && (
+          <>
+            <h2 id="zhinan">买之前可以读的指南</h2>
+            <ul class="quick-links">
+              {guides.map((article) => (
+                <li><a href={getArticleHref(article)}>{article.data.title}</a></li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+      <TagChips tags={tags} label="相关专题" />
+    </div>
+
+    <aside class="article-side">
+      <nav class="article-toc" aria-label="本页目录">
+        <p class="article-toc__label">本页目录</p>
+        <ol>
+          <li><a href="#ziliaoka">资料卡</a></li>
+          <li><a href="#taocan">价格与套餐</a></li>
+          <li><a href="#kanfa">选梯子怎么看</a></li>
+          <li><a href="#guanwang">官网检测</a></li>
+          <li><a href="#laiyuan">资料来源</a></li>
+          {coupons.length > 0 && <li><a href="#youhuima">优惠码</a></li>}
+          <li><a href="#hedui">购买前核对</a></li>
+          <li><a href="#changjian-wenti">常见问题</a></li>
+        </ol>
+      </nav>
+      <div class="side-rank">
+        <p class="side-rank__title">榜单位置</p>
+        <ul class="link-list">
+          {prev && <li><a href={`/jichang/${prev.provider.data.slug}/`}>上一名：{prev.provider.data.name}</a></li>}
+          {next && <li><a href={`/jichang/${next.provider.data.slug}/`}>下一名：{next.provider.data.name}</a></li>}
+          <li><a href="/tuijian/">完整机场推荐榜</a></li>
+        </ul>
+      </div>
+      {
+        sameTier.length > 0 && (
+          <div class="side-card">
+            <p class="side-card__title">同为“{tier.label}”</p>
+            <ul class="link-list">
+              {sameTier.map((r) => (
+                <li><a href={`/jichang/${r.provider.data.slug}/`}>{r.provider.data.name}</a></li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </aside>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webPageJsonLd)} />
+</BaseLayout>

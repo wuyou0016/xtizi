@@ -1,0 +1,9 @@
+name = "xuan-tizi"
+compatibility_date = "2026-10-01"
+
+routes = [
+  { pattern = "xziti.com", custom_domain = true }
+]
+
+[assets]
+directory = "./dist"

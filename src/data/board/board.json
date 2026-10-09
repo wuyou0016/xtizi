@@ -1,0 +1,211 @@
+[
+  {
+    "id": "xuantizi-board",
+    "title": "选梯子机场推荐榜",
+    "description": "28 家机场按资料完整度和选梯子的跟进情况，排成首推、重点推荐、优先考虑、备选、资料待核实五档；没有价格与套餐资料的品牌按实际情况排在最后。",
+    "methodology": "名次不是测速名次。排序综合三件事：公开资料填了几栏（价格、线路、协议、节点地区、客户端这五栏里有几栏查得到）、价格与付费方式有多少可选范围（有没有月付、有几档套餐），以及选梯子对这家品牌的了解与跟进程度。第 1 到第 5 名是重点推荐的品牌；之后按资料完整度依次往后；价格与套餐资料没有核实到的品牌，一律排在最后，标为“资料待核实”，它们之间的先后只按已有的零星资料排，不代表高低。测速、延迟、解锁这几项，选梯子手里还没有自己测出来的数据，对应栏位一律写“实时检测中”，不拿推测的数字去填。价格、线路等信息取自官网、站长确认或第三方页面，逐项标了出处，付款前请再到官网结账页面核对一遍。",
+    "snapshotAt": "2026-10-09",
+    "tiers": [
+      {
+        "id": "shoutui",
+        "label": "首推",
+        "tagline": "拿不定主意就从这家开始看",
+        "rule": "价格、线路、协议、节点地区、客户端这五栏资料全部有内容，是选梯子的第一推荐。"
+      },
+      {
+        "id": "zhongdian",
+        "label": "重点推荐",
+        "tagline": "价格和线路都查得到，值得放进候选",
+        "rule": "至少有一档读得出月均价的套餐，同时线路一栏不是空的。"
+      },
+      {
+        "id": "youxian",
+        "label": "优先考虑",
+        "tagline": "价格资料查得到，选梯子持续跟进的品牌",
+        "rule": "有可读出的套餐价格，并至少记录了线路或协议中的一项；个别栏位仍然空着，理由里会直接写出来。"
+      },
+      {
+        "id": "beixuan",
+        "label": "备选",
+        "tagline": "有价格记录，可以拿来横向比价",
+        "rule": "有读得出的套餐价格，但线路、协议、节点地区至少有一栏是空的，或者目前标为观察中；档内按资料完整度往后排。"
+      },
+      {
+        "id": "daibu",
+        "label": "资料待核实",
+        "tagline": "价格与套餐资料没核实到，排在最后",
+        "rule": "官网可以正常进入，但价格与套餐资料为空或存疑，必须先到官网自行核实；这一档内的先后只按已有的零星资料排，不代表品牌高低。"
+      }
+    ],
+    "entries": [
+      {
+        "providerId": "wuyou-lianjie",
+        "tier": "shoutui",
+        "rank": 1,
+        "reason": "MINI 档 ¥6.6/月（40GB/月，实际按年付费），线路栏同时列了 IPLC 与 IEPL，另有三种协议、四处节点地区和三类可用客户端，是 28 家里五栏资料都填满的唯一一家。"
+      },
+      {
+        "providerId": "weifeng-network",
+        "tier": "zhongdian",
+        "rank": 2,
+        "reason": "乘风档 ¥27/月、200GB，按月付费，价格由站长直接确认；线路栏是 IEPL，节点有港、新、日、美四处，流量吃得多又不愿意一次付一年的人可以先看它。"
+      },
+      {
+        "providerId": "feimao-cloud",
+        "tier": "zhongdian",
+        "rank": 3,
+        "reason": "入门约 ¥7/月起（年付 ¥84、50GB），这个数字在两处来源里对得上；线路栏为 IPLC，协议列了三种。"
+      },
+      {
+        "providerId": "twilight",
+        "tier": "zhongdian",
+        "rank": 4,
+        "reason": "轻量年付约 ¥9.1/月（70GB），也有约 ¥20/月起的月付档（120GB），长短周期都有得选；官网把线路标为 IEPL。"
+      },
+      {
+        "providerId": "firefly",
+        "tier": "zhongdian",
+        "rank": 5,
+        "reason": "入门约 ¥8/月起（年付、60GB），两处来源报的是同一个价；线路栏为 IPLC，节点有港、新、日、台四处。"
+      },
+      {
+        "providerId": "xingdaomeng",
+        "tier": "youxian",
+        "rank": 6,
+        "reason": "2020 年开业，入门约 ¥8/月起（年付、60GB），协议列了三种，节点有港、日、美、新四处，还卖不限时的买断档。"
+      },
+      {
+        "providerId": "guangsu-cloud",
+        "tier": "youxian",
+        "rank": 7,
+        "reason": "2020 年开业，年付折算约 ¥7.5/月（59GB）；线路写的是 IEPL 加企业级内网专线。它主要用自家客户端，想换别的要先找客服。"
+      },
+      {
+        "providerId": "shanyue",
+        "tier": "youxian",
+        "rank": 8,
+        "reason": "入门约 ¥8/月起（年付、60GB），线路栏为 IPLC，节点有港、新、日、台、美五处，是地区一栏填得最多的品牌。"
+      },
+      {
+        "providerId": "ermao-cloud",
+        "tier": "youxian",
+        "rank": 9,
+        "reason": "入门 20 元/月、130GB，按月付费；线路是中转与专线混用，协议列了三种，适合想按月先试的人。"
+      },
+      {
+        "providerId": "lingdong-cloud",
+        "tier": "beixuan",
+        "rank": 10,
+        "reason": "2025 年开业，年付 ¥99（约 ¥8.3/月、70GB），IEPL 线路、VLESS 协议，节点有港、新、日、美四处。开业时间不长，建议从短周期买起。"
+      },
+      {
+        "providerId": "laddercloud",
+        "tier": "beixuan",
+        "rank": 11,
+        "reason": "年付 ¥89（约 ¥7.4/月、60GB），IEPL 线路、VLESS 协议，节点四处；资料里还写到它有自家开发的多平台客户端。"
+      },
+      {
+        "providerId": "guangnian-ladder",
+        "tier": "beixuan",
+        "rank": 12,
+        "reason": "入门 18 元/月、110GB，按月付费，在有月付记录的品牌里起步价最低；线路一栏没有内容。"
+      },
+      {
+        "providerId": "u1s1",
+        "tier": "beixuan",
+        "rank": 13,
+        "reason": "入门 20 元/月、120GB，按月付费；协议有 Trojan 和 VLESS，节点四处，线路一栏没有内容。"
+      },
+      {
+        "providerId": "sogo-cloud",
+        "tier": "beixuan",
+        "rank": 14,
+        "reason": "入门 25 元/月、150GB，按月付费；协议与节点地区都有，线路一栏空着，来源页对优惠码的两处说法互相打架。"
+      },
+      {
+        "providerId": "kuaili",
+        "tier": "beixuan",
+        "rank": 15,
+        "reason": "25 元/月、150GB，按月付费；两份第三方页面对线路各说各的，目前标为观察中，建议问清线路之后再买。"
+      },
+      {
+        "providerId": "flyv",
+        "tier": "beixuan",
+        "rank": 16,
+        "reason": "年付标准轻量版 ¥99（约 ¥8.3/月、65GB），官网把线路标为 IEPL；协议和节点地区两栏是空的。"
+      },
+      {
+        "providerId": "lingmao-network",
+        "tier": "beixuan",
+        "rank": 17,
+        "reason": "入门约 ¥7.1/月起（年付、45GB），资料说它主打 IPLC；协议出现了两种对不上的说法，目前标为观察中。"
+      },
+      {
+        "providerId": "kuajie-cloud",
+        "tier": "beixuan",
+        "rank": 18,
+        "reason": "三档价格有截图可对（年付约 ¥8/月 60GB、月付约 ¥20/月 120GB、约 ¥130/月 1800GB），线路、协议、节点三栏都没公开，目前标为观察中。"
+      },
+      {
+        "providerId": "jilian-cloud",
+        "tier": "daibu",
+        "rank": 19,
+        "reason": "按第三方页面的说法，它主打 IPLC 内网专线，节点有港、日、美、台四处；那张价格截图到底属不属于这个品牌，来源方自己也没确认，所以价格栏留空，目前标为观察中、资料待核实。"
+      },
+      {
+        "providerId": "yuzhou-cloud",
+        "tier": "daibu",
+        "rank": 20,
+        "reason": "按第三方页面的说法，它用的是企业级内网专线、套餐不限时，但价格一栏没有任何可核对的数字，所以排在资料待核实这一档，付款前先到官网套餐页把价格和周期看清。"
+      },
+      {
+        "providerId": "weitu-cloud",
+        "tier": "daibu",
+        "rank": 21,
+        "reason": "官网能正常打开，价格、套餐、线路、协议四栏目前都没有核实到资料，排在资料待核实这一档；在看到具体数字之前，不建议付款。"
+      },
+      {
+        "providerId": "kexin-cloud",
+        "tier": "daibu",
+        "rank": 22,
+        "reason": "目前只核实到官网能打开，套餐信息还要等进一步核对，资料待核实。"
+      },
+      {
+        "providerId": "speedworld",
+        "tier": "daibu",
+        "rank": 23,
+        "reason": "官网可以正常进入，价格、协议、线路都还没有公开信息可查，资料待核实。"
+      },
+      {
+        "providerId": "edge-node",
+        "tier": "daibu",
+        "rank": 24,
+        "reason": "目前只核实到官网能打开，价格、线路、协议三栏都是空的，资料待核实。"
+      },
+      {
+        "providerId": "yifan-cloud",
+        "tier": "daibu",
+        "rank": 25,
+        "reason": "官网可以正常进入，价格和线路两栏都空着，资料待核实。"
+      },
+      {
+        "providerId": "wavenet",
+        "tier": "daibu",
+        "rank": 26,
+        "reason": "官网可以正常进入，套餐一栏尚无可用信息，资料待核实。"
+      },
+      {
+        "providerId": "invisible",
+        "tier": "daibu",
+        "rank": 27,
+        "reason": "官网可以正常进入，套餐方面一条具体信息都没找到，资料待核实。"
+      },
+      {
+        "providerId": "quanqiu-cloud",
+        "tier": "daibu",
+        "rank": 28,
+        "reason": "官网可以正常进入，节点地区和价格两栏都空着，资料待核实。"
+      }
+    ]
+  }
+]

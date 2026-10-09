@@ -1,0 +1,250 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import { siteConfig } from '../config/site';
+import { resolveCanonicalUrl, type RobotsDirective } from '../config/seo';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  robots?: RobotsDirective;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  keywords?: string[];
+}
+
+const { title, description, robots, ogType, ogImage, publishedTime, modifiedTime, keywords } = Astro.props;
+const pathname = Astro.url.pathname;
+const homepageUrl = resolveCanonicalUrl('/');
+
+// 网站级 JSON-LD：只在此处生成一次，覆盖全站，不逐页重复声明。
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteConfig.brandName,
+  alternateName: [siteConfig.brandNameEn, 'xziti'],
+  url: homepageUrl,
+  inLanguage: 'zh-CN',
+  description: siteConfig.description,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: `${homepageUrl}sousuo/?q={search_term_string}` },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+// 非文章页统一补一份 WebPage：说明这个页面属于哪个站点；有明确更新日期的页面带 dateModified。
+const webPageJsonLd =
+  ogType === 'article' || pathname === '/404/'
+    ? null
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: title,
+        description: description ?? siteConfig.defaultDescription,
+        url: resolveCanonicalUrl(pathname),
+        inLanguage: 'zh-CN',
+        isPartOf: { '@type': 'WebSite', name: siteConfig.brandName, url: homepageUrl },
+        ...(modifiedTime ? { dateModified: modifiedTime } : {}),
+      };
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteConfig.brandName,
+  url: homepageUrl,
+  logo: `${homepageUrl}icon-512.png`,
+};
+---
+
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050816" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script is:inline>
+      // 首次绘制前确定主题：默认深色（本站的主视觉），用户手动切换后记住选择。
+      (function () {
+        try {
+          var stored = localStorage.getItem('xz-theme');
+          document.documentElement.setAttribute('data-theme', stored === 'light' ? 'light' : 'dark');
+        } catch (e) {}
+        document.documentElement.classList.add('js-reveal');
+      })();
+    </script>
+    <SEOHead
+      title={title}
+      description={description}
+      pathname={pathname}
+      robots={robots}
+      ogType={ogType}
+      ogImage={ogImage}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      keywords={keywords}
+    />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
+    {webPageJsonLd && <script type="application/ld+json" set:html={JSON.stringify(webPageJsonLd)} />}
+    <Analytics />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <Header />
+    <main class="container" id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 主题切换
+        var toggle = document.getElementById('theme-toggle');
+        if (toggle)
+          toggle.addEventListener('click', function () {
+            var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            root.setAttribute('data-theme', next);
+            try {
+              localStorage.setItem('xz-theme', next);
+            } catch (e) {}
+          });
+
+        // 移动端导航
+        var header = document.getElementById('site-header');
+        var navToggle = document.getElementById('nav-toggle');
+        if (header && navToggle)
+          navToggle.addEventListener('click', function () {
+            var open = header.getAttribute('data-open') !== 'true';
+            header.setAttribute('data-open', String(open));
+            navToggle.setAttribute('aria-expanded', String(open));
+          });
+        document.addEventListener('click', function (e) {
+          document.querySelectorAll('.site-nav details[open]').forEach(function (d) {
+            if (!d.contains(e.target)) d.removeAttribute('open');
+          });
+        });
+
+        // 滚动入场
+        var items = document.querySelectorAll('.reveal');
+        if (reduce || !('IntersectionObserver' in window)) {
+          items.forEach(function (el) {
+            el.classList.add('is-in');
+          });
+        } else {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-in');
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { rootMargin: '0px 0px 25% 0px', threshold: 0 },
+          );
+          items.forEach(function (el) {
+            io.observe(el);
+          });
+          // 兜底：极端情况下观察器没有触发，也保证内容可见
+          setTimeout(function () {
+            items.forEach(function (el) {
+              var r = el.getBoundingClientRect();
+              if (r.top < window.innerHeight) el.classList.add('is-in');
+            });
+          }, 1200);
+        }
+
+        // 卡片立体倾斜（仅鼠标设备）
+        if (!reduce && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          document.querySelectorAll('.tilt').forEach(function (el) {
+            el.addEventListener('pointermove', function (e) {
+              var r = el.getBoundingClientRect();
+              var x = (e.clientX - r.left) / r.width;
+              var y = (e.clientY - r.top) / r.height;
+              el.style.setProperty('--ry', ((x - 0.5) * 7).toFixed(2) + 'deg');
+              el.style.setProperty('--rx', ((0.5 - y) * 6).toFixed(2) + 'deg');
+              el.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+              el.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+            });
+            el.addEventListener('pointerleave', function () {
+              el.style.setProperty('--rx', '0deg');
+              el.style.setProperty('--ry', '0deg');
+            });
+          });
+          var stage = document.querySelector('.stage');
+          if (stage)
+            window.addEventListener(
+              'pointermove',
+              function (e) {
+                var x = e.clientX / window.innerWidth - 0.5;
+                var y = e.clientY / window.innerHeight - 0.5;
+                stage.style.setProperty('--tilt-y', (x * 16).toFixed(2) + 'deg');
+                stage.style.setProperty('--tilt-x', (y * -8).toFixed(2) + 'deg');
+              },
+              { passive: true },
+            );
+        }
+
+        // 表格排序：th[data-sort] 点击后按 data-v 排序；默认顺序保存在 data-i
+        document.querySelectorAll('table[data-sortable]').forEach(function (table) {
+          var tbody = table.tBodies[0];
+          if (!tbody) return;
+          Array.prototype.forEach.call(tbody.rows, function (row, i) {
+            row.setAttribute('data-i', i);
+          });
+          table.querySelectorAll('th[data-sort]').forEach(function (th) {
+            th.setAttribute('tabindex', '0');
+            th.setAttribute('role', 'button');
+            function run() {
+              var idx = th.cellIndex;
+              var current = th.getAttribute('aria-sort');
+              var dir = current === 'ascending' ? 'descending' : current === 'descending' ? 'none' : 'ascending';
+              table.querySelectorAll('th[data-sort]').forEach(function (o) {
+                o.removeAttribute('aria-sort');
+              });
+              var rows = Array.prototype.slice.call(tbody.rows);
+              if (dir === 'none') {
+                rows.sort(function (a, b) {
+                  return a.getAttribute('data-i') - b.getAttribute('data-i');
+                });
+              } else {
+                th.setAttribute('aria-sort', dir);
+                rows.sort(function (a, b) {
+                  var va = parseFloat(a.cells[idx].getAttribute('data-v'));
+                  var vb = parseFloat(b.cells[idx].getAttribute('data-v'));
+                  if (isNaN(va) && isNaN(vb)) return 0;
+                  if (isNaN(va)) return 1;
+                  if (isNaN(vb)) return -1;
+                  return dir === 'ascending' ? va - vb : vb - va;
+                });
+              }
+              rows.forEach(function (row) {
+                tbody.appendChild(row);
+              });
+            }
+            th.addEventListener('click', run);
+            th.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                run();
+              }
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

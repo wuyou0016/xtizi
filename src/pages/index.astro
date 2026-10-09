@@ -1,0 +1,451 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProviderCard from '../components/ProviderCard.astro';
+import FaqBlock from '../components/FaqBlock.astro';
+import Icon from '../components/Icon.astro';
+import ClientTable from '../components/ClientTable.astro';
+import { siteConfig } from '../config/site';
+import { resolveCanonicalUrl } from '../config/seo';
+import { getBoard } from '../data/utils/board';
+import { isDemoEntry } from '../data/utils/demo-filter';
+import { getArticleHref } from '../data/utils/article-routing';
+import { filterRows, priceLine, cleanList } from '../data/utils/provider-facts';
+import { CLIENTS, MONITOR, PLATFORM_LABEL, PLATFORM_ORDER, RELEASES_CHECKED_AT, clientsForPlatform, fmtDate, fmtDateTime } from '../data/utils/live';
+
+const board = await getBoard();
+const tierLabel = new Map(board.tiers.map((tier) => [tier.id, tier.label]));
+const first = board.rows[0]!;
+const focus = board.rows.slice(1, 5);
+const priority = board.rows.filter((row) => row.tier === 'youxian');
+const podium = board.rows.slice(0, 5);
+
+const articles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const byType = (type: string) => articles.filter((a) => a.data.type === type);
+const pick = (ids: string[]) => ids.map((id) => articles.find((a) => a.id === id)).filter((a) => a !== undefined);
+const scenes = pick(['chatgpt', 'claude', 'gemini', 'netflix', 'youtube', 'telegram', 'x-twitter', 'disney-plus', 'tiktok', 'instagram', 'discord', 'github']);
+const starters = pick(['tizi-shi-shenme', 'tizi-zenme-xuan', 'xinshou-mai-tizi', 'tizi-duoshao-qian', 'kexue-shangwang', 'clash-shi-shenme', 'v2ray-shi-shenme', 'vpn-jichang', 'mianfei-tizi']);
+const fixes = pick(['tizi-lianbushang', 'tizi-sudu-man', 'dingyue-gengxin-shibai', 'chatgpt-dabukai', 'guanwang-dabukai', 'jichang-paolu-qianzhao']);
+
+const upCount = MONITOR.results.filter((r) => r.state === 'up' || r.state === 'guarded').length;
+const countOf = (kind: Parameters<typeof filterRows>[0]) => filterRows(kind, board.rows).length;
+const headClients = ['clash-verge-rev', 'v2rayn', 'flclash', 'v2rayng', 'sing-box', 'shadowrocket'].map((slug) => CLIENTS.find((c) => c.slug === slug)!);
+
+const needs = [
+  { icon: 'scale', title: '性价比机场', href: '/tuijian/xingjiabi/', desc: `把月均价除以每月流量，算出每 GB 折算价。资料里有 ${countOf('value')} 家算得出来。` },
+  { icon: 'price', title: '便宜机场', href: '/tuijian/pianyi/', desc: `按最低月均价（按资料）从低到高排，标明哪些是年付折算、哪些能直接月付。` },
+  { icon: 'route', title: '专线机场', href: '/tuijian/zhuanxian/', desc: `资料里写明 IPLC、IEPL 或企业级专线的有 ${countOf('dedicated')} 家，线路说法逐条标来源。` },
+  { icon: 'calendar', title: '月付机场', href: '/tuijian/yuefu/', desc: `${countOf('monthly')} 家的资料里有按月付费套餐，适合第一次买、想先试一个月的人。` },
+  { icon: 'bolt', title: '大流量机场', href: '/tuijian/daliuliang/', desc: `看视频、全家共用先看流量。${countOf('traffic')} 家有每月 100GB 以上的套餐。` },
+  { icon: 'shield', title: '稳定机场', href: '/tuijian/wending/', desc: '稳定没法靠广告词判断。这一页讲能自己核对的五个信号，并附官网检测记录。' },
+];
+
+const columns = [
+  { icon: 'device', title: '梯子下载', href: '/xiazai/', desc: `${CLIENTS.length} 款梯子工具的官方地址、最新版本与核验时间，按 Windows、Mac、安卓、iPhone 分类。` },
+  { icon: 'spark', title: '使用场景', href: '/changjing/', desc: 'ChatGPT、Claude、奈飞、YouTube、Telegram、X……每个场景对节点和流量的要求不一样。' },
+  { icon: 'book', title: '选购指南', href: '/zhinan/', desc: '梯子是什么、机场怎么选、梯子多少钱、VPN 和机场的区别，从概念到下单一步步讲。' },
+  { icon: 'terminal', title: '使用教程', href: '/jiaocheng/', desc: 'Clash、V2Ray、小火箭、sing-box 的导入与设置，外加规则模式、TUN、分流这些通用设置。' },
+  { icon: 'wrench', title: '故障排查', href: '/paicha/', desc: '连不上、速度慢、订阅更新失败、ChatGPT 打不开，按现象找到对应的排查顺序。' },
+  { icon: 'alert', title: '避坑指南', href: '/bikeng/', desc: '跑路前兆、永久套餐、一元机场、假官网、订阅泄露，把常见的坑提前看一遍。' },
+  { icon: 'globe', title: '梯子导航', href: '/daohang/', desc: '机场官网入口、客户端官方仓库、官方文档和本站工具，一页收齐，全部标注来源。' },
+  { icon: 'check', title: '机场官网检测', href: '/jiance/', desc: `定时检测 ${board.rows.length} 家机场官网能否打开，记录状态码与耗时，帮你区分“被墙”和“停运”。` },
+  { icon: 'chip', title: '机场对比', href: '/duibi/', desc: '把两家机场的价格、流量、线路、协议、节点地区放进同一张表逐项比。' },
+  { icon: 'ticket', title: '机场优惠码', href: '/youhuima/', desc: '只收录资料里白纸黑字写过的优惠码，逐条注明来源与日期，矛盾的记录会标出来。' },
+  { icon: 'gift', title: '工具箱', href: '/gongju/', desc: '选梯子向导、流量计算器、成本计算器、客户端选择器和下单前核对清单。' },
+  { icon: 'faq', title: '常见问题', href: '/faq/', desc: '读者来信里重复率最高的那些问题，按主题归好类，每条先给结论再讲怎么判断。' },
+];
+
+const ticker = [
+  ['机场推荐', '/tuijian/'], ['性价比机场', '/tuijian/xingjiabi/'], ['便宜机场', '/tuijian/pianyi/'], ['梯子导航', '/daohang/'],
+  ['梯子下载', '/xiazai/'], ['梯子工具', '/zhinan/tizi-gongju/'], ['翻墙梯子', '/zhinan/fanqiang-tizi/'], ['梯子机场', '/zhinan/tizi-jichang/'],
+  ['VPN 机场', '/zhinan/vpn-jichang/'], ['VPN 梯子', '/zhinan/vpn-tizi/'], ['科学上网', '/zhinan/kexue-shangwang/'], ['魔法上网', '/zhinan/mofa-shangwang/'],
+  ['Clash', '/zhinan/clash-shi-shenme/'], ['V2Ray', '/zhinan/v2ray-shi-shenme/'], ['ChatGPT 梯子', '/changjing/chatgpt/'], ['Claude 梯子', '/changjing/claude/'],
+  ['奈飞梯子', '/changjing/netflix/'], ['Telegram 梯子', '/changjing/telegram/'], ['YouTube 梯子', '/changjing/youtube/'], ['推特梯子', '/changjing/x-twitter/'],
+  ['专线机场', '/tuijian/zhuanxian/'], ['月付机场', '/tuijian/yuefu/'], ['手机梯子', '/zhinan/shouji-tizi/'], ['电脑梯子', '/zhinan/diannao-tizi/'],
+].filter(([, href]) => !/^\/(zhinan|changjing)\//.test(href!) || articles.some((a) => getArticleHref(a) === href));
+
+const faqs = [
+  {
+    q: '梯子和机场是一回事吗？',
+    a: '日常说法里基本是一回事。梯子是口语统称，指能访问境外网站的代理工具；机场是其中最常见的一种服务形态：你付钱之后得到的是一条订阅地址，把它填进 Clash、v2rayN、小火箭这类客户端，节点就会出现在列表里。所以买梯子，多数时候就是挑一家机场，再装一个客户端。',
+  },
+  {
+    q: '选梯子的机场推荐榜是按什么排的？',
+    a: '名次不是测速名次。排序综合三件事：公开资料填了几栏（价格、线路、协议、节点地区、客户端支持五栏里查得到几栏）、价格与付费方式有多少可选范围，以及选梯子对品牌的跟进程度。价格与套餐资料没核实到的品牌排在最后，标为资料待核实。本站手里还没有自己测出来的速度数据，所以速度和延迟一栏统一写“实时检测中”。',
+  },
+  {
+    q: '第一次买梯子，应该先看什么？',
+    a: '动手之前先回答三个问题：拿它干什么、一个月流量大致在什么量级、肯不肯一次付一年。然后在推荐榜里看价格和付费周期，在机场资料页看线路与节点地区，最后确认自己的设备有对应的客户端。拿不准就先买一个月，用晚高峰试几天再决定。',
+  },
+  {
+    q: '便宜机场能用吗？价格低是不是一定有问题？',
+    a: '低价不等于有问题，但要看清买到的是什么。很多月均价很低的套餐需要按年付费，流量也偏小；有的低价来自高超售的线路。比较时把价格折成月均价和每 GB 价格，再对一下线路写的是什么、要一次付多久，这个低价的来历基本就清楚了。',
+  },
+  {
+    q: '梯子工具去哪里下载才安全？',
+    a: '认准官方出处。开源客户端看它 GitHub 仓库里的发布页，iPhone 上的客户端只走 App Store。选梯子的下载页只列官方地址，并标出最新版本号、发布日期和我们核验的时间；任何网盘、整合包和所谓破解版都不建议使用。',
+  },
+  {
+    q: '用 ChatGPT、Claude 或看奈飞，对梯子有什么要求？',
+    a: 'AI 工具卡的是地区：节点出口得落在官方认可的范围里。它几乎不耗流量，认准一个地区一直用，比换来换去省事；流媒体除了地区，还取决于节点 IP 是否被平台识别为代理，并且非常吃流量。具体怎么判断，使用场景栏目里每个服务都有单独的说明。',
+  },
+];
+
+const itemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '选梯子机场推荐榜',
+  description: board.description,
+  numberOfItems: 10,
+  itemListElement: board.rows.slice(0, 10).map((row) => ({
+    '@type': 'ListItem',
+    position: row.rank,
+    name: row.provider.data.name,
+    url: resolveCanonicalUrl(`/jichang/${row.provider.data.slug}/`),
+  })),
+};
+const snapshot = fmtDate(board.snapshotAt);
+---
+
+<BaseLayout
+  title={siteConfig.defaultTitle}
+  description={siteConfig.defaultDescription}
+  keywords={['选梯子', '梯子推荐', '机场推荐', '梯子导航', '性价比机场', '便宜机场', '梯子下载', '梯子工具', '翻墙梯子', '梯子机场', 'VPN机场', 'VPN梯子', '科学上网', '魔法上网', 'Clash', 'V2Ray']}
+>
+  <section class="hero">
+    <div class="hero__copy">
+      <p class="hero__kicker">
+        <b>{snapshot}</b> 更新 · 收录 {board.rows.length} 家机场 · {CLIENTS.length} 款梯子工具
+      </p>
+      <h1>
+        <span class="grad-text">选梯子</span>：2026 梯子推荐<br />与机场推荐导航
+      </h1>
+      <p class="lead">
+        买梯子之前，先把价格、流量、线路和资料来源摆在一张表里。选梯子整理了 {board.rows.length} 家机场的公开资料，做成<a href="/tuijian/">机场推荐榜</a>、<a href="/tuijian/xingjiabi/">性价比机场</a>和<a href="/tuijian/pianyi/">便宜机场</a>对照表；同时提供 Clash、V2Ray 等<a href="/xiazai/">梯子工具下载</a>地址与版本核验，并按 ChatGPT、Claude、奈飞、Telegram、YouTube 这些使用场景，讲清科学上网到底该看哪几项。
+      </p>
+      <div class="btn-row">
+        <a class="btn" href="/tuijian/">
+          看机场推荐榜
+          <Icon name="arrow" size={18} />
+        </a>
+        <a class="btn btn--ghost" href="/gongju/xuan-tizi-xiangdao/">30 秒选梯子向导</a>
+        <a class="btn btn--ghost" href="/xiazai/">梯子下载</a>
+      </div>
+      <div class="hero__stats">
+        <div class="stat">
+          <b>{board.rows.length}</b>
+          <span>家机场资料</span>
+        </div>
+        <div class="stat">
+          <b>{CLIENTS.length}</b>
+          <span>款梯子工具</span>
+        </div>
+        <div class="stat">
+          <b>{articles.length}</b>
+          <span>篇指南与教程</span>
+        </div>
+        <div class="stat">
+          <b>{upCount}/{MONITOR.results.length}</b>
+          <span>官网本次检测可打开</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage" aria-label="选梯子推荐榜前五名">
+      <div class="stage__orb stage__orb--a" aria-hidden="true"></div>
+      <div class="stage__orb stage__orb--b" aria-hidden="true"></div>
+      <div class="stage__floor" aria-hidden="true"></div>
+      <div class="stairs">
+        {
+          podium.map((row, index) => (
+            <a class={`bar bar--${row.rank}`} style={`--i:${index}`} href={`/jichang/${row.provider.data.slug}/`} title={`第 ${row.rank} 名：${row.provider.data.name}`}>
+              <span class="bar__top" aria-hidden="true" />
+              <span class="bar__side" aria-hidden="true" />
+              <span class="bar__front">
+                <span class="bar__no">{row.rank}</span>
+                <span class="bar__name">{row.provider.data.name}</span>
+                <span class="bar__tag">{row.rank === 1 ? '首推' : tierLabel.get(row.tier)}</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+      <p class="hero__stage-note">阶梯高度代表推荐名次，不代表速度。点击任意一级查看该机场资料。</p>
+    </div>
+  </section>
+
+  <nav class="ticker" aria-label="热门关键词入口">
+    <div class="ticker__track">
+      {
+        [0, 1].map((round) =>
+          ticker.map(([label, href]) => (
+            <a class="chip" href={href} aria-hidden={round === 1 ? 'true' : undefined} tabindex={round === 1 ? -1 : undefined}>
+              {label}
+            </a>
+          )),
+        )
+      }
+    </div>
+  </nav>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">01 / 首推</span>
+        <h2>梯子推荐第一名：{first.provider.data.name}</h2>
+        <p>拿不定主意时，从资料最齐的这一家看起。下面每一项都来自资料记录，付款前请到官网结账页面再核对一遍。</p>
+      </div>
+      <a class="section__more" href="/tuijian/">完整推荐榜</a>
+    </div>
+    <ProviderCard row={first} tierLabel={tierLabel.get(first.tier)!} />
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">02 / 重点推荐</span>
+        <h2>机场推荐第 2–5 名：价格和线路都查得到</h2>
+        <p>这四家都至少有一档能读出月均价的套餐，并且资料里写明了线路类型。</p>
+      </div>
+      <a class="section__more" href="/duibi/">两两对比</a>
+    </div>
+    {focus.map((row) => <ProviderCard row={row} tierLabel={tierLabel.get(row.tier)!} />)}
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">03 / 优先考虑</span>
+        <h2>优先考虑的 {priority.length} 家机场</h2>
+        <p>价格资料查得到、选梯子持续跟进的品牌。个别栏位仍然空着，卡片上会如实写“资料暂缺”。</p>
+      </div>
+      <a class="section__more" href="/jichang/">全部 {board.rows.length} 家机场</a>
+    </div>
+    <div class="mini-grid">
+      {
+        priority.map((row) => {
+          const price = priceLine(row.provider);
+          const routes = cleanList(row.provider.data.vendor.routes);
+          return (
+            <a class="mini reveal" href={`/jichang/${row.provider.data.slug}/`}>
+              <span class="mini__top">
+                <span class="mini__no">#{row.rank}</span>
+                {row.provider.data.name}
+              </span>
+              <span class="mini__meta">
+                <span class="price">{price.text}</span> · {price.note}
+              </span>
+              <span class="mini__meta">线路：{routes.length ? routes.join('、') : '资料暂缺'}</span>
+            </a>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">04 / 按需求选</span>
+        <h2>性价比机场、便宜机场还是专线机场？按需求进对应的榜</h2>
+        <p>专项榜的筛选和折算只认资料里实际填了的栏位，哪一栏空着，对应的榜里就没有这家。</p>
+      </div>
+    </div>
+    <div class="grid grid--3">
+      {
+        needs.map((item, index) => (
+          <a class="card nav-card tilt glow-border reveal" style={`--d:${index}`} href={item.href}>
+            <span class="nav-card__icon"><Icon name={item.icon} /></span>
+            <span class="nav-card__title">{item.title}</span>
+            <p class="nav-card__desc">{item.desc}</p>
+            <span class="nav-card__cta">打开{item.title}榜</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">05 / 三步选好</span>
+        <h2>梯子怎么选：三步把范围缩到两三家</h2>
+      </div>
+      <a class="section__more" href="/zhinan/">全部选购指南</a>
+    </div>
+    <ol class="steps">
+      <li class="reveal">
+        <h3>想清楚用途和每月流量</h3>
+        <p>
+          聊天、查资料、用 AI 工具几乎不费流量；看高清视频、多台设备共用才是大头。不确定的话用<a href="/gongju/liuliang-jisuanqi/">流量计算器</a>估一下，再决定看<a href="/tuijian/pianyi/">便宜机场</a>还是<a href="/tuijian/daliuliang/">大流量机场</a>。
+        </p>
+      </li>
+      <li class="reveal">
+        <h3>比月均价、付费周期和线路</h3>
+        <p>
+          同样写“每月几块钱”，有的要一次付一年，有的可以按月付。把价格折成月均价和每 GB 价格再比，线路优先看资料里写明 IPLC、IEPL 的<a href="/tuijian/zhuanxian/">专线机场</a>。拿不准就用<a href="/duibi/">机场对比</a>逐项看。
+        </p>
+      </li>
+      <li class="reveal">
+        <h3>装客户端，导入订阅，先试再续</h3>
+        <p>
+          到<a href="/xiazai/">梯子下载</a>页找自己系统对应的客户端，只从官方地址下载；按<a href="/jiaocheng/">使用教程</a>导入订阅。第一次建议买短周期，在晚高峰用几天，遇到问题去<a href="/paicha/">故障排查</a>对照现象处理。
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">06 / 梯子下载</span>
+        <h2>梯子工具下载：Clash、V2Ray 等客户端的官方地址与最新版本</h2>
+        <p>版本号与发布日期由脚本从 GitHub 官方接口读取，核验于 {fmtDateTime(RELEASES_CHECKED_AT)}；只列官方仓库和官方商店。</p>
+      </div>
+      <a class="section__more" href="/xiazai/">全部 {CLIENTS.length} 款梯子工具</a>
+    </div>
+    <ul class="chips" aria-label="按系统下载">
+      {
+        PLATFORM_ORDER.map((platform) => (
+          <li>
+            <a class="chip" href={`/xiazai/${platform}/`}>
+              {PLATFORM_LABEL[platform]} · {clientsForPlatform(platform).length} 款
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <ClientTable clients={headClients} />
+  </section>
+
+  {
+    scenes.length > 0 && (
+      <section class="section">
+        <div class="section__head">
+          <div>
+            <span class="section__eyebrow">07 / 使用场景</span>
+            <h2>按场景选梯子：ChatGPT、Claude、奈飞、Telegram、YouTube</h2>
+            <p>不同服务对节点地区、IP 和流量的要求差别很大。每个场景一页，讲要求、讲怎么自己验证。</p>
+          </div>
+          <a class="section__more" href="/changjing/">全部使用场景</a>
+        </div>
+        <div class="entry-grid">
+          {scenes.map((article) => (
+            <a class="entry-card reveal" href={getArticleHref(article)}>
+              <span class="entry-card__kicker">{article.data.primaryKeyword}</span>
+              <span class="entry-card__title">{article.data.title}</span>
+              <p class="entry-card__description">{article.data.answer}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">08 / 梯子导航</span>
+        <h2>梯子导航：十二个栏目，覆盖从选到用的每一步</h2>
+      </div>
+      <a class="section__more" href="/daohang/">打开梯子导航</a>
+    </div>
+    <div class="grid grid--4">
+      {
+        columns.map((item, index) => (
+          <a class="card nav-card tilt reveal" style={`--d:${index % 4}`} href={item.href}>
+            <span class="nav-card__icon"><Icon name={item.icon} /></span>
+            <span class="nav-card__title">{item.title}</span>
+            <p class="nav-card__desc">{item.desc}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    starters.length > 0 && (
+      <section class="section">
+        <div class="section__head">
+          <div>
+            <span class="section__eyebrow">09 / 新手先读</span>
+            <h2>科学上网入门：梯子、机场、VPN、Clash、V2Ray 一次分清</h2>
+          </div>
+          <a class="section__more" href="/zhinan/">选购指南 {byType('zhinan').length} 篇</a>
+        </div>
+        <div class="entry-grid">
+          {starters.map((article) => (
+            <a class="entry-card reveal" href={getArticleHref(article)}>
+              <span class="entry-card__kicker">{article.data.primaryKeyword}</span>
+              <span class="entry-card__title">{article.data.title}</span>
+              <p class="entry-card__description">{article.data.answer}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="grid grid--2">
+      <div class="card glow-border reveal">
+        <span class="section__eyebrow">10 / 官网检测</span>
+        <h2>机场官网还能打开吗？</h2>
+        <p>
+          最近一次检测：<strong class="mono">{upCount}/{MONITOR.results.length}</strong> 家机场官网可以打开，检测时间 {fmtDateTime(MONITOR.checkedAt)}，检测点为{MONITOR.vantage}。
+        </p>
+        <p class="muted small">这项检测只说明检测点当时能否打开官网入口，不代表节点可用，也不代表你所在网络下的情况。</p>
+        <a class="btn btn--small btn--ghost" href="/jiance/">查看逐家检测记录</a>
+      </div>
+      <div class="card reveal">
+        <span class="section__eyebrow">11 / 出问题了</span>
+        <h2>梯子连不上、速度慢？</h2>
+        {
+          fixes.length > 0 ? (
+            <ul class="link-list">
+              {fixes.map((article) => (
+                <li>
+                  <a href={getArticleHref(article)}>{article.data.title}</a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="muted">排查文章正在整理。</p>
+          )
+        }
+        <p style="margin-top:1rem">
+          <a class="btn btn--small btn--ghost" href="/paicha/">全部故障排查</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">12 / 我们的做法</span>
+        <h2>选梯子怎么做推荐，以及不做什么</h2>
+      </div>
+      <a class="section__more" href="/fangfa/">排名与核验方法</a>
+    </div>
+    <div class="grid grid--3">
+      <div class="card reveal">
+        <h3>每一项资料都标来源</h3>
+        <p class="muted">价格、线路、协议、节点地区分别标注来自官网、站长确认还是第三方资料。几个来源说法不一致时，如实写出不一致，不替品牌挑一个好看的。</p>
+      </div>
+      <div class="card reveal" style="--d:1">
+        <h3>没测过的不写数字</h3>
+        <p class="muted">选梯子手里还没有自己测出来的速度、延迟和解锁测试，所以这些栏位写“实时检测中”。能自动核对的两项——客户端版本和官网可访问性——由脚本定时采集并公开时间。</p>
+      </div>
+      <div class="card reveal" style="--d:2">
+        <h3>名次是推荐，不是测速</h3>
+        <p class="muted">{board.methodology.split('。')[0]}。资料有错可以在<a href="/gengzheng/">更正记录</a>页找到反馈方式。</p>
+      </div>
+    </div>
+  </section>
+
+  <FaqBlock heading="选梯子常见问题" items={faqs} />
+  <p style="margin-top:1rem"><a href="/faq/">查看全部梯子常见问题</a></p>
+
+  <script type="application/ld+json" set:html={JSON.stringify(itemListJsonLd)} />
+</BaseLayout>

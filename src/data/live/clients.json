@@ -1,0 +1,18 @@
+[
+  { "slug": "clash-verge-rev", "name": "Clash Verge Rev", "repo": "clash-verge-rev/clash-verge-rev", "platforms": ["windows", "mac", "linux"], "kind": "Clash 系图形客户端", "core": "Mihomo" },
+  { "slug": "clash-party", "name": "Clash Party（原 Mihomo Party）", "repo": "mihomo-party-org/clash-party", "platforms": ["windows", "mac", "linux"], "kind": "Clash 系图形客户端", "core": "Mihomo" },
+  { "slug": "flclash", "name": "FlClash", "repo": "chen08209/FlClash", "platforms": ["android", "windows", "mac", "linux"], "kind": "Clash 系图形客户端", "core": "Mihomo" },
+  { "slug": "v2rayn", "name": "v2rayN", "repo": "2dust/v2rayN", "platforms": ["windows", "mac", "linux"], "kind": "V2Ray/Xray 系图形客户端", "core": "Xray / sing-box" },
+  { "slug": "v2rayng", "name": "v2rayNG", "repo": "2dust/v2rayNG", "platforms": ["android"], "kind": "V2Ray/Xray 系安卓客户端", "core": "Xray" },
+  { "slug": "clash-meta-for-android", "name": "Clash Meta for Android", "repo": "MetaCubeX/ClashMetaForAndroid", "platforms": ["android"], "kind": "Clash 系安卓客户端", "core": "Mihomo" },
+  { "slug": "sing-box", "name": "sing-box", "repo": "SagerNet/sing-box", "platforms": ["windows", "mac", "linux", "android", "iphone"], "kind": "通用代理内核与官方客户端", "core": "sing-box" },
+  { "slug": "nekobox", "name": "NekoBox for Android", "repo": "MatsuriDayo/NekoBoxForAndroid", "platforms": ["android"], "kind": "sing-box 系安卓客户端", "core": "sing-box" },
+  { "slug": "hiddify", "name": "Hiddify", "repo": "hiddify/hiddify-app", "platforms": ["windows", "mac", "linux", "android", "iphone"], "kind": "多平台图形客户端", "core": "sing-box" },
+  { "slug": "karing", "name": "Karing", "repo": "KaringX/karing", "platforms": ["windows", "mac", "android", "iphone"], "kind": "多平台图形客户端", "core": "sing-box" },
+  { "slug": "clashx-meta", "name": "ClashX Meta", "repo": "MetaCubeX/ClashX.Meta", "platforms": ["mac"], "kind": "Clash 系 macOS 菜单栏客户端", "core": "Mihomo" },
+  { "slug": "clash-nyanpasu", "name": "Clash Nyanpasu", "repo": "libnyanpasu/clash-nyanpasu", "platforms": ["windows", "mac", "linux"], "kind": "Clash 系图形客户端", "core": "Mihomo" },
+  { "slug": "openclash", "name": "OpenClash", "repo": "vernesong/OpenClash", "platforms": ["luyouqi"], "kind": "OpenWrt 路由器插件", "core": "Mihomo" },
+  { "slug": "mihomo", "name": "Mihomo（内核）", "repo": "MetaCubeX/mihomo", "platforms": ["windows", "mac", "linux"], "kind": "代理内核（命令行）", "core": "Mihomo" },
+  { "slug": "shadowrocket", "name": "Shadowrocket（小火箭）", "repo": null, "store": "https://apps.apple.com/us/app/shadowrocket/id932747118", "platforms": ["iphone"], "kind": "iOS 付费客户端", "core": "自有" },
+  { "slug": "stash", "name": "Stash", "repo": null, "store": "https://apps.apple.com/us/app/stash-rule-based-proxy/id1596063349", "platforms": ["iphone", "mac"], "kind": "iOS / macOS 付费客户端", "core": "兼容 Clash 配置" }
+]

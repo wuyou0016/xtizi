@@ -1,0 +1,30 @@
+---
+import ArticleHub from '../../components/ArticleHub.astro';
+---
+
+<ArticleHub
+  type="changjing"
+  title="梯子使用场景｜ChatGPT、Claude、奈飞、YouTube、Telegram 用什么梯子"
+  description="梯子使用场景大全：ChatGPT 梯子、Claude 梯子、奈飞梯子、YouTube 梯子、Telegram 梯子、推特梯子各自对节点地区、IP 类型、流量和带宽有什么要求，逐个场景讲清该看哪些参数、怎么自己验证。"
+  h1="梯子使用场景：不同服务对梯子的要求不一样"
+  lead="同一条梯子，用来聊天绰绰有余，用来看 4K 可能流量不够，用来登录 AI 工具又可能卡在地区上。这个栏目按服务拆开讲：这项服务在网络上卡你的是哪几点，挑机场、挑节点时盯住哪些栏位，最后怎样自己动手验证。"
+  breadcrumb="使用场景"
+  href="/changjing/"
+  eyebrow="CHANGJING / 使用场景"
+  keywords={['梯子使用场景', 'ChatGPT梯子', 'Claude梯子', '奈飞梯子', 'YouTube梯子', 'Telegram梯子', '推特梯子']}
+  categoryOrder={['AI 工具', '流媒体', '社交通讯', '工作与学习', '游戏与下载']}
+  categoryIntro={{
+    'AI 工具': '先看节点出口落在哪个地区、官方认不认；流量花不了多少，认准一个地区长期用比来回换更省心。',
+    流媒体: '既看节点能否被平台接受，也非常吃流量和带宽。',
+    社交通讯: '多数对地区不挑，重点是连接方式、通知和账号登录环境。',
+    工作与学习: '稳定和一致性比速度重要，工作时段不能掉。',
+    游戏与下载: '商店、下载、联机是三件事，很多流量其实不该走代理。',
+  }}
+>
+  <div slot="intro" class="callout">
+    <p class="callout__title">场景页不做的事</p>
+    <p>
+      选梯子没有任何解锁或可用性测试数据，所以场景页不会写“哪家机场能用某某服务”。平台的地区规则以官方页面为准，我们给出官方链接；节点是否可用，需要你按文中的方法在自己的网络下验证。想先看有哪些机场记录了海外节点地区，可以到<a href="/tuijian/">机场推荐榜</a>和<a href="/jichang/">机场大全</a>。
+    </p>
+  </div>
+</ArticleHub>

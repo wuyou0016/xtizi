@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SourceBadge from '../../components/SourceBadge.astro';
+import { getBoard } from '../../data/utils/board';
+import { CLIENTS, MONITOR, RELEASES_CHECKED_AT, fmtDate, fmtDateTime } from '../../data/utils/live';
+
+const board = await getBoard();
+const snapshot = fmtDate(board.snapshotAt);
+---
+
+<BaseLayout
+  modifiedTime="2026-10-09"
+  title="排名与核验方法｜选梯子的机场推荐榜怎么排、数据从哪来"
+  description="选梯子的排名与核验方法：机场推荐榜的名次不是测速名次，说明名次的三项依据、五个推荐档的条件、价格与线路资料的来源分级、每 GB 折算价的算法、客户端版本与官网检测的自动采集方式，以及我们明确不做的五件事和资料出错时的更正方式。"
+  keywords={['选梯子排名方法', '机场推荐榜规则', '机场评测方法', '机场排名依据', '数据来源']}
+>
+  <Breadcrumbs items={[{ name: '排名与核验方法', href: '/fangfa/' }]} />
+  <article class="prose" style="max-width:54rem">
+    <span class="section__eyebrow">FANGFA / 方法</span>
+    <h1>排名与核验方法：选梯子的榜单怎么排，数据从哪来</h1>
+    <p class="lead">这一页把选梯子所有会影响你判断的规则写清楚：名次怎么来、每个数字的出处、哪些是自动采集的、哪些事我们不做。榜单当前快照日期为 {snapshot}。</p>
+
+    <h2 id="mingci">一、名次不是测速名次，依据是这三件事</h2>
+    <p>{board.methodology}</p>
+    <p>换句话说，这份榜单回答的是“编辑部建议你先看哪几家”，而不是“哪家跑得最快”。后者需要在固定地点、固定运营商下长期连续测量，选梯子目前没有这样的数据，也不会用别人的截图代替。</p>
+
+    <h2 id="dangwei">二、五个推荐档的条件</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>推荐档</th><th>含义</th><th>条件</th><th class="num">当前家数</th></tr></thead>
+        <tbody>
+          {board.tiers.map((tier) => (
+            <tr>
+              <td><span class={`tier-pill tier-pill--${tier.id}`}>{tier.label}</span></td>
+              <td>{tier.tagline}</td>
+              <td>{tier.rule}</td>
+              <td class="num">{tier.rows.length}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p>“资料完整度”指价格、线路、协议、节点地区、客户端支持五项里，公开资料查得到几项。它衡量的是信息是否透明，不是服务好坏。</p>
+
+    <h2 id="laiyuan">三、每一项资料都分来源标注</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>标记</th><th>含义</th><th>使用时要注意</th></tr></thead>
+        <tbody>
+          <tr><td><SourceBadge type="vendor" /></td><td>品牌官网或官方渠道公开写出的信息</td><td>可信度最高，但官网可能随时调整</td></tr>
+          <tr><td><SourceBadge type="editorial" /></td><td>由站长直接向品牌确认，或选梯子给出的看法</td><td>确认过的事实与编辑观点会分开写</td></tr>
+          <tr><td><SourceBadge type="third-party" /></td><td>其他导航站、评测站页面上的记录</td><td>属于转述，可能滞后；来源之间矛盾时如实并列</td></tr>
+          <tr><td><SourceBadge type="calculated" /></td><td>由已有字段算出来的数字，例如每 GB 折算价</td><td>只是算术结果，不包含任何主观判断</td></tr>
+          <tr><td><SourceBadge type="in-house" /></td><td>选梯子自己的测试记录</td><td>目前没有任何一条，相应栏位显示“实时检测中”</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="suanfa">四、折算与筛选的算法</h2>
+    <ul>
+      <li><strong>月均价</strong>：从套餐文案里读出的每月价格。年付套餐为折算值，页面上会注明需要按年付费。</li>
+      <li><strong>每 GB 折算价</strong> = 月均价 ÷ 每月流量。两项都读得出才计算，不考虑节点倍率。</li>
+      <li><strong>专项榜单</strong>：便宜机场按最低月均价升序；性价比、月付、大流量、专线几张表只做条件筛选，默认按榜单名次排列，可以由你点击表头重新排序。</li>
+      <li><strong>没有字段就不出现</strong>：资料里没有价格的品牌不会进入任何需要价格的榜单，不会被赋予一个估计值。</li>
+    </ul>
+
+    <h2 id="zidong">五、两项自动采集的一手数据</h2>
+    <h3>客户端版本</h3>
+    <p>脚本调用 GitHub 官方接口，读取 {CLIENTS.length} 款客户端仓库的最新发布版本、发布日期、开源协议和最近提交时间，并记录核验时间。最近一次核验：{fmtDateTime(RELEASES_CHECKED_AT)}。App Store 上的应用没有公开的版本接口，页面只给出官方商店地址。</p>
+    <h3>机场官网可访问性</h3>
+    <p>脚本对每家机场登记的官网入口发起一次普通网页请求，十五秒超时，记录状态码与耗时，并按天累计检测次数和有响应的次数，保留三十天。最近一次检测：{fmtDateTime(MONITOR.checkedAt)}，检测点为{MONITOR.vantage}，记录自 {fmtDate(MONITOR.firstCheckedAt)} 起。它只说明检测点当时能否打开官网，不代表节点可用，也不代表中国大陆网络下的情况。</p>
+
+    <h2 id="buzuo">六、我们明确不做的事</h2>
+    <ul>
+      <li>不发布任何未经自己测量的速度、延迟、丢包、解锁数据，也不转载被来源方自己标为“示例”的图表。</li>
+      <li>不给机场打综合分，不用无法解释的权重把不同维度揉成一个数字。</li>
+      <li>不提供免费节点、订阅或共享账号。</li>
+      <li>不提供任何安装包的直接下载，客户端只指向官方仓库或官方商店。</li>
+      <li>不在文章正文里点名评价具体品牌，品牌信息只通过数据表和资料页呈现。</li>
+    </ul>
+
+    <h2 id="gengxin">七、更新与更正</h2>
+    <p>榜单快照日期写在榜单页顶部，每家机场资料页写有最近核对日期。发现资料有误，可以按<a href="/gengzheng/">更正记录</a>页的方式告诉我们；站点的改动记录在<a href="/gengxin/">更新日志</a>。商业关系的披露统一放在每页页脚。</p>
+    <p>了解规则之后，可以回到<a href="/tuijian/">机场推荐榜</a>，或者读<a href="/bikeng/jichang-ceping/">机场测评能信吗</a>，看看评价任何一个推荐站时该问哪些问题。</p>
+  </article>
+</BaseLayout>

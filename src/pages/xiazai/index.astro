@@ -1,0 +1,160 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import ClientTable from '../../components/ClientTable.astro';
+import Icon from '../../components/Icon.astro';
+import { resolveCanonicalUrl } from '../../config/seo';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { getArticleHref } from '../../data/utils/article-routing';
+import { CLIENTS, PLATFORM_LABEL, PLATFORM_ORDER, RELEASES_CHECKED_AT, clientsForPlatform, fmtDateTime, shortName } from '../../data/utils/live';
+
+const articles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const downloads = articles.filter((a) => a.data.type === 'xiazai');
+const platformPages = new Map(downloads.filter((a) => a.data.platform && !a.data.client).map((a) => [a.data.platform!, a]));
+const tutorials = articles.filter((a) => a.data.type === 'jiaocheng' && a.data.client);
+const groups = [
+  { title: 'Clash 系客户端', note: '基于 Mihomo（Clash Meta）内核，用规则做分流，机场普遍提供对应格式的订阅。', match: (kind: string, core: string) => /Clash|兼容 Clash/.test(kind + core) || core === 'Mihomo' },
+  { title: 'V2Ray / Xray 系客户端', note: '节点列表式的经典用法，支持 VMess、VLESS、Trojan 等协议。', match: (kind: string) => /V2Ray/.test(kind) },
+  { title: 'sing-box 系与多平台客户端', note: '基于 sing-box 内核，协议支持面广，多数主打多平台统一体验。', match: (kind: string, core: string) => core === 'sing-box' },
+  { title: 'iOS 付费客户端', note: 'App Store 付费应用，需要非中国大陆地区的 Apple ID。', match: (kind: string, core: string) => core === '自有' },
+];
+const used = new Set<string>();
+const grouped = groups.map((group) => {
+  const list = CLIENTS.filter((c) => !used.has(c.slug) && group.match(c.kind, c.core));
+  list.forEach((c) => used.add(c.slug));
+  return { ...group, list };
+});
+
+const platformIcon: Record<string, string> = { windows: 'device', mac: 'device', android: 'chip', iphone: 'chip', hongmeng: 'chip', linux: 'terminal', luyouqi: 'globe' };
+const faqs = [
+  { q: '梯子下载哪个软件好？', a: '没有唯一答案，取决于系统和使用习惯。Windows 和 Mac 上，Clash 系图形客户端上手最容易；安卓可以在 Clash 系和 V2Ray 系之间选；iPhone 需要外区 Apple ID 下载对应的应用。先确认你买的机场提供哪种格式的订阅，再选支持它的客户端。' },
+  { q: '梯子软件是免费的吗？', a: '本页收录的开源客户端本身免费，花钱的是机场的订阅服务。例外是 iPhone 上的部分客户端，它们是 App Store 的付费应用，价格以商店页面为准。任何声称“内置免费节点”的整合包都不建议安装。' },
+  { q: '为什么只给 GitHub 和 App Store 的地址？', a: '因为这是唯一能确认来源的渠道。开源客户端的官方发布渠道就是它的仓库发布页，第三方网盘、下载站和所谓汉化版无法验证是否被修改过。选梯子不提供任何安装包的直接下载，只指向官方地址。' },
+  { q: '页面上的版本号是怎么来的？', a: '由脚本定时调用 GitHub 官方接口读取各仓库的最新发布版本、发布日期和仓库状态，并记录核验时间。页面上显示的就是那一次核验的结果，如果仓库在那之后发布了新版本，以官方发布页为准。' },
+  { q: '国内打不开 GitHub，怎么下载梯子？', a: '这是常见的先有鸡还是先有蛋的问题。可行的办法是：请已经能访问的朋友帮忙下载官方安装包，换一个网络环境再试，或者先用手机流量尝试访问。不建议为了省事去下载来路不明的整合包。' },
+  { q: '装了客户端为什么还是不能用？', a: '客户端只是工具，本身不带节点。你还需要一家机场的订阅链接，把它导入客户端、选好节点并开启代理后才能使用。导入方法见使用教程栏目里的订阅链接怎么用。' },
+];
+
+const listJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '梯子工具下载：客户端官方地址与最新版本',
+  numberOfItems: CLIENTS.length,
+  itemListElement: CLIENTS.map((client, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: shortName(client),
+    url: resolveCanonicalUrl(`/xiazai/${client.slug}/`),
+  })),
+};
+---
+
+<BaseLayout
+  title="梯子下载｜2026 梯子工具与梯子软件官方下载地址、最新版本核验"
+  description={`梯子下载导航：收录 ${CLIENTS.length} 款梯子工具的官方下载地址，包括 Clash Verge Rev、v2rayN、v2rayNG、sing-box、小火箭等梯子软件，按 Windows、Mac、安卓、iPhone 分类，标出最新版本号、发布日期与核验时间，只指向官方仓库与官方商店。`}
+  keywords={['梯子下载', '梯子工具下载', '梯子软件下载', '梯子客户端', '梯子软件', 'Clash下载', 'V2Ray下载', '翻墙软件下载']}
+>
+  <Breadcrumbs items={[{ name: '梯子下载', href: '/xiazai/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">XIAZAI / 梯子下载</span>
+    <h1>梯子下载：{CLIENTS.length} 款梯子工具的官方地址与最新版本</h1>
+    <p class="lead">
+      梯子软件最大的风险不是难用，而是下到被改过的安装包。这一页只做两件事：告诉你每款梯子工具的官方发布地址在哪，以及它现在的最新版本是多少。版本数据由脚本从 GitHub 官方接口读取，核验于 <strong>{fmtDateTime(RELEASES_CHECKED_AT)}</strong>。
+    </p>
+  </header>
+
+  <section>
+    <h2 id="an-xitong">按系统找梯子下载地址</h2>
+    <div class="grid grid--4">
+      {
+        PLATFORM_ORDER.map((platform, index) => {
+          const page = platformPages.get(platform);
+          const list = clientsForPlatform(platform);
+          const inner = (
+            <>
+              <span class="nav-card__icon"><Icon name={platformIcon[platform]!} /></span>
+              <span class="nav-card__title">{PLATFORM_LABEL[platform]} 梯子下载</span>
+              <p class="nav-card__desc">{list.length > 0 ? `收录 ${list.length} 款：${list.slice(0, 4).map(shortName).join('、')}${list.length > 4 ? ' 等' : ''}` : '暂无原生客户端，页面给出可行的替代方案'}</p>
+            </>
+          );
+          return page ? (
+            <a class="card nav-card tilt reveal" style={`--d:${index % 4}`} href={getArticleHref(page)}>
+              {inner}
+              <span class="nav-card__cta">查看{PLATFORM_LABEL[platform]}对照</span>
+            </a>
+          ) : (
+            <div class="card nav-card">{inner}</div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <h2 id="quanbu">全部梯子工具：版本与官方地址总表</h2>
+    <ClientTable clients={CLIENTS} />
+    <p class="table-note">
+      版本号、发布日期来自 GitHub 官方接口，核验于 {fmtDateTime(RELEASES_CHECKED_AT)}。App Store 应用没有公开的版本接口，以商店页面为准。
+    </p>
+  </section>
+
+  {
+    grouped
+      .filter((group) => group.list.length > 0)
+      .map((group) => (
+        <section class="section section--tight">
+          <div class="section__head">
+            <div>
+              <h2>{group.title}</h2>
+              <p>{group.note}</p>
+            </div>
+          </div>
+          <div class="mini-grid">
+            {group.list.map((client) => {
+              const page = downloads.find((a) => a.data.client === client.slug);
+              const tutorial = tutorials.find((a) => a.data.client === client.slug);
+              return (
+                <div class="mini">
+                  <span class="mini__top">{page ? <a href={getArticleHref(page)}>{shortName(client)} 下载</a> : shortName(client)}</span>
+                  <span class="mini__meta">{client.kind}</span>
+                  <span class="mini__meta">支持：{client.platforms.map((p) => PLATFORM_LABEL[p]).join('、')}</span>
+                  {tutorial && (
+                    <span class="mini__meta">
+                      <a href={getArticleHref(tutorial)}>{tutorial.data.primaryKeyword}</a>
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ))
+  }
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>下载梯子软件之前，先弄清三件事</h2>
+    <h3>客户端不等于梯子</h3>
+    <p>
+      这里列出的都是客户端或内核，也就是“工具”。它们本身不带任何节点，装好之后还需要导入机场的订阅链接才能用。如果你还没有订阅，先看<a href="/tuijian/">机场推荐榜</a>或者<a href="/zhinan/xinshou-mai-tizi/">新手第一次买梯子</a>。
+    </p>
+    <h3>先看机场给什么格式的订阅</h3>
+    <p>
+      机场通常提供两类订阅：Clash（Mihomo）格式，以及通用的节点链接格式。Clash 系客户端用前者，V2Ray 系客户端用后者，sing-box 系的多平台客户端往往两种都能导入。选客户端之前，先在机场面板里确认它提供哪一种。
+    </p>
+    <h3>怎么确认下到的是官方版本</h3>
+    <ol>
+      <li>地址栏里的域名是 <code>github.com</code>，仓库路径与本页“官方地址”一致。</li>
+      <li>安装包来自仓库的 Releases（发布）页面，而不是某个评论或第三方链接。</li>
+      <li>发布页的版本号与本页的核验结果相同或更新。</li>
+      <li>iPhone 只从 App Store 安装，不使用来路不明的共享 Apple ID。</li>
+    </ol>
+    <p>
+      不知道选哪个，可以用<a href="/gongju/kehuduan-xuanze/">客户端选择器</a>按系统和习惯筛一下；装好之后的步骤在<a href="/jiaocheng/">使用教程</a>里。
+    </p>
+  </section>
+
+  <FaqBlock heading="梯子下载常见问题" items={faqs} />
+  <script type="application/ld+json" set:html={JSON.stringify(listJsonLd)} />
+</BaseLayout>

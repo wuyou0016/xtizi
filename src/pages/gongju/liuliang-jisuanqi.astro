@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+
+const faqs = [
+  { q: '梯子流量计算器是怎么算的？', a: '视频流量按“码率 × 时长”计算：每小时流量（GB）等于码率（Mbps）乘以 0.45。网页、聊天和听歌按每小时的估算用量乘以时长。把每天的用量乘以三十天，再加上你填的每月下载量，就是每月总流量的估算值。所有参数都可以自己修改。' },
+  { q: '为什么我的实际流量比估算的多？', a: '常见原因有四个：视频平台自动切到了更高清晰度；开了全局模式，国内流量也算进了套餐；后台的系统更新、云同步走了代理；用了带流量倍率的节点。可以对照“梯子流量消耗太快”那篇排查。' },
+  { q: '只用 ChatGPT 和查资料，需要多少流量？', a: '很少。文字对话和网页浏览的数据量很小，即使每天用几个小时，一个月通常也只有几个 GB 到十几 GB 的量级。这类用法不需要为流量多花钱，选小流量套餐即可。' },
+  { q: '估出来的数字应该留多少余量？', a: '建议在估算值上再留三成左右的余量，因为清晰度切换、偶尔的大文件下载都很难预估。如果估算值刚好卡在两个档位之间，第一次可以先买小的，用一个月看实际消耗再调整。' },
+];
+---
+
+<BaseLayout
+  title="梯子流量计算器｜每月需要多少流量？按看视频、聊天、下载估算"
+  description="梯子流量计算器：填写每天看视频的时长与清晰度、上网聊天和听歌的时间、每月下载量，按码率乘以时长的公式估算每月需要的梯子流量，码率参数可自行修改，结果附每项明细和三成余量，并给出对应的套餐流量档位建议。运算只在你的浏览器里进行。"
+  keywords={['梯子流量计算器', '机场流量计算', '梯子流量多少够用', '流量估算', '看视频用多少流量', '机场流量']}
+>
+  <Breadcrumbs items={[{ name: '工具箱', href: '/gongju/' }, { name: '流量计算器', href: '/gongju/liuliang-jisuanqi/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">LIULIANG / 流量计算器</span>
+    <h1>梯子流量计算器：估算每月需要多少流量</h1>
+    <p class="lead">流量买少了不够用，买多了浪费。填上你平均每天的使用习惯，下面会按公开的公式给出一个估算值。它是估算，不是测量：真实消耗会随清晰度和使用方式变化。</p>
+  </header>
+
+  <div class="grid grid--2" style="align-items:start">
+    <form class="card tool" id="calc" onsubmit="return false">
+      <h2 style="font-size:1.1rem;margin:0">每天看视频（小时）</h2>
+      <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem">
+        <div class="field"><label for="h480">480p 标清</label><input id="h480" type="number" min="0" max="24" step="0.5" value="0" /></div>
+        <div class="field"><label for="h720">720p 高清</label><input id="h720" type="number" min="0" max="24" step="0.5" value="1" /></div>
+        <div class="field"><label for="h1080">1080p 全高清</label><input id="h1080" type="number" min="0" max="24" step="0.5" value="0.5" /></div>
+        <div class="field"><label for="h4k">4K 超高清</label><input id="h4k" type="number" min="0" max="24" step="0.5" value="0" /></div>
+      </div>
+      <h2 style="font-size:1.1rem;margin:0">每天其他用途（小时）</h2>
+      <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem">
+        <div class="field"><label for="hweb">网页、社交、AI 对话</label><input id="hweb" type="number" min="0" max="24" step="0.5" value="2" /></div>
+        <div class="field"><label for="hmusic">在线听歌</label><input id="hmusic" type="number" min="0" max="24" step="0.5" value="0" /></div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem">
+        <div class="field"><label for="dl">每月下载 / 更新（GB）</label><input id="dl" type="number" min="0" step="1" value="5" /></div>
+        <div class="field"><label for="people">同样习惯的人数</label><input id="people" type="number" min="1" max="10" step="1" value="1" /></div>
+      </div>
+      <details>
+        <summary style="cursor:pointer;font-weight:700">修改估算参数（码率与每小时用量）</summary>
+        <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin-top:.8rem">
+          <div class="field"><label for="r480">480p 码率 Mbps</label><input id="r480" type="number" min="0.1" step="0.1" value="1.5" /></div>
+          <div class="field"><label for="r720">720p 码率 Mbps</label><input id="r720" type="number" min="0.1" step="0.1" value="3" /></div>
+          <div class="field"><label for="r1080">1080p 码率 Mbps</label><input id="r1080" type="number" min="0.1" step="0.1" value="5" /></div>
+          <div class="field"><label for="r4k">4K 码率 Mbps</label><input id="r4k" type="number" min="0.1" step="0.5" value="16" /></div>
+          <div class="field"><label for="rweb">网页等每小时 GB</label><input id="rweb" type="number" min="0.01" step="0.01" value="0.15" /></div>
+          <div class="field"><label for="rmusic">听歌每小时 GB</label><input id="rmusic" type="number" min="0.01" step="0.01" value="0.07" /></div>
+        </div>
+        <p class="small muted" style="margin:.6rem 0 0">默认值是常见的码率量级，仅用于估算；不同平台、不同内容的实际码率差别很大。</p>
+      </details>
+    </form>
+    <div>
+      <div class="output" aria-live="polite">
+        <span class="muted small">估算每月流量</span>
+        <b class="big"><span id="out-total">0</span> GB</b>
+        <span class="muted small">建议按 <strong id="out-buffer">0</strong> GB 以上的档位选（含三成余量）</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>项目</th><th class="num">每月 GB</th></tr></thead>
+          <tbody id="out-rows"></tbody>
+        </table>
+      </div>
+      <div class="callout" id="out-advice"></div>
+      <noscript><p class="callout callout--warn">这个工具需要启用 JavaScript。</p></noscript>
+    </div>
+  </div>
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>计算公式</h2>
+    <p>视频流量的本质是码率乘以时间。码率的单位是 Mbps（每秒兆比特），换算成每小时的流量：</p>
+    <pre><code>每小时流量（GB）= 码率（Mbps）× 3600 秒 ÷ 8 ÷ 1000 = 码率 × 0.45</code></pre>
+    <p>举例：码率 5 Mbps 的视频，每小时约 2.25 GB。把各个清晰度的时长分别代入、相加，再乘以三十天，就是视频部分的月流量。网页、社交和听歌按“每小时用量 × 时长”估算，最后加上每月的下载量。</p>
+    <h2>估算时容易漏掉的几项</h2>
+    <ul>
+      <li><strong>自动清晰度。</strong>视频平台会在网络好的时候自动提高清晰度，实际消耗常常高于你以为的那一档。</li>
+      <li><strong>国内流量。</strong>如果客户端开的是全局模式，国内网站和 App 的流量也会计入套餐。日常应使用规则模式，见<a href="/jiaocheng/guize-quanju-zhilian/">规则模式和全局模式怎么选</a>。</li>
+      <li><strong>流量倍率。</strong>部分节点按倍率扣流量，同样的使用量会消耗更多，见<a href="/zhinan/liuliang-beilv/">流量倍率是什么</a>。</li>
+      <li><strong>后台同步。</strong>系统更新、云盘同步、应用自动更新都可能走代理。</li>
+    </ul>
+    <p>拿到估算值后，可以去<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>按流量和预算筛机场；流量需求超过 100GB 的直接看<a href="/tuijian/daliuliang/">大流量机场</a>；更完整的思路见<a href="/zhinan/tizi-liuliang/">梯子流量多少够用</a>。</p>
+  </section>
+
+  <FaqBlock heading="梯子流量计算器常见问题" items={faqs} />
+
+  <script is:inline>
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+      var n = function (id) { var v = parseFloat($(id).value); return isNaN(v) || v < 0 ? 0 : v; };
+      function run() {
+        var people = Math.max(1, n('people'));
+        var items = [
+          ['480p 视频', n('h480') * n('r480') * 0.45 * 30],
+          ['720p 视频', n('h720') * n('r720') * 0.45 * 30],
+          ['1080p 视频', n('h1080') * n('r1080') * 0.45 * 30],
+          ['4K 视频', n('h4k') * n('r4k') * 0.45 * 30],
+          ['网页、社交、AI 对话', n('hweb') * n('rweb') * 30],
+          ['在线听歌', n('hmusic') * n('rmusic') * 30]
+        ].map(function (it) { return [it[0], it[1] * people]; });
+        items.push(['下载 / 更新', n('dl')]);
+        var total = items.reduce(function (s, it) { return s + it[1]; }, 0);
+        var buffer = total * 1.3;
+        $('out-total').textContent = total.toFixed(0);
+        $('out-buffer').textContent = buffer.toFixed(0);
+        $('out-rows').innerHTML = items.filter(function (it) { return it[1] > 0; }).map(function (it) {
+          return '<tr><td>' + it[0] + '</td><td class="num">' + it[1].toFixed(1) + '</td></tr>';
+        }).join('') || '<tr><td colspan="2" class="muted">填写使用时长后显示明细</td></tr>';
+        var advice;
+        if (buffer <= 50) advice = '<h3>小流量就够</h3><p>你的用量在 50GB 以内，可以优先看价格。到<a href="/tuijian/pianyi/">便宜机场</a>里选小流量套餐即可。</p>';
+        else if (buffer <= 100) advice = '<h3>中等流量</h3><p>建议选每月 100GB 左右的档位。可以在<a href="/tuijian/xingjiabi/">性价比机场</a>里按每 GB 价格比较。</p>';
+        else if (buffer <= 200) advice = '<h3>需要大流量</h3><p>建议选 100GB 到 200GB 的档位，直接看<a href="/tuijian/daliuliang/">大流量机场</a>，并留意节点倍率。</p>';
+        else advice = '<h3>流量需求很高</h3><p>每月超过 200GB，可选的套餐不多。先确认是否能降低清晰度、让国内流量直连，再到<a href="/tuijian/daliuliang/">大流量机场</a>里看最大档位。</p>';
+        $('out-advice').innerHTML = advice;
+      }
+      $('calc').addEventListener('input', run);
+      run();
+    })();
+  </script>
+</BaseLayout>

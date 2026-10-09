@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { resolveCanonicalUrl } from '../../config/seo';
+import { getBoard } from '../../data/utils/board';
+import { cleanList, completeness, priceLine } from '../../data/utils/provider-facts';
+import { fmtDate, monitorFor, STATE_LABEL } from '../../data/utils/live';
+
+const board = await getBoard();
+const snapshot = fmtDate(board.snapshotAt);
+const allRegions = [...new Set(board.rows.flatMap((row) => row.provider.data.vendor.regions ?? []))];
+const allRoutes = ['IPLC', 'IEPL', '专线'];
+
+const faqs = [
+  { q: '机场大全里的机场是怎么收录的？', a: '收录的前提是官网入口可以打开，并且至少有一条可以追溯的资料来源。收录不等于推荐：推荐档位见机场推荐榜，资料待核实的品牌只确认了官网入口，其余都需要你自己核对。' },
+  { q: '为什么有些机场的价格写“资料暂缺”？', a: '因为选梯子没有查到可以核对的公开价格。有的机场需要注册后才能看到套餐，有的只在第三方页面留下了名字。我们不会用推测数字填空，这类品牌的价格请直接到官网套餐页查看。' },
+  { q: '机场资料页里的“观察中”是什么意思？', a: '表示这家的公开资料存在需要留意的情况，例如几个来源对线路或协议的说法互相对不上，或者价格截图的归属存疑。它不是负面结论，只是提醒你购买前多核对一步。' },
+  { q: '怎么在这么多机场里快速筛选？', a: '可以用页面上方的筛选按钮按“有月付”“写明专线”“有价格资料”缩小范围，也可以直接用选梯子向导按用途筛。剩下两三家时，用机场对比把它们放进同一张表逐项看。' },
+  { q: '机场资料多久核对一次？', a: '每家资料页都写有最近一次核对日期和资料来源的获取日期；官网可访问性由脚本定时检测并公开检测时间。机场调价、换域名不会通知第三方，所以下单前仍然要以官网为准。' },
+];
+const listJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '机场大全',
+  numberOfItems: board.rows.length,
+  itemListElement: board.rows.map((row) => ({ '@type': 'ListItem', position: row.rank, name: row.provider.data.name, url: resolveCanonicalUrl(`/jichang/${row.provider.data.slug}/`) })),
+};
+---
+
+<BaseLayout
+  title={`机场大全｜${board.rows.length} 家梯子机场官网、价格、线路资料库`}
+  description={`机场大全：选梯子收录的 ${board.rows.length} 家梯子机场资料库，每家一页，列出官网入口、套餐价格、流量、线路类型、协议、节点地区和资料来源，并附官网可访问性检测。可按有月付、写明专线、有价格资料、有节点地区记录四个条件筛选，资料暂缺的栏位会明确标出。`}
+  keywords={['机场大全', '机场列表', '梯子机场大全', '机场官网', '机场资料', '机场有哪些', '梯子有哪些']}
+>
+  <Breadcrumbs items={[{ name: '机场大全', href: '/jichang/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">JICHANG / 机场库</span>
+    <h1>机场大全：{board.rows.length} 家梯子机场的资料库</h1>
+    <p class="lead">
+      每家机场一页资料：官网入口、套餐与价格、线路、协议、节点地区、资料来源，以及官网可访问性检测。这里按榜单名次列出全部品牌，资料快照日期 {snapshot}。目前资料里出现过的节点地区有{allRegions.join('、')}。
+    </p>
+    <div class="options" id="filters" role="group" aria-label="筛选机场">
+      <label class="option"><input type="checkbox" value="monthly" /><span>有月付</span></label>
+      <label class="option"><input type="checkbox" value="dedicated" /><span>写明专线</span></label>
+      <label class="option"><input type="checkbox" value="priced" /><span>有价格资料</span></label>
+      <label class="option"><input type="checkbox" value="regions" /><span>有节点地区记录</span></label>
+    </div>
+    <p class="muted small" id="filter-count" aria-live="polite" style="margin-top:0.6rem">共 {board.rows.length} 家</p>
+  </header>
+
+  <div class="grid grid--3" id="provider-grid">
+    {
+      board.rows.map((row) => {
+        const p = row.provider.data;
+        const price = priceLine(row.provider);
+        const routes = cleanList(p.vendor.routes);
+        const comp = completeness(row.provider);
+        const m = monitorFor(row.provider.id);
+        const tier = board.tiers.find((t) => t.id === row.tier)!;
+        const flags = [
+          (p.vendor.pricing ?? []).some((plan) => plan.billingCycle === 'monthly') ? 'monthly' : '',
+          (p.vendor.routes ?? []).some((r) => allRoutes.some((k) => r.includes(k))) ? 'dedicated' : '',
+          (p.vendor.pricing ?? []).length > 0 ? 'priced' : '',
+          (p.vendor.regions ?? []).length > 0 ? 'regions' : '',
+        ].filter(Boolean);
+        return (
+          <article class:list={['card', 'tilt', { 'card--gold': row.rank === 1 }]} data-flags={flags.join(' ')}>
+            <p class="btn-row" style="gap:0.5rem;margin-bottom:0.5rem">
+              <span class="mono muted">#{row.rank}</span>
+              <span class={`tier-pill tier-pill--${row.tier}`}>{tier.label}</span>
+              {row.rank === 1 && (
+                <span class="badge badge--gold">
+                  <span>首推</span>
+                </span>
+              )}
+              {p.status === 'watch' && <span class="chip chip--empty">观察中</span>}
+            </p>
+            <h2 style="font-size:1.2rem;margin-bottom:0.4rem">
+              <a href={`/jichang/${p.slug}/`} style="color:var(--text)">{p.name}</a>
+            </h2>
+            <dl class="kv small" style="margin-bottom:0.9rem">
+              <dt>价格</dt>
+              <dd>
+                <span class="price">{price.text}</span>
+                <span class="muted"> · {price.note}</span>
+              </dd>
+              <dt>线路</dt>
+              <dd>{routes.length ? routes.join('、') : '资料暂缺'}</dd>
+              <dt>节点地区</dt>
+              <dd>{(p.vendor.regions ?? []).join('、') || '资料暂缺'}</dd>
+              <dt>完整度</dt>
+              <dd>{comp.have.length}/5</dd>
+              <dt>官网检测</dt>
+              <dd>{m.result ? <span class={`state state--${m.result.state}`}>{STATE_LABEL[m.result.state]}</span> : '尚未检测'}</dd>
+            </dl>
+            <div class="btn-row">
+              <a class="btn btn--small btn--ghost" href={`/jichang/${p.slug}/`}>{p.name}资料</a>
+              <a class:list={['btn', 'btn--small', { 'btn--gold': row.rank === 1 }]} href={p.vendor.officialWebsite} target="_blank" rel="nofollow sponsored noopener">官网</a>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>怎么读一家机场的资料页</h2>
+    <p>每个资料页的结构相同，建议按这个顺序看：</p>
+    <ol>
+      <li><strong>资料卡</strong>：最低月均价、每 GB 折算价、线路、协议、节点地区、客户端支持，缺哪项一眼能看到。</li>
+      <li><strong>价格与套餐</strong>：逐档列出价格、付费周期和流量，年付档会标明月均价是折算值。</li>
+      <li><strong>资料来源</strong>：每条信息来自官网、站长确认还是第三方资料，以及获取日期。</li>
+      <li><strong>官网检测</strong>：脚本定时请求官网入口的结果，用来区分“被墙”和“停运”。</li>
+      <li><strong>购买前核对</strong>：把资料里缺的项目列成清单，到官网逐项确认。</li>
+    </ol>
+    <p>
+      想直接看结论，去<a href="/tuijian/">机场推荐榜</a>；想两家放在一起比，去<a href="/duibi/">机场对比</a>；不清楚线路和协议这些词，查<a href="/cidian/">梯子术语库</a>。
+    </p>
+  </section>
+
+  <FaqBlock heading="机场大全常见问题" items={faqs} />
+  <script type="application/ld+json" set:html={JSON.stringify(listJsonLd)} />
+  <script is:inline>
+    (function () {
+      var boxes = document.querySelectorAll('#filters input');
+      var cards = document.querySelectorAll('#provider-grid [data-flags]');
+      var count = document.getElementById('filter-count');
+      function apply() {
+        var need = Array.prototype.filter.call(boxes, function (b) { return b.checked; }).map(function (b) { return b.value; });
+        var shown = 0;
+        cards.forEach(function (card) {
+          var flags = card.getAttribute('data-flags').split(' ');
+          var ok = need.every(function (n) { return flags.indexOf(n) !== -1; });
+          card.hidden = !ok;
+          if (ok) shown++;
+        });
+        count.textContent = need.length ? '符合条件 ' + shown + ' 家' : '共 ' + cards.length + ' 家';
+      }
+      boxes.forEach(function (b) { b.addEventListener('change', apply); });
+    })();
+  </script>
+</BaseLayout>

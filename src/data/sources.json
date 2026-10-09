@@ -1,0 +1,326 @@
+[
+ {
+  "key": "openai-countries",
+  "title": "OpenAI：ChatGPT 支持的国家和地区",
+  "url": "https://help.openai.com/en/articles/7947663-chatgpt-supported-countries",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "openai-api-countries",
+  "title": "OpenAI：API 支持的国家和地区",
+  "url": "https://platform.openai.com/docs/supported-countries",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "anthropic-countries",
+  "title": "Anthropic：支持的国家和地区",
+  "url": "https://www.anthropic.com/supported-countries",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "gemini-api-regions",
+  "title": "Google：Gemini API 可用地区",
+  "url": "https://ai.google.dev/gemini-api/docs/available-regions",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "gemini-app-regions",
+  "title": "Google：Gemini 应用可用地区",
+  "url": "https://support.google.com/gemini/answer/13575153",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "netflix-vpn",
+  "title": "Netflix 帮助中心：使用 VPN 或代理观看",
+  "url": "https://help.netflix.com/en/node/277",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "netflix-where",
+  "title": "Netflix 帮助中心：Netflix 在哪些地区提供",
+  "url": "https://help.netflix.com/en/node/14164",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "youtube-premium-regions",
+  "title": "YouTube 帮助：YouTube Premium 提供的地区",
+  "url": "https://support.google.com/youtube/answer/6307365",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "disney-help",
+  "title": "Disney+ 帮助中心",
+  "url": "https://help.disneyplus.com/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "telegram-faq",
+  "title": "Telegram 官方 FAQ",
+  "url": "https://telegram.org/faq",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "x-help",
+  "title": "X 帮助中心",
+  "url": "https://help.x.com/en",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "discord-support",
+  "title": "Discord 支持",
+  "url": "https://support.discord.com/hc/en-us",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "steam-help",
+  "title": "Steam 客服",
+  "url": "https://help.steampowered.com/en/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "apple-region",
+  "title": "Apple 支持：更改 Apple 账户的国家或地区",
+  "url": "https://support.apple.com/en-us/118283",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "appstore-shadowrocket",
+  "title": "Apple App Store：Shadowrocket",
+  "url": "https://apps.apple.com/us/app/shadowrocket/id932747118",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "appstore-stash",
+  "title": "Apple App Store：Stash",
+  "url": "https://apps.apple.com/us/app/stash-rule-based-proxy/id1596063349",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "googleplay-country",
+  "title": "Google Play 帮助：更改 Google Play 国家/地区",
+  "url": "https://support.google.com/googleplay/answer/7431675",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "github-docs",
+  "title": "GitHub 文档",
+  "url": "https://docs.github.com/en",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "spotify-support",
+  "title": "Spotify 支持",
+  "url": "https://support.spotify.com/us/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "wireguard",
+  "title": "WireGuard 官网",
+  "url": "https://www.wireguard.com/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "openvpn",
+  "title": "OpenVPN 官网",
+  "url": "https://openvpn.net/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "xray-docs",
+  "title": "Project X（Xray）文档",
+  "url": "https://xtls.github.io/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "v2fly-docs",
+  "title": "V2Fly（V2Ray）文档",
+  "url": "https://www.v2fly.org/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "singbox-docs",
+  "title": "sing-box 官方文档",
+  "url": "https://sing-box.sagernet.org/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "mihomo-docs",
+  "title": "Mihomo（Clash Meta）文档",
+  "url": "https://wiki.metacubex.one/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "hysteria-docs",
+  "title": "Hysteria 2 官方文档",
+  "url": "https://v2.hysteria.network/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "trojan-docs",
+  "title": "Trojan 项目文档",
+  "url": "https://trojan-gfw.github.io/trojan/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "shadowsocks",
+  "title": "Shadowsocks 官网",
+  "url": "https://shadowsocks.org/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-clash-verge-rev",
+  "title": "Clash Verge Rev 官方仓库",
+  "url": "https://github.com/clash-verge-rev/clash-verge-rev",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-clash-party",
+  "title": "Clash Party 官方仓库",
+  "url": "https://github.com/mihomo-party-org/clash-party",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-flclash",
+  "title": "FlClash 官方仓库",
+  "url": "https://github.com/chen08209/FlClash",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-v2rayn",
+  "title": "v2rayN 官方仓库",
+  "url": "https://github.com/2dust/v2rayN",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-v2rayng",
+  "title": "v2rayNG 官方仓库",
+  "url": "https://github.com/2dust/v2rayNG",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-clash-meta-for-android",
+  "title": "Clash Meta for Android 官方仓库",
+  "url": "https://github.com/MetaCubeX/ClashMetaForAndroid",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-sing-box",
+  "title": "sing-box 官方仓库",
+  "url": "https://github.com/SagerNet/sing-box",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-nekobox",
+  "title": "NekoBox for Android 官方仓库",
+  "url": "https://github.com/MatsuriDayo/NekoBoxForAndroid",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-hiddify",
+  "title": "Hiddify 官方仓库",
+  "url": "https://github.com/hiddify/hiddify-app",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-karing",
+  "title": "Karing 官方仓库",
+  "url": "https://github.com/KaringX/karing",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-clashx-meta",
+  "title": "ClashX Meta 官方仓库",
+  "url": "https://github.com/MetaCubeX/ClashX.Meta",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-clash-nyanpasu",
+  "title": "Clash Nyanpasu 官方仓库",
+  "url": "https://github.com/libnyanpasu/clash-nyanpasu",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-openclash",
+  "title": "OpenClash 官方仓库",
+  "url": "https://github.com/vernesong/OpenClash",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "repo-mihomo",
+  "title": "Mihomo 内核官方仓库",
+  "url": "https://github.com/MetaCubeX/mihomo",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "cf-vpn",
+  "title": "Cloudflare：What is a VPN",
+  "url": "https://www.cloudflare.com/learning/access-management/what-is-a-vpn/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "cf-dns",
+  "title": "Cloudflare：What is DNS",
+  "url": "https://www.cloudflare.com/learning/dns/what-is-dns/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "cf-1111-help",
+  "title": "Cloudflare 1.1.1.1 帮助（检查连接信息）",
+  "url": "https://one.one.one.one/help/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "android-vpnservice",
+  "title": "Android 开发者文档：VpnService",
+  "url": "https://developer.android.com/reference/android/net/VpnService",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "ms-netsh",
+  "title": "Microsoft Learn：Windows 代理设置",
+  "url": "https://learn.microsoft.com/en-us/windows/win32/winhttp/netsh-exe-commands",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "mdn-proxy",
+  "title": "Mozilla MDN：HTTP 代理与隧道",
+  "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Proxy_servers_and_tunneling",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "iana",
+  "title": "IANA：IP 地址分配",
+  "url": "https://www.iana.org/numbers",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "openai-status",
+  "title": "ChatGPT 状态页",
+  "url": "https://status.openai.com/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "anthropic-status",
+  "title": "Claude 状态页",
+  "url": "https://status.anthropic.com/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "telegram-mtproto",
+  "title": "Telegram 代理说明（MTProto）",
+  "url": "https://core.telegram.org/mtproto",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "harmonyos",
+  "title": "HarmonyOS 开发者官网",
+  "url": "https://developer.huawei.com/consumer/cn/harmonyos/",
+  "checkedAt": "2026-10-08"
+ },
+ {
+  "key": "telegram-proxy",
+  "title": "Telegram 官方代理说明（MTProxy 与 SOCKS5）",
+  "url": "https://core.telegram.org/proxy",
+  "checkedAt": "2026-10-09"
+ }
+]

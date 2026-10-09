@@ -1,0 +1,82 @@
+---
+// 文章/专项页末尾的"资料里……的机场"数据块：按 providers 真实字段筛选，不手写品牌结论。
+import type { BoardRow } from '../data/utils/board';
+import { RANK_BLOCK_META, bestPerGb, cheapestMonthly, cheapestMonthlyBilled, cleanList, filterRows, largestPlan, type RankBlockKind } from '../data/utils/provider-facts';
+
+interface Props {
+  kind: RankBlockKind;
+  rows: BoardRow[];
+  tiers: { id: string; label: string }[];
+  heading?: string;
+  limit?: number;
+}
+
+const { kind, rows, tiers, heading, limit = 8 } = Astro.props;
+const meta = RANK_BLOCK_META[kind];
+const picked = filterRows(kind, rows).slice(0, limit);
+const tierLabel = new Map(tiers.map((tier) => [tier.id, tier.label]));
+
+function priceCell(row: BoardRow): string {
+  const plan =
+    kind === 'monthly'
+      ? cheapestMonthlyBilled(row.provider)?.plan
+      : kind === 'traffic'
+        ? largestPlan(row.provider)?.plan
+        : kind === 'value'
+          ? bestPerGb(row.provider)?.plan
+          : cheapestMonthly(row.provider)?.plan;
+  if (plan) return `${plan.price}${plan.quota ? ` · ${plan.quota}` : ''}${plan.cycle ? `（${plan.cycle}）` : ''}`;
+  return row.provider.data.vendor.pricing?.[0]?.price ?? '资料暂缺';
+}
+const thirdLabel = kind === 'value' ? '每 GB 折算价' : kind === 'overseas' ? '节点地区' : '线路';
+function thirdCell(row: BoardRow): string {
+  if (kind === 'value') {
+    const best = bestPerGb(row.provider);
+    return best ? `约 ¥${best.perGb.toFixed(3)}` : '—';
+  }
+  if (kind === 'overseas') return (row.provider.data.vendor.regions ?? []).join('、') || '资料暂缺';
+  return cleanList(row.provider.data.vendor.routes).join('、') || '资料暂缺';
+}
+---
+
+{
+  picked.length > 0 && (
+    <section class="rank-block" aria-label={heading ?? meta.heading}>
+      <h2>{heading ?? meta.heading}</h2>
+      <p>{meta.intro}</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="num">推荐名次</th>
+              <th>机场</th>
+              <th>推荐档</th>
+              <th>资料里的价格</th>
+              <th>{thirdLabel}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {picked.map((row) => (
+              <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                <td class="num">{row.rank}</td>
+                <td>
+                  <a href={`/jichang/${row.provider.data.slug}/`}>{row.provider.data.name}</a>
+                </td>
+                <td>
+                  <span class={`tier-pill tier-pill--${row.tier}`}>{tierLabel.get(row.tier)}</span>
+                </td>
+                <td>{priceCell(row)}</td>
+                <td>{thirdCell(row)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <a class="btn btn--small" href={meta.link.href}>
+          {meta.link.label}
+        </a>
+      </p>
+    </section>
+  )
+}

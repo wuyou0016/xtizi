@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getBoard } from '../../data/utils/board';
+import { CLIENTS, MONITOR, RELEASES_CHECKED_AT, fmtDate, fmtDateTime } from '../../data/utils/live';
+
+const board = await getBoard();
+const log = [
+  {
+    date: '2026-10-09',
+    title: '一轮全站审计与优化',
+    items: [
+      '榜单调整：价格与套餐资料没有核实到的品牌排到最后，档名改为“资料待核实”；名次的说明改为直接写明三项依据：资料完整度、价格与付费方式的可选范围、选梯子的跟进程度。',
+      '页脚友情链接精简为两个。',
+      '内容：重写 20 多篇客户端下载与教程里彼此雷同的段落，站内文章之间的重复度最高从 34% 降到 12%；逐条核对官方来源，更正了 3 处引用与表述，见更正记录。',
+      '搜索与收录：新增站内搜索；每个栏目一张独立分享图；sitemap 写入真实的最近更新日期；补全结构化数据与页面元信息。',
+      '体验：修复卡片悬停倾斜失效、重复 id、标题层级、浅色模式配色对比度；表格在手机上可横向滚动；增加跳到正文链接；术语库入口出现在每篇文章里。',
+    ],
+  },
+  {
+    date: '2026-10-08',
+    title: '选梯子上线',
+    items: [
+      `机场推荐榜上线：收录 ${board.rows.length} 家机场，分为首推、重点推荐、优先考虑、备选、资料待核实五档。`,
+      '专项榜单上线：性价比机场、便宜机场、专线机场、月付机场、大流量机场、稳定机场。',
+      `梯子下载上线：收录 ${CLIENTS.length} 款客户端的官方地址，接入 GitHub 官方接口自动核验版本。`,
+      '机场官网检测上线：开始按天累计各品牌官网的可访问性记录。',
+      '内容栏目上线：选购指南、使用场景、使用教程、故障排查、避坑指南、术语库与常见问题。',
+      '工具箱上线：选梯子向导、流量计算器、成本计算器、客户端选择器、下单前核对清单。',
+    ],
+  },
+];
+---
+
+<BaseLayout
+  modifiedTime="2026-10-09"
+  title="更新日志｜选梯子的榜单、数据与内容更新记录"
+  description="选梯子更新日志：记录机场推荐榜快照、梯子客户端版本核验、机场官网检测以及各栏目内容的上线与调整时间，方便你判断页面上的信息有多新。榜单快照日期、客户端版本的最近核验时间和官网检测的最近运行时间也集中显示在这一页。"
+  keywords={['选梯子更新日志', '机场推荐榜更新', '更新记录']}
+>
+  <Breadcrumbs items={[{ name: '更新日志', href: '/gengxin/' }]} />
+  <article class="prose" style="max-width:54rem">
+    <span class="section__eyebrow">GENGXIN / 更新</span>
+    <h1>更新日志</h1>
+    <p class="lead">判断一条信息能不能用，先看它有多新。这一页列出当前各类数据的时间，以及站点的改动记录。</p>
+    <h2>当前数据的时间</h2>
+    <dl class="facts">
+      <div><dt>机场推荐榜快照</dt><dd>{fmtDate(board.snapshotAt)}</dd></div>
+      <div><dt>客户端版本核验</dt><dd>{fmtDateTime(RELEASES_CHECKED_AT)}</dd></div>
+      <div><dt>机场官网检测</dt><dd>{fmtDateTime(MONITOR.checkedAt)}</dd></div>
+      <div><dt>官网检测记录起始</dt><dd>{fmtDate(MONITOR.firstCheckedAt)}</dd></div>
+    </dl>
+    <h2>改动记录</h2>
+    {
+      log.map((entry) => (
+        <section>
+          <h3><time datetime={entry.date}>{entry.date}</time> · {entry.title}</h3>
+          <ul>{entry.items.map((item) => <li>{item}</li>)}</ul>
+        </section>
+      ))
+    }
+    <h2>哪些内容会自动更新</h2>
+    <p>有两类数据不需要人工改动：梯子客户端的最新版本，由脚本读取各项目的官方仓库；机场官网的可访问性，由脚本定时发起请求并按天累计。它们的最近核验时间显示在上面，也显示在<a href="/xiazai/">梯子下载</a>和<a href="/jiance/">机场官网检测</a>页面。</p>
+    <h2>哪些内容需要人工核对</h2>
+    <p>机场的价格、套餐、线路和节点地区需要人工对照来源更新，每家<a href="/jichang/">机场资料页</a>都写有最近一次核对日期；榜单的名次调整会体现在<a href="/tuijian/">机场推荐榜</a>的快照日期上，并在本页留下记录。文章正文里涉及平台规则的部分，以文末列出的官方来源为准。</p>
+    <p>事实性内容的修改另行登记在<a href="/gengzheng/">更正记录</a>；数据的采集方式见<a href="/fangfa/">排名与核验方法</a>。</p>
+  </article>
+</BaseLayout>

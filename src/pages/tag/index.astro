@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { SEO_TAGS, getArticlesForTag, getFaqForTag } from '../../data/seo/seo-tags';
+
+const articles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const tags = SEO_TAGS.map((tag) => ({ tag, articleCount: getArticlesForTag(tag, articles).length, faqCount: getFaqForTag(tag).length }));
+---
+
+<BaseLayout
+  title="梯子关键词专题｜机场推荐、便宜机场、Clash、V2Ray、科学上网专题"
+  description={`梯子关键词专题：选梯子把全站内容按 ${tags.length} 个关键词整理成专题，包括机场推荐、便宜机场、性价比机场、专线机场、梯子下载、Clash、V2Ray、小火箭、科学上网、VPN、AI 工具与流媒体，每个专题聚合相关文章、问答与机场资料。`}
+  keywords={['梯子专题', '机场推荐', '便宜机场', 'Clash', 'V2Ray', '科学上网', '梯子下载']}
+>
+  <Breadcrumbs items={[{ name: '关键词专题', href: '/tag/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">TAG / 关键词专题</span>
+    <h1>梯子关键词专题：想到哪个词，就从哪个词进</h1>
+    <p class="lead">同一个话题的内容往往分散在指南、教程、排查和问答里。专题页把它们按关键词收在一起：相关文章、相关问答，以及资料里确实写到这个词的机场。</p>
+  </header>
+  <div class="entry-grid">
+    {
+      tags.map(({ tag, articleCount, faqCount }) => (
+        <a class="entry-card" href={`/tag/${tag.slug}/`}>
+          <span class="entry-card__title">{tag.name}</span>
+          <p class="entry-card__description">{tag.blurb}</p>
+          <span class="entry-card__cta">文章 {articleCount} 篇 · 问答 {faqCount} 条</span>
+        </a>
+      ))
+    }
+  </div>
+  {tags.length === 0 && <div class="empty-state"><p class="empty-state__title">专题正在整理</p><p>可以先看<a href="/daohang/">梯子导航</a>。</p></div>}
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>其他找内容的方式</h2>
+    <p>按栏目浏览可以从<a href="/daohang/">梯子导航</a>进入；直接看结论去<a href="/tuijian/">机场推荐榜</a>；具体问题先查<a href="/faq/">梯子常见问题</a>；不认识的词查<a href="/cidian/">梯子术语库</a>。</p>
+  </section>
+</BaseLayout>

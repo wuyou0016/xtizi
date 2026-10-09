@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { getBoard } from '../../data/utils/board';
+import { COUPONS } from '../../data/seo/provider-faq';
+import { priceLine } from '../../data/utils/provider-facts';
+import { fmtDate } from '../../data/utils/live';
+
+const board = await getBoard();
+const rows = COUPONS.map((item) => {
+  const row = board.rows.find((r) => r.provider.id === item.providerId);
+  const note = row?.provider.data.thirdPartyNotes?.[item.noteIndex];
+  return row && note ? { row, note, code: item.code, conflict: /矛盾|不一/.test(note.claim) } : null;
+})
+  .filter((x) => x !== null)
+  .sort((a, b) => a.row.rank - b.row.rank);
+const withCode = new Set(rows.map((x) => x.row.provider.id));
+const without = board.rows.filter((row) => !withCode.has(row.provider.id));
+
+const faqs = [
+  { q: '机场优惠码在哪里找最可靠？', a: '先看官网：活动页、结账页面和官方公告是第一手信息，别处转来的码很可能早就失效了。本页只收录资料里明确写出过的优惠码，并逐条注明是谁记录的、什么时候记录的，是否仍然有效需要你在结算页验证。' },
+  { q: '优惠码怎么用？', a: '一般在选好套餐后的结算页有一个优惠码输入框，填入后点击验证或应用，页面会显示折后价格。如果提示无效，多半是过了有效期、只给新注册用户用，或者你选的档位和周期不在适用范围内。最后付多少钱，看结账页面上的数字。' },
+  { q: '有的机场为什么查不到优惠码？', a: '要么品牌没有公开发放优惠码，要么选梯子没有查到可以追溯来源的记录。没有记录不等于没有折扣，很多机场只在节日或周年活动期间发放。表格里宁可空着，也不会凑一个查不到出处的码进去。' },
+  { q: '用优惠码之前要留意哪些限制？', a: '常见的有：只对新注册用户或首单有效；续费恢复原价；不适用于最低档或年付小包；与其他活动不能叠加。使用前看清说明，折扣力度特别大的码更要留意它适用的是哪个档位。' },
+  { q: '用了优惠码还是觉得贵，怎么省钱？', a: '比起找优惠码，更有效的是先估清自己的流量，买刚好够用的档位；确认长期使用后再考虑年付。可以用成本计算器把不同套餐折成月均价和每 GB 价格，再和便宜机场、性价比机场两张表对照。' },
+];
+---
+
+<BaseLayout
+  title="机场优惠码 2026｜梯子优惠码与折扣码汇总，逐条标注来源与日期"
+  description={`机场优惠码汇总：选梯子整理资料里明确记录过的 ${rows.length} 个机场优惠码与梯子折扣码，逐条注明品牌、折扣说明、来源和记录日期，前后说法矛盾的会标出来；没有记录的品牌也如实列出，另附优惠码的使用方法、常见限制和判断折后是否划算的思路。`}
+  keywords={['机场优惠码', '梯子优惠码', '机场折扣码', '机场优惠', '机场折扣', '梯子折扣']}
+>
+  <Breadcrumbs items={[{ name: '机场优惠码', href: '/youhuima/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">YOUHUIMA / 优惠码</span>
+    <h1>机场优惠码：资料里记录过的梯子折扣码汇总</h1>
+    <p class="lead">
+      这一页只收录“有出处”的优惠码：第三方资料里明确写出过的码，原样列出，并注明来源和记录日期。优惠码随时可能失效，是否可用以官网结账页面显示的为准。目前有记录的 {rows.length} 个，没有记录的品牌也如实列在下面。
+    </p>
+  </header>
+
+  <section>
+    <h2 id="liebiao">有记录的机场优惠码（{rows.length} 个）</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="num">推荐名次</th>
+            <th>机场</th>
+            <th>优惠码</th>
+            <th>资料里的说明</th>
+            <th>来源</th>
+            <th class="num">记录日期</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map(({ row, note, code, conflict }) => (
+              <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                <td class="num">{row.rank}</td>
+                <td>
+                  <a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a>
+                  <br />
+                  <a class="small" href={row.provider.data.vendor.officialWebsite} target="_blank" rel="nofollow sponsored noopener">前往官网</a>
+                </td>
+                <td><code>{code}</code>{conflict && <><br /><span class="chip chip--empty">说法不一致</span></>}</td>
+                <td>{note.claim}</td>
+                <td class="small">{note.source}</td>
+                <td class="num">{fmtDate(note.date)}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">“说法不一致”表示来源页面自己对这个优惠码的描述前后矛盾，选梯子如实转述，不判断哪一句是对的。</p>
+  </section>
+
+  <section class="section section--tight">
+    <h2 id="zanwu">暂无优惠码记录的机场（{without.length} 家）</h2>
+    <p class="muted">下面这些品牌，我们没找到有出处的优惠码。价格以官网为准，活动信息请看各自的官方公告。</p>
+    <div class="mini-grid">
+      {
+        without.map((row) => {
+          const price = priceLine(row.provider);
+          return (
+            <a class="mini" href={`/jichang/${row.provider.data.slug}/`}>
+              <span class="mini__top"><span class="mini__no">#{row.rank}</span>{row.provider.data.name}</span>
+              <span class="mini__meta">{price.text} · {price.note}</span>
+            </a>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>梯子优惠码怎么用</h2>
+    <ol>
+      <li>在机场官网注册并登录，进入套餐页选择档位和付费周期。</li>
+      <li>在结算页找到优惠码输入框，填入后点击验证。</li>
+      <li>确认页面显示的折后金额，再选择支付方式付款。</li>
+      <li>如果提示无效，换一个档位或周期再试；仍然无效就按原价判断是否值得买，不要为了用码而买不需要的套餐。</li>
+    </ol>
+    <h2>看到优惠码时先问三个问题</h2>
+    <ul>
+      <li><strong>适用哪个档位？</strong>不少优惠码不适用于最低档或年付小包，表里“资料里的说明”一栏写到的限制要先看。</li>
+      <li><strong>续费还有吗？</strong>多数是首单优惠，续费恢复原价，比较长期成本时要按原价算。</li>
+      <li><strong>折后是否真的划算？</strong>把折后价格折成月均价和每 GB 价格，放到<a href="/tuijian/xingjiabi/">性价比机场</a>或<a href="/tuijian/pianyi/">便宜机场</a>的表里对照。</li>
+    </ul>
+    <p>想按预算直接筛选，可以用<a href="/gongju/chengben-jisuanqi/">成本计算器</a>和<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>；价格相关的思路见<a href="/zhinan/tizi-duoshao-qian/">梯子多少钱一个月</a>。</p>
+  </section>
+
+  <FaqBlock heading="机场优惠码常见问题" items={faqs} />
+</BaseLayout>

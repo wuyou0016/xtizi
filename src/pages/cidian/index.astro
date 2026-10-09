@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { resolveCanonicalUrl } from '../../config/seo';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+
+const terms = (await getCollection('glossary', ({ id }) => !isDemoEntry(id))).sort((a, b) => a.data.term.localeCompare(b.data.term, 'zh-CN'));
+const GROUPS: { title: string; note: string; ids: string[] }[] = [
+  { title: '基础名词', note: '买梯子最先遇到的几个词。', ids: ['tizi', 'jichang', 'jiedian', 'dingyue', 'neihe', 'paolu'] },
+  { title: '线路', note: '套餐页上描述线路时常用的说法。', ids: ['iplc', 'iepl', 'zhongzhuan', 'zhilian', 'bgp', 'luodi', 'wan-gaofeng', 'chaoshou'] },
+  { title: '协议', note: '节点使用的协议名称。', ids: ['vless', 'trojan', 'shadowsocks', 'hysteria2', 'vmess'] },
+  { title: '客户端设置', note: '客户端里会看到的开关与概念。', ids: ['tun', 'xitong-daili', 'fenliu', 'celue-zu', 'fake-ip', 'dns-xielou', 'yanchi'] },
+  { title: '套餐与使用', note: '和流量、IP、平台规则有关的词。', ids: ['beilv', 'yuansheng-ip', 'jiesuo', 'shenji-guize'] },
+];
+const used = new Set(GROUPS.flatMap((g) => g.ids));
+const rest = terms.filter((t) => !used.has(t.id));
+const groups = [...GROUPS.map((g) => ({ ...g, list: g.ids.map((id) => terms.find((t) => t.id === id)).filter((t) => t !== undefined) })), { title: '其他', note: '', list: rest }].filter((g) => g.list.length > 0);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  name: '梯子术语库',
+  url: resolveCanonicalUrl('/cidian/'),
+  inLanguage: 'zh-CN',
+  hasDefinedTerm: terms.map((t) => ({ '@type': 'DefinedTerm', name: t.data.term, description: t.data.definition, url: resolveCanonicalUrl(`/cidian/${t.id}/`) })),
+};
+---
+
+<BaseLayout
+  title="梯子术语库｜机场、节点、IPLC、TUN 模式等梯子名词解释"
+  description={`梯子术语库：用一句话解释买梯子和用梯子时会遇到的 ${terms.length} 个名词，包括机场、节点、订阅链接、IPLC、IEPL、中转、VLESS、Trojan、TUN 模式、分流、流量倍率、原生 IP 等，每个词条附详细说明与相关指南。`}
+  keywords={['梯子术语', '机场术语', '梯子名词解释', 'IPLC是什么', 'TUN模式是什么', '机场节点是什么', '流量倍率']}
+>
+  <Breadcrumbs items={[{ name: '梯子术语库', href: '/cidian/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">CIDIAN / 术语库</span>
+    <h1>梯子术语库：{terms.length} 个常见名词的一句话解释</h1>
+    <p class="lead">套餐页和客户端里的缩写，看不懂就容易被带着走。这里每个词先给一句话定义，点进去是它在哪里出现、怎么判断、常见误解。不追求面面俱到，只解释选梯子和用梯子真正会碰到的词。</p>
+  </header>
+  {
+    groups.map((group) => (
+      <section class="section section--tight">
+        <div class="section__head">
+          <div>
+            <h2>{group.title}</h2>
+            {group.note && <p>{group.note}</p>}
+          </div>
+        </div>
+        <div class="entry-grid">
+          {group.list.map((term) => (
+            <a class="entry-card" href={`/cidian/${term.id}/`}>
+              <span class="entry-card__title">{term.data.term}</span>
+              <p class="entry-card__description">{term.data.definition}</p>
+              <span class="entry-card__cta">查看{term.data.term}的解释</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+  {terms.length === 0 && <div class="empty-state"><p class="empty-state__title">词条正在整理</p><p>可以先看<a href="/zhinan/">选购指南</a>。</p></div>}
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>名词看懂了，接下来</h2>
+    <p>想系统地了解怎么挑，读<a href="/zhinan/tizi-zenme-xuan/">梯子怎么选</a>和<a href="/zhinan/jichang-zenme-xuan/">机场怎么选</a>；想直接看各家机场的线路和协议记录，去<a href="/tuijian/">机场推荐榜</a>和<a href="/jichang/">机场大全</a>；客户端里的设置项，见<a href="/jiaocheng/">使用教程</a>的通用设置部分。</p>
+  </section>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

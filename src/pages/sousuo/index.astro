@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const hot = [
+  ['机场推荐', '/tuijian/'], ['性价比机场', '/tuijian/xingjiabi/'], ['便宜机场', '/tuijian/pianyi/'], ['梯子下载', '/xiazai/'],
+  ['ChatGPT 梯子', '/changjing/chatgpt/'], ['Clash', '/zhinan/clash-shi-shenme/'], ['梯子连不上', '/paicha/tizi-lianbushang/'], ['机场跑路前兆', '/bikeng/jichang-paolu-qianzhao/'],
+];
+---
+
+<BaseLayout
+  title="站内搜索｜在选梯子里查机场、梯子下载、教程与术语"
+  description="选梯子站内搜索：输入机场名称、梯子工具、使用场景或报错现象，在机场资料、梯子下载、选购指南、使用教程、故障排查和术语库里快速找到对应页面。检索在你的浏览器里完成，不会上传你输入的关键词。"
+  robots={{ index: false, follow: true }}
+>
+  <Breadcrumbs items={[{ name: '站内搜索', href: '/sousuo/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">SOUSUO / 搜索</span>
+    <h1>站内搜索</h1>
+    <p class="lead">输入机场名称、梯子工具、使用场景或你看到的现象，例如“Clash”“连不上”“奈飞”“无忧链接”。检索只在你的浏览器里进行，不会上传你输入的内容。</p>
+  </header>
+  <form class="search-box" id="search-form" role="search" onsubmit="return false">
+    <label class="visually-hidden" for="q">搜索关键词</label>
+    <input id="q" type="search" name="q" placeholder="搜索机场、梯子工具、教程、报错现象……" autocomplete="off" autofocus />
+  </form>
+  <p class="muted small" id="search-status" aria-live="polite" style="margin-top:0.8rem">输入至少 1 个字开始搜索。</p>
+  <ol class="search-results" id="search-results"></ol>
+  <section class="section section--tight" id="hot">
+    <h2>常搜的内容</h2>
+    <ul class="chips">
+      {hot.map(([label, href]) => <li><a class="chip" href={href}>{label}</a></li>)}
+    </ul>
+    <p class="muted small" style="margin-top:1rem">也可以从<a href="/daohang/">梯子导航</a>按栏目浏览，或者读<a href="/faq/">梯子常见问题</a>。</p>
+  </section>
+  <script is:inline>
+    (function () {
+      var input = document.getElementById('q');
+      var status = document.getElementById('search-status');
+      var list = document.getElementById('search-results');
+      var index = null;
+      var loading = null;
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+      function load() {
+        if (index) return Promise.resolve(index);
+        if (!loading) loading = fetch('/search-index.json').then(function (r) { return r.json(); }).then(function (d) { index = d; return d; });
+        return loading;
+      }
+      function score(item, tokens) {
+        var t = item.t.toLowerCase(), w = item.w.toLowerCase(), d = item.d.toLowerCase(), s = 0;
+        for (var i = 0; i < tokens.length; i++) {
+          var k = tokens[i], hit = 0;
+          if (t.indexOf(k) !== -1) hit += 6;
+          if (w.indexOf(k) !== -1) hit += 4;
+          if (d.indexOf(k) !== -1) hit += 1;
+          if (!hit) return 0;
+          s += hit;
+        }
+        return s;
+      }
+      function run() {
+        var q = input.value.trim().toLowerCase();
+        var url = new URL(location.href);
+        if (q) url.searchParams.set('q', input.value.trim()); else url.searchParams.delete('q');
+        history.replaceState(null, '', url);
+        if (!q) { list.innerHTML = ''; status.textContent = '输入至少 1 个字开始搜索。'; return; }
+        var tokens = q.split(/\s+/).filter(Boolean);
+        load().then(function (items) {
+          var hits = items.map(function (it) { return [score(it, tokens), it]; }).filter(function (x) { return x[0] > 0; }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, 30);
+          status.textContent = hits.length ? '找到 ' + hits.length + ' 个相关页面' + (hits.length === 30 ? '（只显示前 30 个）' : '') + '。' : '没有找到相关页面，换个说法试试，或者看下面常搜的内容。';
+          list.innerHTML = hits.map(function (x) {
+            var it = x[1];
+            return '<li><a class="search-hit" href="' + esc(it.u) + '"><span class="chip">' + esc(it.k) + '</span><strong>' + esc(it.t) + '</strong>' + (it.d ? '<span class="muted small">' + esc(it.d) + '</span>' : '') + '</a></li>';
+          }).join('');
+        }).catch(function () { status.textContent = '搜索索引加载失败，请刷新页面重试。'; });
+      }
+      input.addEventListener('input', run);
+      input.addEventListener('focus', load, { once: true });
+      var q0 = new URL(location.href).searchParams.get('q');
+      if (q0) { input.value = q0; run(); }
+    })();
+  </script>
+</BaseLayout>

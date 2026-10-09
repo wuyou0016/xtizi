@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+
+const faqs = [
+  { q: '月均价和每 GB 价格分别说明什么？', a: '月均价是把一次付清的总价平摊到每个月，说明你每月大概花多少钱；每 GB 价格是月均价除以每月流量，说明流量的单价。用量小的人看月均价，用量大的人看每 GB 价格，两者都要结合付费周期一起看。' },
+  { q: '年付套餐算出来更便宜，是不是一定更划算？', a: '不一定。年付的低价建立在你用满一年的前提上。如果中途服务质量下降、需求变化或者服务商停止运营，没用完的部分就浪费了。计算器里的“已付总额”一栏就是你一次性押进去的钱，可以用它衡量风险。' },
+  { q: '流量按年给一次的套餐怎么填？', a: '把总流量除以月数，填成每月流量即可。例如一年共 600GB 的套餐，每月流量填 50。要注意这类套餐的流量通常不按月重置，用完就没有了，使用节奏和按月重置的套餐不同。' },
+  { q: '计算器能算出哪个机场最好吗？', a: '不能。它只做算术：把不同周期、不同流量的套餐折到同一口径。线路质量、节点地区、客服这些无法折成数字的因素，需要你结合机场资料页和实际试用来判断。' },
+];
+---
+
+<BaseLayout
+  title="梯子成本计算器｜机场套餐月均价、每 GB 价格与年付成本对比"
+  description="梯子成本计算器：输入机场套餐的总价、付费月数和每月流量，自动折算月均价、每 GB 价格和已付总额，最多三个套餐并排比较，还能按你每月的实际用量再算一次单价，帮你看清年付和月付、大流量和小流量哪个更划算。运算只在你的浏览器里进行。"
+  keywords={['梯子成本计算器', '机场价格计算', '机场月均价', '每GB价格', '年付月付对比', '机场套餐对比']}
+>
+  <Breadcrumbs items={[{ name: '工具箱', href: '/gongju/' }, { name: '成本计算器', href: '/gongju/chengben-jisuanqi/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">CHENGBEN / 成本计算器</span>
+    <h1>梯子成本计算器：把套餐折成同一口径再比</h1>
+    <p class="lead">一个写“年付 99”，一个写“月付 20”，一个写“季付 45”，直接比不出来。把官网结算页上的数字填进来，计算器会折成月均价和每 GB 价格。下面预填的是举例用的虚拟套餐，请换成你要比较的真实数字。</p>
+  </header>
+
+  <form class="card tool" id="cost" onsubmit="return false">
+    <div class="table-wrap" style="margin:0">
+      <table>
+        <thead>
+          <tr><th>套餐</th><th>一次付的总价（元）</th><th>覆盖几个月</th><th>每月流量（GB）</th><th class="num">月均价</th><th class="num">每 GB 价格</th><th class="num">已付总额</th></tr>
+        </thead>
+        <tbody>
+          <tr data-row><td><input type="text" value="套餐 A（举例）" aria-label="套餐名称" /></td><td><input type="number" min="0" step="0.1" value="96" aria-label="总价" /></td><td><input type="number" min="1" step="1" value="12" aria-label="月数" /></td><td><input type="number" min="0" step="1" value="60" aria-label="每月流量" /></td><td class="num" data-m>—</td><td class="num" data-g>—</td><td class="num" data-t>—</td></tr>
+          <tr data-row><td><input type="text" value="套餐 B（举例）" aria-label="套餐名称" /></td><td><input type="number" min="0" step="0.1" value="20" aria-label="总价" /></td><td><input type="number" min="1" step="1" value="1" aria-label="月数" /></td><td><input type="number" min="0" step="1" value="120" aria-label="每月流量" /></td><td class="num" data-m>—</td><td class="num" data-g>—</td><td class="num" data-t>—</td></tr>
+          <tr data-row><td><input type="text" value="套餐 C（举例）" aria-label="套餐名称" /></td><td><input type="number" min="0" step="0.1" value="45" aria-label="总价" /></td><td><input type="number" min="1" step="1" value="3" aria-label="月数" /></td><td><input type="number" min="0" step="1" value="100" aria-label="每月流量" /></td><td class="num" data-m>—</td><td class="num" data-g>—</td><td class="num" data-t>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="field" style="max-width:22rem">
+      <label for="usage">我每月实际大约用多少 GB（可选）</label>
+      <input id="usage" type="number" min="0" step="1" value="40" />
+      <small>填了之后会按“实际用量”再算一次单价，流量用不完的套餐会显得更贵。</small>
+    </div>
+    <div class="output" id="cost-out" aria-live="polite"></div>
+    <noscript><p class="callout callout--warn">这个工具需要启用 JavaScript。</p></noscript>
+  </form>
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>三个数字怎么看</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>指标</th><th>算法</th><th>回答的问题</th></tr></thead>
+        <tbody>
+          <tr><td>月均价</td><td>总价 ÷ 月数</td><td>平均每月花多少钱</td></tr>
+          <tr><td>每 GB 价格</td><td>月均价 ÷ 每月流量</td><td>流量单价贵不贵</td></tr>
+          <tr><td>已付总额</td><td>一次付清的总价</td><td>万一中途不用了，最多损失多少</td></tr>
+          <tr><td>按实际用量的单价</td><td>月均价 ÷ min(每月流量, 实际用量)</td><td>对你个人而言，每 GB 实际花了多少</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>比完数字之后</h2>
+    <p>数字只解决“贵不贵”，不解决“好不好”。把候选缩小之后，还要看线路类型和节点地区是否符合你的用途，可以对照<a href="/duibi/">机场对比</a>的总表。想看资料里各家现成的折算结果，直接打开<a href="/tuijian/xingjiabi/">性价比机场</a>和<a href="/tuijian/pianyi/">便宜机场</a>。年付还是月付的取舍，见<a href="/zhinan/nianfu-haishi-yuefu/">机场年付还是月付</a>。</p>
+  </section>
+
+  <FaqBlock heading="梯子成本计算器常见问题" items={faqs} />
+
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('cost');
+      var out = document.getElementById('cost-out');
+      function run() {
+        var usage = parseFloat(document.getElementById('usage').value);
+        var best = null;
+        var lines = [];
+        form.querySelectorAll('tr[data-row]').forEach(function (tr) {
+          var inputs = tr.querySelectorAll('input');
+          var name = inputs[0].value || '未命名';
+          var price = parseFloat(inputs[1].value), months = parseFloat(inputs[2].value), gb = parseFloat(inputs[3].value);
+          var ok = price >= 0 && months >= 1;
+          var monthly = ok ? price / months : NaN;
+          var perGb = ok && gb > 0 ? monthly / gb : NaN;
+          tr.querySelector('[data-m]').textContent = isNaN(monthly) ? '—' : '¥' + monthly.toFixed(2);
+          tr.querySelector('[data-g]').textContent = isNaN(perGb) ? '—' : '¥' + perGb.toFixed(3);
+          tr.querySelector('[data-t]').textContent = ok ? '¥' + price.toFixed(2) : '—';
+          if (!isNaN(monthly) && gb > 0) {
+            var used = usage > 0 ? Math.min(gb, usage) : gb;
+            var eff = monthly / used;
+            var enough = !(usage > 0) || gb >= usage;
+            lines.push({ name: name, monthly: monthly, eff: eff, enough: enough, price: price, months: months });
+            if (enough && (!best || eff < best.eff)) best = lines[lines.length - 1];
+          }
+        });
+        if (!lines.length) { out.innerHTML = '<span class="muted">填写总价、月数和流量后显示结果。</span>'; return; }
+        var html = '<span class="muted small">按' + (usage > 0 ? '你每月 ' + usage + 'GB 的实际用量' : '套餐标称流量') + '计算</span>';
+        html += '<ul style="margin:.5rem 0 0;padding-left:1.2rem">' + lines.map(function (l) {
+          return '<li><strong>' + l.name.replace(/[<>&]/g, '') + '</strong>：每 GB 实际约 ¥' + l.eff.toFixed(3) + '，一次需付 ¥' + l.price.toFixed(2) + '（' + l.months + ' 个月）' + (l.enough ? '' : '，<span style="color:var(--warn)">流量不够你用</span>') + '</li>';
+        }).join('') + '</ul>';
+        if (best) html += '<p style="margin:.7rem 0 0">在流量够用的套餐里，单价最低的是 <strong>' + best.name.replace(/[<>&]/g, '') + '</strong>。记得同时比较“一次需付”的金额：周期越长，押进去的钱越多。</p>';
+        out.innerHTML = html;
+      }
+      form.addEventListener('input', run);
+      run();
+    })();
+  </script>
+</BaseLayout>

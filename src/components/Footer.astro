@@ -1,0 +1,113 @@
+---
+import { siteConfig } from '../config/site';
+
+const telegramUrl = 'https://t.me/wyolink';
+
+const columns = [
+  {
+    title: '选机场',
+    links: [
+      { label: '机场推荐榜', href: '/tuijian/' },
+      { label: '性价比机场', href: '/tuijian/xingjiabi/' },
+      { label: '便宜机场', href: '/tuijian/pianyi/' },
+      { label: '专线机场', href: '/tuijian/zhuanxian/' },
+      { label: '月付机场', href: '/tuijian/yuefu/' },
+      { label: '大流量机场', href: '/tuijian/daliuliang/' },
+      { label: '稳定机场', href: '/tuijian/wending/' },
+      { label: '机场大全', href: '/jichang/' },
+      { label: '机场对比', href: '/duibi/' },
+      { label: '机场优惠码', href: '/youhuima/' },
+    ],
+  },
+  {
+    title: '用梯子',
+    links: [
+      { label: '梯子下载', href: '/xiazai/' },
+      { label: 'Windows 梯子下载', href: '/xiazai/windows/' },
+      { label: 'Mac 梯子下载', href: '/xiazai/mac/' },
+      { label: '安卓梯子下载', href: '/xiazai/android/' },
+      { label: 'iPhone 梯子下载', href: '/xiazai/iphone/' },
+      { label: '梯子使用教程', href: '/jiaocheng/' },
+      { label: '梯子使用场景', href: '/changjing/' },
+      { label: '梯子故障排查', href: '/paicha/' },
+    ],
+  },
+  {
+    title: '学与查',
+    links: [
+      { label: '梯子选购指南', href: '/zhinan/' },
+      { label: '机场避坑指南', href: '/bikeng/' },
+      { label: '梯子导航', href: '/daohang/' },
+      { label: '机场官网检测', href: '/jiance/' },
+      { label: '选梯子工具箱', href: '/gongju/' },
+      { label: '梯子术语库', href: '/cidian/' },
+      { label: '梯子常见问题', href: '/faq/' },
+      { label: '关键词专题', href: '/tag/' },
+    ],
+  },
+  {
+    title: '关于本站',
+    links: [
+      { label: '关于选梯子', href: '/guanyu/' },
+      { label: '排名与核验方法', href: '/fangfa/' },
+      { label: '更正记录', href: '/gengzheng/' },
+      { label: '更新日志', href: '/gengxin/' },
+      { label: '隐私说明', href: '/yinsi/' },
+    ],
+  },
+];
+
+// 友情链接：只保留机场牛与机场宝，文字带关键词，新窗口打开。
+const friendLinks = [
+  { label: '机场推荐 - 机场牛', href: 'https://jcniu.com' },
+  { label: '机场导航 - 机场宝', href: 'https://jichangbao.com' },
+];
+const year = 2026;
+// 友情链接只在首页传递权重；内页页脚的同样链接加 nofollow，避免全站页脚链接的链接网络特征。
+const isHome = Astro.url.pathname === '/';
+const friendRel = isHome ? 'noopener' : 'noopener nofollow';
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__about">
+      <h2>{siteConfig.brandName.toUpperCase()} · XZITI.COM</h2>
+      <p>
+        选梯子是一个梯子选购指南站：把机场的价格、线路、协议资料摆在一张表里，把梯子工具的官方下载地址和版本核验时间列清楚，再按使用场景讲明白该看哪几项。没有测过的数据，这里一律写“实时检测中”。
+      </p>
+    </div>
+    {
+      columns.map((column) => (
+        <nav aria-label={column.title}>
+          <h2>{column.title}</h2>
+          <ul>
+            {column.links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+  </div>
+  <div class="container site-footer__bar">
+    <p class="friend-links">
+      <span>友情链接：</span>
+      {
+        friendLinks.map((link) => (
+          <a href={link.href} target="_blank" rel={friendRel}>
+            {link.label}
+          </a>
+        ))
+      }
+    </p>
+    <p>
+      <b>推广披露：</b>本站的品牌官网入口使用品牌方提供的推广链接，你通过这些链接购买时，选梯子可能获得佣金，你支付的价格不会因此变化。榜单名次不是测速名次，排名规则见<a href="/fangfa/">排名与核验方法</a>。
+    </p>
+    <p>请遵守你所在地区的法律法规使用网络服务，选梯子不提供法律意见，也不提供任何免费节点。</p>
+    <p>
+      © {year} {siteConfig.brandName} xziti.com · 商务合作：<a href={telegramUrl} target="_blank" rel="noopener nofollow">入驻申请</a>
+    </p>
+  </div>
+</footer>

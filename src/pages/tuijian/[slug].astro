@@ -1,0 +1,353 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import SourceBadge from '../../components/SourceBadge.astro';
+import { resolveCanonicalUrl } from '../../config/seo';
+import { getBoard, type BoardRow } from '../../data/utils/board';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { getArticleHref } from '../../data/utils/article-routing';
+import { bestPerGb, cheapestMonthly, cheapestMonthlyBilled, completeness, filterRows, hasDedicatedRoute, hasMonthlyPlan, largestPlan, planFacts } from '../../data/utils/provider-facts';
+import { RANK_PAGES, getRankPage } from '../../data/copy/rank-pages';
+import { MONITOR, STATE_LABEL, fmtDate, fmtDateTime, monitorFor } from '../../data/utils/live';
+
+export function getStaticPaths() {
+  return RANK_PAGES.map((page) => ({ params: { slug: page.slug } }));
+}
+
+const page = getRankPage(Astro.params.slug!)!;
+const board = await getBoard();
+const tierLabel = new Map(board.tiers.map((tier) => [tier.id, tier.label]));
+const rows: BoardRow[] =
+  page.kind === 'stable' ? board.rows.filter((row) => hasDedicatedRoute(row.provider) && row.provider.data.status !== 'watch') : filterRows(page.kind, board.rows);
+const snapshot = fmtDate(board.snapshotAt);
+const href = `/tuijian/${page.slug}/`;
+
+const articles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const related = page.related.map((id) => articles.find((a) => a.id === id)).filter((a) => a !== undefined);
+const others = RANK_PAGES.filter((p) => p.slug !== page.slug);
+const sourceType = (row: BoardRow) => row.provider.data.vendor.source.type as 'vendor' | 'third-party' | 'editorial' | 'in-house';
+const money = (n: number) => `¥${n}`;
+
+const itemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: page.h1,
+  description: page.description,
+  numberOfItems: rows.length,
+  itemListElement: rows.map((row, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: row.provider.data.name,
+    url: resolveCanonicalUrl(`/jichang/${row.provider.data.slug}/`),
+  })),
+};
+---
+
+<BaseLayout title={page.title} description={page.description} keywords={page.keywords}>
+  <Breadcrumbs
+    items={[
+      { name: '机场推荐榜', href: '/tuijian/' },
+      { name: page.navLabel, href },
+    ]}
+  />
+  <header class="page-head">
+    <span class="section__eyebrow">{page.eyebrow}</span>
+    <h1>{page.h1}</h1>
+    <p class="lead">{page.lead}</p>
+    <p class="muted small">
+      本页收录 {rows.length} 家 · 数据快照 <time datetime={snapshot}>{snapshot}</time> · 资料逐项标注来源，付款前到官网结账页面再核对一遍
+    </p>
+  </header>
+
+  <section>
+    <h2 id="duizhaobiao">{page.navLabel}对照表（{rows.length} 家）</h2>
+    <p class="muted">{page.orderNote}</p>
+    <div class="table-wrap">
+      <table data-sortable>
+        {
+          page.kind === 'value' && (
+            <>
+              <thead>
+                <tr>
+                  <th class="num">推荐名次</th>
+                  <th>机场</th>
+                  <th>折算所用套餐</th>
+                  <th class="num" data-sort>月均价</th>
+                  <th class="num" data-sort>每月流量</th>
+                  <th class="num" data-sort>每 GB 折算价</th>
+                  <th>付费周期</th>
+                  <th>资料来源</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => {
+                  const best = bestPerGb(row.provider)!;
+                  return (
+                    <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                      <td class="num">{row.rank}</td>
+                      <td><a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a></td>
+                      <td>{best.plan.name}<br /><span class="muted small">{best.plan.price}</span></td>
+                      <td class="num" data-v={best.plan.monthly}>{money(best.plan.monthly!)}</td>
+                      <td class="num" data-v={best.plan.gb}>{best.plan.gb}GB</td>
+                      <td class="num" data-v={best.perGb}>¥{best.perGb.toFixed(3)}</td>
+                      <td>{best.plan.cycle || '资料未写'}</td>
+                      <td><SourceBadge type={sourceType(row)} /></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </>
+          )
+        }
+        {
+          page.kind === 'cheap' && (
+            <>
+              <thead>
+                <tr>
+                  <th class="num">推荐名次</th>
+                  <th>机场</th>
+                  <th class="num" data-sort>最低月均价</th>
+                  <th>对应套餐</th>
+                  <th class="num" data-sort>每月流量</th>
+                  <th>付费周期</th>
+                  <th class="num" data-sort>最低月付价</th>
+                  <th>资料来源</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, index) => {
+                  const best = cheapestMonthly(row.provider)!;
+                  const monthly = cheapestMonthlyBilled(row.provider);
+                  return (
+                    <tr class:list={[{ 'is-first': index === 0 }]}>
+                      <td class="num">{row.rank}</td>
+                      <td><a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a></td>
+                      <td class="num" data-v={best.monthly}>{money(best.monthly)}</td>
+                      <td>{best.plan.name}<br /><span class="muted small">{best.plan.price}</span></td>
+                      <td class="num" data-v={best.plan.gb ?? ''}>{best.plan.gb ? `${best.plan.gb}GB` : '—'}</td>
+                      <td>{best.plan.cycle || '资料未写'}</td>
+                      <td class="num" data-v={monthly?.monthly ?? ''}>{monthly ? money(monthly.monthly) : '资料里没有月付'}</td>
+                      <td><SourceBadge type={sourceType(row)} /></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </>
+          )
+        }
+        {
+          page.kind === 'dedicated' && (
+            <>
+              <thead>
+                <tr>
+                  <th class="num">推荐名次</th>
+                  <th>机场</th>
+                  <th>资料里的线路说法</th>
+                  <th class="num" data-sort>最低月均价</th>
+                  <th>节点地区</th>
+                  <th>推荐档</th>
+                  <th>资料来源</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => {
+                  const best = cheapestMonthly(row.provider);
+                  return (
+                    <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                      <td class="num">{row.rank}</td>
+                      <td><a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a>{row.provider.data.status === 'watch' && <span class="chip chip--empty">观察中</span>}</td>
+                      <td>{(row.provider.data.vendor.routes ?? []).join('、')}</td>
+                      <td class="num" data-v={best?.monthly ?? ''}>{best ? money(best.monthly) : '—'}</td>
+                      <td>{(row.provider.data.vendor.regions ?? []).join('、') || '资料暂缺'}</td>
+                      <td><span class={`tier-pill tier-pill--${row.tier}`}>{tierLabel.get(row.tier)}</span></td>
+                      <td><SourceBadge type={sourceType(row)} /></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </>
+          )
+        }
+        {
+          page.kind === 'monthly' && (
+            <>
+              <thead>
+                <tr>
+                  <th class="num">推荐名次</th>
+                  <th>机场</th>
+                  <th>月付套餐</th>
+                  <th class="num" data-sort>月付价格</th>
+                  <th class="num" data-sort>每月流量</th>
+                  <th class="num" data-sort>每 GB 折算价</th>
+                  <th>线路</th>
+                  <th>资料来源</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => {
+                  const best = cheapestMonthlyBilled(row.provider);
+                  const plan = best?.plan ?? planFacts(row.provider).find((p) => p.cycleId === 'monthly')!;
+                  return (
+                    <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                      <td class="num">{row.rank}</td>
+                      <td><a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a>{row.provider.data.status === 'watch' && <span class="chip chip--empty">观察中</span>}</td>
+                      <td>{plan.name}<br /><span class="muted small">{plan.price}</span></td>
+                      <td class="num" data-v={plan.monthly ?? ''}>{plan.monthly !== null ? money(plan.monthly) : '—'}</td>
+                      <td class="num" data-v={plan.gb ?? ''}>{plan.gb ? `${plan.gb}GB` : '—'}</td>
+                      <td class="num" data-v={plan.perGb ?? ''}>{plan.perGb !== null ? `¥${plan.perGb.toFixed(3)}` : '—'}</td>
+                      <td>{(row.provider.data.vendor.routes ?? []).join('、') || '资料暂缺'}</td>
+                      <td><SourceBadge type={sourceType(row)} /></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </>
+          )
+        }
+        {
+          page.kind === 'traffic' && (
+            <>
+              <thead>
+                <tr>
+                  <th class="num">推荐名次</th>
+                  <th>机场</th>
+                  <th class="num" data-sort>最大一档流量</th>
+                  <th>对应套餐与价格</th>
+                  <th class="num" data-sort>每 GB 折算价</th>
+                  <th>付费周期</th>
+                  <th>线路</th>
+                  <th>资料来源</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => {
+                  const largest = largestPlan(row.provider)!;
+                  return (
+                    <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                      <td class="num">{row.rank}</td>
+                      <td><a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a>{row.provider.data.status === 'watch' && <span class="chip chip--empty">观察中</span>}</td>
+                      <td class="num" data-v={largest.gb}>{largest.gb}GB</td>
+                      <td>{largest.plan.name}<br /><span class="muted small">{largest.plan.price}</span></td>
+                      <td class="num" data-v={largest.plan.perGb ?? ''}>{largest.plan.perGb !== null ? `¥${largest.plan.perGb.toFixed(3)}` : '—'}</td>
+                      <td>{largest.plan.cycle || '资料未写'}</td>
+                      <td>{(row.provider.data.vendor.routes ?? []).join('、') || '资料暂缺'}</td>
+                      <td><SourceBadge type={sourceType(row)} /></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </>
+          )
+        }
+        {
+          page.kind === 'stable' && (
+            <>
+              <thead>
+                <tr>
+                  <th class="num">推荐名次</th>
+                  <th>机场</th>
+                  <th>资料里的线路说法</th>
+                  <th class="num" data-sort>资料完整度</th>
+                  <th>月付</th>
+                  <th>官网最近一次检测</th>
+                  <th class="num">累计可达 / 检测次数</th>
+                  <th>速度与丢包</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => {
+                  const comp = completeness(row.provider);
+                  const m = monitorFor(row.provider.id);
+                  return (
+                    <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                      <td class="num">{row.rank}</td>
+                      <td><a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a></td>
+                      <td>{(row.provider.data.vendor.routes ?? []).join('、')}</td>
+                      <td class="num" data-v={comp.have.length}>{comp.have.length}/5</td>
+                      <td>{hasMonthlyPlan(row.provider) ? '有' : '资料里没有'}</td>
+                      <td>{m.result ? <span class={`state state--${m.result.state}`}>{STATE_LABEL[m.result.state]}</span> : <span class="state state--pending">尚未检测</span>}</td>
+                      <td class="num">{m.reachable} / {m.checks}</td>
+                      <td><span class="live-tag">实时检测中</span></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </>
+          )
+        }
+      </table>
+    </div>
+    <p class="table-note">
+      {page.kind === 'stable'
+        ? `官网检测最近一次运行于 ${fmtDateTime(MONITOR.checkedAt)}，检测点：${MONITOR.vantage}。它只说明检测点当时能否打开官网入口。`
+        : '年付套餐的月均价为折算值，实际需要按付费周期一次付清。“—”表示资料暂缺。'}
+    </p>
+  </section>
+
+  {
+    page.sections.map((section) => (
+      <section class="section section--tight prose" style="max-width:52rem">
+        <h2>{section.h2}</h2>
+        {section.paragraphs.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </section>
+    ))
+  }
+
+  <section class="section section--tight">
+    <h2>{page.verify.h2}</h2>
+    <p class="muted">{page.verify.intro}</p>
+    <ul class="check-list">
+      {
+        page.verify.items.map((item) => (
+          <li>
+            <label>
+              <input type="checkbox" />
+              <span>{item}</span>
+            </label>
+          </li>
+        ))
+      }
+    </ul>
+    <p style="margin-top:1rem"><a href="/gongju/xuangou-qingdan/">完整的下单前核对清单</a></p>
+  </section>
+
+  {
+    related.length > 0 && (
+      <section class="section section--tight">
+        <h2>和{page.navLabel}有关的指南</h2>
+        <div class="entry-grid">
+          {related.map((article) => (
+            <a class="entry-card" href={getArticleHref(article)}>
+              <span class="entry-card__kicker">{article.data.primaryKeyword}</span>
+              <span class="entry-card__title">{article.data.title}</span>
+              <p class="entry-card__description">{article.data.answer}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--tight">
+    <h2>其他专项榜单</h2>
+    <ul class="chips">
+      <li><a class="chip" href="/tuijian/">机场推荐总榜</a></li>
+      {
+        others.map((p) => (
+          <li>
+            <a class="chip" href={`/tuijian/${p.slug}/`}>{p.navLabel}</a>
+          </li>
+        ))
+      }
+      <li><a class="chip" href="/duibi/">机场对比</a></li>
+      <li><a class="chip" href="/jichang/">机场大全</a></li>
+    </ul>
+  </section>
+
+  <FaqBlock heading={`${page.navLabel}常见问题`} items={page.faqs} />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListJsonLd)} />
+</BaseLayout>

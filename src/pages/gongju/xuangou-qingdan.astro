@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+
+const groups = [
+  {
+    title: '价格与周期',
+    items: [
+      ['结算页的实付金额与周期', '以结算页显示的总金额为准，而不是首页的“每月低至”。确认这笔钱覆盖几个月。'],
+      ['续费价格', '首单优惠、优惠码是否只对第一次购买有效，续费按什么价格算。'],
+      ['退款规则', '在服务条款里找退款条件：时间窗口、已用流量上限，或者明确写了不退款。'],
+    ],
+  },
+  {
+    title: '流量与限制',
+    items: [
+      ['流量的重置方式', '每月重置，还是一次性给完、用完为止；重置日是哪一天。'],
+      ['节点倍率', '节点列表或公告里有没有高倍率节点，常用地区的倍率是多少。'],
+      ['设备数与同时在线', '限制设备数、同时在线的 IP 数，还是不限制。家人共用前要确认。'],
+      ['禁止的用途', '是否禁止 BT 下载、群发邮件等，触发后是限速还是封号。'],
+    ],
+  },
+  {
+    title: '线路与节点',
+    items: [
+      ['线路类型的说法', '套餐页是否写明专线、中转或直连，说法是否具体到每个节点。'],
+      ['有没有你要的地区', '对地区有要求的服务，先确认节点列表里有对应地区，而且不止一个节点。'],
+    ],
+  },
+  {
+    title: '使用与售后',
+    items: [
+      ['订阅格式与客户端', '提供 Clash 格式还是通用格式的订阅，你的设备有没有对应的客户端。'],
+      ['公告与客服渠道', '官方公告渠道在哪里，工单或客服多久回复，域名变更时如何通知。'],
+      ['官网是否持续在线', '看一眼机场官网检测的记录，并把官网地址存进收藏夹，避免以后进到仿冒站。'],
+    ],
+  },
+];
+const total = groups.reduce((n, g) => n + g.items.length, 0);
+const faqs = [
+  { q: '这份清单要在什么时候用？', a: '在你已经选定一两家机场、准备付款之前。打开对方官网的套餐页和服务条款，对照清单逐项确认。大多数纠纷都出在“以为”和“实际”不一样的地方，例如以为可以月付、以为流量每月重置、以为可以退款。' },
+  { q: '有些项目在官网上找不到怎么办？', a: '找不到本身就是一个信息。可以直接向客服提问，并保留回复截图。如果关键项目，例如退款规则、流量重置方式，客服也说不清楚，建议只买最短周期，或者换一家信息更透明的。' },
+  { q: '清单全部确认了，是不是就不会踩坑？', a: '清单能排除“条件没看清”这一类问题，不能保证线路在你的网络下好用，也不能保证服务商长期运营。所以第一次购买仍然建议选短周期，用晚高峰试几天再决定是否续费。' },
+  { q: '勾选记录保存在哪里？', a: '保存在你当前浏览器的本地存储里，只为了方便你分几次核对。它不会上传到服务器，换一个浏览器或清除浏览数据后就没有了。点击“清空勾选”可以随时重置。' },
+];
+---
+
+<BaseLayout
+  title="买梯子下单前核对清单｜机场付款前要在官网确认的 12 件事"
+  description={`买梯子下单前核对清单：付款前到机场官网逐项确认的 ${total} 件事，涵盖实付金额与周期、续费价格、退款规则、流量重置、节点倍率、设备数限制、线路说法、节点地区、订阅格式与客服渠道。每一项都写明该看官网的哪一处，可逐项勾选，进度保存在你自己的浏览器里。`}
+  keywords={['买梯子注意事项', '机场购买清单', '买机场注意什么', '梯子下单前核对', '机场避坑清单', '选梯子']}
+>
+  <Breadcrumbs items={[{ name: '工具箱', href: '/gongju/' }, { name: '下单前核对清单', href: '/gongju/xuangou-qingdan/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">QINGDAN / 核对清单</span>
+    <h1>买梯子下单前核对清单：付款前确认这 {total} 件事</h1>
+    <p class="lead">选梯子的资料只能告诉你“我们查到了什么”。付款前的最后一步，需要你自己打开机场官网，把下面的项目逐条确认。确认一项勾一项，进度会保存在你的浏览器里。</p>
+  </header>
+
+  <div class="output" style="position:sticky;top:4.6rem;z-index:5">
+    <span class="muted small">核对进度</span>
+    <b class="big"><span id="done">0</span> / {total}</b>
+    <button class="btn btn--small btn--ghost" type="button" id="reset" style="margin-top:.5rem">清空勾选</button>
+  </div>
+
+  {
+    groups.map((group, gi) => (
+      <section class="section section--tight">
+        <h2>{group.title}</h2>
+        <ul class="check-list">
+          {group.items.map((item, ii) => (
+            <li>
+              <label>
+                <input type="checkbox" data-key={`${gi}-${ii}`} />
+                <span>
+                  <strong>{item[0]}</strong>
+                  <br />
+                  <span class="muted">{item[1]}</span>
+                </span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>清单之外：第一次购买的三个建议</h2>
+    <ol>
+      <li><strong>先买最短周期。</strong>能月付就月付，线路是否适合你，只有用过才知道。可选的品牌见<a href="/tuijian/yuefu/">月付机场</a>。</li>
+      <li><strong>在晚高峰试用。</strong>晚上八点到十一点是最能看出差别的时段，判断方法见<a href="/tuijian/wending/">稳定机场怎么判断</a>。</li>
+      <li><strong>保存关键页面的截图。</strong>套餐说明、退款条款、付款凭证各留一张，出现分歧时有据可依。</li>
+    </ol>
+    <p>清单里涉及的名词不清楚，可以查<a href="/cidian/">梯子术语库</a>；想了解常见的坑，看<a href="/bikeng/">机场避坑指南</a>；还没定下来买哪家，回到<a href="/tuijian/">机场推荐榜</a>或用<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>。</p>
+  </section>
+
+  <FaqBlock heading="下单前核对清单常见问题" items={faqs} />
+
+  <script is:inline>
+    (function () {
+      var KEY = 'xz-checklist';
+      var boxes = document.querySelectorAll('input[data-key]');
+      var done = document.getElementById('done');
+      var state = {};
+      try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+      function render() {
+        var n = 0;
+        boxes.forEach(function (b) { b.checked = !!state[b.getAttribute('data-key')]; if (b.checked) n++; });
+        done.textContent = n;
+      }
+      boxes.forEach(function (b) {
+        b.addEventListener('change', function () {
+          state[b.getAttribute('data-key')] = b.checked;
+          try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+          render();
+        });
+      });
+      document.getElementById('reset').addEventListener('click', function () {
+        state = {};
+        try { localStorage.removeItem(KEY); } catch (e) {}
+        render();
+      });
+      render();
+    })();
+  </script>
+</BaseLayout>

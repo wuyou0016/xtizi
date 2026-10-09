@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { getBoard } from '../../data/utils/board';
+import { PAIR_COUNT_TOP, comparePair, pairSlug } from '../../data/utils/compare';
+import { MONITOR, STATE_LABEL, fmtDate, fmtDateTime, monitorFor } from '../../data/utils/live';
+
+export async function getStaticPaths() {
+  const board = await getBoard();
+  const top = board.rows.slice(0, PAIR_COUNT_TOP);
+  const paths = [];
+  for (let i = 0; i < top.length; i++) for (let j = i + 1; j < top.length; j++) paths.push({ params: { pair: pairSlug(top[i]!.provider.data.slug, top[j]!.provider.data.slug) }, props: { a: top[i]!.provider.data.slug, b: top[j]!.provider.data.slug } });
+  return paths;
+}
+
+interface Props {
+  a: string;
+  b: string;
+}
+const board = await getBoard();
+const a = board.rows.find((r) => r.provider.data.slug === Astro.props.a)!;
+const b = board.rows.find((r) => r.provider.data.slug === Astro.props.b)!;
+const na = a.provider.data.name;
+const nb = b.provider.data.name;
+const result = comparePair(a, b);
+const href = `/duibi/${pairSlug(a.provider.data.slug, b.provider.data.slug)}/`;
+const snapshot = fmtDate(board.snapshotAt);
+const top = board.rows.slice(0, PAIR_COUNT_TOP);
+const others = top
+  .filter((r) => r !== a && r !== b)
+  .flatMap((r) => [a, b].map((x) => (x.rank < r.rank ? [x, r] : [r, x])))
+  .map(([x, y]) => ({ label: `${x!.provider.data.name} vs ${y!.provider.data.name}`, href: `/duibi/${pairSlug(x!.provider.data.slug, y!.provider.data.slug)}/` }))
+  .slice(0, 12);
+const ma = monitorFor(a.provider.id);
+const mb = monitorFor(b.provider.id);
+const title = `${na} vs ${nb}：价格、流量、线路对比，2026 哪个更适合你`;
+const description = `${na}和${nb}哪个好？选梯子把两家机场的最低月均价、月付套餐、最大流量、每 GB 折算价、线路、协议、节点地区放进同一张表逐项对比，标出资料上的差别，并按“想省钱、想月付、流量大”等需求给出取舍建议，两家都没有测速数据，所以不比速度。`;
+---
+
+<BaseLayout title={title} description={description} keywords={[`${na} vs ${nb}`, `${na}和${nb}哪个好`, `${na}对比${nb}`, `${na}怎么样`, `${nb}怎么样`, '机场对比']}>
+  <Breadcrumbs
+    items={[
+      { name: '机场对比', href: '/duibi/' },
+      { name: `${na} vs ${nb}`, href },
+    ]}
+  />
+  <header class="page-head">
+    <span class="section__eyebrow">DUIBI / 对比</span>
+    <h1>{na} vs {nb}：价格、流量、线路逐项对比</h1>
+    <p class="lead">
+      这一页只比资料上查得到的东西：价格、付费周期、流量、线路、协议、节点地区。两家都没有选梯子的测速数据，所以速度和稳定性不在比较范围内。资料快照日期 {snapshot}，下单前请以各自官网为准。
+    </p>
+  </header>
+
+  <section>
+    <h2 id="duizhao">{na}和{nb}对照表</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>对比项</th>
+            <th><a href={`/jichang/${a.provider.data.slug}/`}>{na}</a></th>
+            <th><a href={`/jichang/${b.provider.data.slug}/`}>{nb}</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            result.table.map((row) => (
+              <tr>
+                <th scope="row" style="background:transparent;color:var(--muted);font-weight:600">{row.label}</th>
+                <td>{row.a}</td>
+                <td>{row.b}</td>
+              </tr>
+            ))
+          }
+          <tr>
+            <th scope="row" style="background:transparent;color:var(--muted);font-weight:600">官网最近一次检测</th>
+            <td>{ma.result ? <span class={`state state--${ma.result.state}`}>{STATE_LABEL[ma.result.state]}</span> : '尚未检测'}</td>
+            <td>{mb.result ? <span class={`state state--${mb.result.state}`}>{STATE_LABEL[mb.result.state]}</span> : '尚未检测'}</td>
+          </tr>
+          <tr>
+            <th scope="row" style="background:transparent;color:var(--muted);font-weight:600">官网入口</th>
+            <td><a class:list={['btn', 'btn--small', { 'btn--gold': a.rank === 1 }]} href={a.provider.data.vendor.officialWebsite} target="_blank" rel="nofollow sponsored noopener">前往{na}官网</a></td>
+            <td><a class="btn btn--small" href={b.provider.data.vendor.officialWebsite} target="_blank" rel="nofollow sponsored noopener">前往{nb}官网</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">官网检测时间 {fmtDateTime(MONITOR.checkedAt)}，只说明检测点当时能否打开官网。年付套餐的月均价为折算值。</p>
+  </section>
+
+  <section class="section section--tight">
+    <h2 id="chabie">{na}和{nb}在资料上的差别</h2>
+    <ul class="check-list">
+      {result.points.map((point) => <li><label style="cursor:default"><span>{point}</span></label></li>)}
+    </ul>
+  </section>
+
+  <section class="section section--tight">
+    <h2 id="zenme-xuan">{na}和{nb}怎么选：按你最在意的一项</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>如果你……</th><th>资料指向</th></tr>
+        </thead>
+        <tbody>
+          {result.picks.map((pick) => <tr><td><strong>{pick.need}</strong></td><td>{pick.pick}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+    <div class="grid grid--2">
+      <div class="card">
+        <h3>选梯子对{na}的说明</h3>
+        <p class="muted">{a.reason}</p>
+        <a href={`/jichang/${a.provider.data.slug}/`}>{na}完整资料</a>
+      </div>
+      <div class="card">
+        <h3>选梯子对{nb}的说明</h3>
+        <p class="muted">{b.reason}</p>
+        <a href={`/jichang/${b.provider.data.slug}/`}>{nb}完整资料</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>对比之后，建议这样验证</h2>
+    <ol>
+      <li>到两家官网的套餐页，把表里的价格、流量和付费周期各核对一遍。</li>
+      <li>如果其中一家可以按月付费，先买它的一个月，在晚高峰用你最常用的服务试几天。</li>
+      <li>确认你的设备有对应的客户端，并且能顺利导入订阅，方法见<a href="/jiaocheng/dingyue-daoru/">订阅链接怎么用</a>。</li>
+      <li>看一眼服务条款里的退款规则，再决定是否续更长的周期。</li>
+    </ol>
+    <p>还想把别的机场放进来比，回到<a href="/duibi/">机场对比</a>总表；想按用途直接筛，用<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>。</p>
+  </section>
+
+  <FaqBlock heading={`${na} vs ${nb} 常见问题`} items={result.faqs} />
+
+  <section class="section section--tight">
+    <h2>相关对比</h2>
+    <ul class="chips">
+      {others.map((link) => <li><a class="chip" href={link.href}>{link.label}</a></li>)}
+    </ul>
+  </section>
+</BaseLayout>

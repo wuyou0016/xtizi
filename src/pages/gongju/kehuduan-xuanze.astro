@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { CLIENTS, PLATFORM_LABEL, PLATFORM_ORDER, RELEASES_CHECKED_AT, fmtDate, fmtDateTime, getRelease, officialUrl, shortName } from '../../data/utils/live';
+
+const family = (c: (typeof CLIENTS)[number]) => (c.core === 'Mihomo' || /Clash/.test(c.kind + c.core) ? 'clash' : /V2Ray/.test(c.kind) ? 'v2ray' : c.core === 'sing-box' ? 'singbox' : 'ios');
+const data = CLIENTS.map((c) => {
+  const r = getRelease(c.slug);
+  return {
+    slug: c.slug,
+    name: shortName(c),
+    kind: c.kind,
+    core: c.core,
+    platforms: c.platforms,
+    family: family(c),
+    gui: !/内核（命令行）/.test(c.kind),
+    paid: !c.repo,
+    version: r?.latestTag ?? '',
+    date: r ? fmtDate(r.publishedAt) : '',
+    url: officialUrl(c),
+  };
+});
+const faqs = [
+  { q: 'Clash 系和 V2Ray 系客户端该选哪个？', a: '看你买的机场提供哪种订阅，以及你的使用习惯。Clash 系用配置文件和规则自动分流，导入后基本不用管，适合大多数人；V2Ray 系以节点列表为主，手动选择节点更直接。多数机场两种订阅都提供，新手一般从 Clash 系图形客户端开始。' },
+  { q: '一个订阅可以在多个客户端上用吗？', a: '通常可以。同一条订阅链接可以导入到手机和电脑的不同客户端，不过不少机场会给同时连着的设备或 IP 设一个上限，超了可能被降速，这一条要回到套餐页上去确认。' },
+  { q: '选择器里为什么没有某个我听说过的客户端？', a: '选梯子只收录能核对到官方发布地址、并且仍可获取的客户端。已经停止维护、仓库被删除，或者只在第三方渠道流传的版本不在收录范围内，因为无法确认来源。' },
+  { q: 'iPhone 只有付费客户端吗？', a: '本页收录的 iPhone 客户端里，有 App Store 的付费应用，也有支持 iOS 的多平台客户端。它们都需要非中国大陆地区的 Apple ID 才能下载，上架情况以 App Store 实际页面为准。' },
+];
+---
+
+<BaseLayout
+  title="梯子客户端选择器｜按系统选 Clash、V2Ray、小火箭等梯子软件"
+  description={`梯子客户端选择器：选择 Windows、Mac、安卓、iPhone、Linux 或路由器，再选偏好的类型，列出对应的梯子软件、内核、最新版本与官方下载地址。收录 ${CLIENTS.length} 款客户端，版本数据来自 GitHub 官方接口。`}
+  keywords={['梯子客户端', '梯子软件选择', 'Clash客户端', 'V2Ray客户端', '梯子软件推荐', '翻墙软件']}
+>
+  <Breadcrumbs items={[{ name: '工具箱', href: '/gongju/' }, { name: '客户端选择器', href: '/gongju/kehuduan-xuanze/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">KEHUDUAN / 客户端选择器</span>
+    <h1>梯子客户端选择器：按系统和习惯找到合适的梯子软件</h1>
+    <p class="lead">先选你的系统，再选偏好的类型。结果里的版本号和发布日期来自 GitHub 官方接口，核验于 {fmtDateTime(RELEASES_CHECKED_AT)}；下载只指向官方仓库或官方商店。</p>
+  </header>
+
+  <form class="card tool" id="picker" onsubmit="return false">
+    <fieldset class="field">
+      <legend>你的系统</legend>
+      <div class="options">
+        {PLATFORM_ORDER.map((p, i) => <label class="option"><input type="radio" name="platform" value={p} checked={i === 0} /><span>{PLATFORM_LABEL[p]}</span></label>)}
+      </div>
+    </fieldset>
+    <fieldset class="field">
+      <legend>偏好的类型</legend>
+      <div class="options">
+        <label class="option"><input type="radio" name="family" value="all" checked /><span>都看看</span></label>
+        <label class="option"><input type="radio" name="family" value="clash" /><span>Clash 系（规则分流）</span></label>
+        <label class="option"><input type="radio" name="family" value="v2ray" /><span>V2Ray 系（节点列表）</span></label>
+        <label class="option"><input type="radio" name="family" value="singbox" /><span>sing-box 系（多平台）</span></label>
+      </div>
+    </fieldset>
+    <label class="option"><input type="checkbox" name="gui" checked /><span>只看有图形界面的</span></label>
+  </form>
+  <div id="picker-out" style="margin-top:1.2rem" aria-live="polite"></div>
+  <noscript><p class="callout callout--warn">这个工具需要启用 JavaScript。也可以直接看<a href="/xiazai/">梯子下载</a>的总表。</p></noscript>
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>三类梯子客户端的区别</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>类型</th><th>内核</th><th>使用方式</th><th>适合</th></tr></thead>
+        <tbody>
+          <tr><td>Clash 系</td><td>Mihomo</td><td>导入配置，按规则自动分流，策略组选节点</td><td>想导入后少操心的大多数用户</td></tr>
+          <tr><td>V2Ray 系</td><td>Xray / sing-box</td><td>导入节点列表，手动选择节点，路由规则可选</td><td>习惯直接挑节点、设置更直观的用户</td></tr>
+          <tr><td>sing-box 系</td><td>sing-box</td><td>多为一键导入，多平台界面一致</td><td>手机电脑想用同一款软件的用户</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>内核决定支持哪些协议，图形界面决定好不好上手。机场给的订阅格式和客户端对不上时，优先在机场面板里换一种格式，而不是把订阅交给第三方转换，原因见<a href="/jiaocheng/dingyue-zhuanhuan/">订阅转换是什么</a>。</p>
+    <p>选好之后，到<a href="/xiazai/">梯子下载</a>页确认官方地址，再按<a href="/jiaocheng/">使用教程</a>导入订阅。还没有订阅的话，先看<a href="/tuijian/">机场推荐榜</a>。</p>
+  </section>
+
+  <FaqBlock heading="梯子客户端选择常见问题" items={faqs} />
+
+  <script type="application/json" id="picker-data" set:html={JSON.stringify(data)} />
+  <script is:inline>
+    (function () {
+      var data = JSON.parse(document.getElementById('picker-data').textContent);
+      var form = document.getElementById('picker');
+      var out = document.getElementById('picker-out');
+      var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      function run() {
+        var platform = form.querySelector('input[name="platform"]:checked').value;
+        var family = form.querySelector('input[name="family"]:checked').value;
+        var gui = form.querySelector('input[name="gui"]').checked;
+        var list = data.filter(function (c) {
+          if (c.platforms.indexOf(platform) === -1) return false;
+          if (gui && !c.gui) return false;
+          if (family !== 'all' && c.family !== family) return false;
+          return true;
+        });
+        if (!list.length) {
+          out.innerHTML = '<div class="empty-state"><p class="empty-state__title">这个组合下没有收录的客户端</p><p>可以把类型改成“都看看”，或取消“只看有图形界面的”。鸿蒙系统的替代方案见<a href="/xiazai/hongmeng/">鸿蒙梯子下载</a>。</p></div>';
+          return;
+        }
+        out.innerHTML = '<div class="mini-grid">' + list.map(function (c) {
+          return '<div class="mini"><span class="mini__top"><a href="/xiazai/' + c.slug + '/">' + esc(c.name) + '</a>' + (c.paid ? ' <span class="chip">付费</span>' : '') + '</span>' +
+            '<span class="mini__meta">' + esc(c.kind) + ' · 内核 ' + esc(c.core) + '</span>' +
+            '<span class="mini__meta">' + (c.version ? '最新 ' + esc(c.version) + ' · ' + esc(c.date) : '版本以 App Store 为准') + '</span>' +
+            '<span class="mini__meta"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">官方地址</a> · <a href="/xiazai/' + c.slug + '/">下载说明</a></span></div>';
+        }).join('') + '</div>';
+      }
+      form.addEventListener('change', run);
+      run();
+    })();
+  </script>
+</BaseLayout>

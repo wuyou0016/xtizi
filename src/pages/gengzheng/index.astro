@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+// 更正记录：每次因读者或品牌方反馈而修改事实性内容，都在这里登记一条。
+const corrections: { date: string; page: string; href: string; before: string; after: string }[] = [
+  {
+    date: '2026-10-09',
+    page: '奈飞梯子怎么选？等 8 篇流媒体相关页面',
+    href: '/changjing/netflix/',
+    before: '写成“Netflix 帮助中心说明，使用 VPN 或代理时只能看到拥有全球授权的内容”。',
+    after: '核对官方页面后改为它实际写的内容：被识别为 VPN 或代理时会提示“You seem to be using a VPN or proxy”，官方建议关闭后重试；VPN 不支持广告方案和直播活动。“只剩自制剧”改为用户常见的现象描述，不再归在官方名下。',
+  },
+  {
+    date: '2026-10-09',
+    page: 'sing-box 下载、sing-box 使用教程',
+    href: '/xiazai/sing-box/',
+    before: '写成“官方图形客户端只覆盖安卓和苹果，Windows 与 Linux 以命令行为主”。',
+    after: '官方文档的客户端页列出了 sing-box for Android、sing-box for Apple platforms 和面向 Windows、Linux 的 sing-box for Desktop，已按文档改正。',
+  },
+  {
+    date: '2026-10-09',
+    page: 'Telegram 梯子怎么选、Telegram 一直连接中怎么办',
+    href: '/changjing/telegram/',
+    before: '把 Telegram 应用内支持 SOCKS5 与 MTProto 代理的说明，归在官方 FAQ 和 MTProto 协议页名下。',
+    after: '这两页都没有写代理。已改为引用 Telegram 官方的代理说明页 core.telegram.org/proxy，并保留 FAQ 作为功能总览。',
+  },
+];
+---
+
+<BaseLayout
+  modifiedTime="2026-10-09"
+  title="更正记录｜选梯子的资料纠错方式与已处理的更正"
+  description="选梯子更正记录：说明发现机场价格、线路、链接或文章表述有误时如何反馈，我们的核对与处理流程，以及每一条已处理更正的日期、页面和修改前后的内容。凡是改动事实的地方都会在这里公开登记，不做无痕修改；品牌方反馈自己的资料也走同一套流程。"
+  keywords={['选梯子更正', '资料纠错', '更正记录', '内容勘误']}
+>
+  <Breadcrumbs items={[{ name: '更正记录', href: '/gengzheng/' }]} />
+  <article class="prose" style="max-width:54rem">
+    <span class="section__eyebrow">GENGZHENG / 更正</span>
+    <h1>更正记录</h1>
+    <p class="lead">资料会过期，文章也可能写错。选梯子的做法是：改了就留记录。凡是涉及事实的修改，例如价格、线路、链接、技术说明，都会在这一页登记修改日期、所在页面和修改前后的内容。</p>
+
+    <h2>已处理的更正</h2>
+    {
+      corrections.length > 0 ? (
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th class="num">日期</th><th>页面</th><th>修改前</th><th>修改后</th></tr></thead>
+            <tbody>
+              {corrections.map((c) => <tr><td class="num">{c.date}</td><td><a href={c.href}>{c.page}</a></td><td>{c.before}</td><td>{c.after}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p class="empty-state__title">目前还没有更正记录</p>
+          <p>出现第一条更正时，会从这里开始登记。</p>
+        </div>
+      )
+    }
+
+    <h2>什么情况算需要更正</h2>
+    <ul>
+      <li>机场资料页或榜单里的价格、流量、付费周期、线路、节点地区与官网当前信息不符。</li>
+      <li>官网入口、客户端官方地址失效，或者指向了错误的页面。</li>
+      <li>文章里的技术说明有误，或者平台规则已经变化。</li>
+      <li>引用的官方来源页面已经改版，原有描述不再成立。</li>
+    </ul>
+    <p>错别字、排版调整这类不影响事实的小修改不单独登记，见<a href="/gengxin/">更新日志</a>。</p>
+
+    <h2>如何反馈</h2>
+    <ol>
+      <li>说明是哪一个页面、哪一处内容。</li>
+      <li>给出你看到的正确信息，以及它的出处，例如官网套餐页的截图或官方文档链接。</li>
+      <li>通过页脚的入驻申请联系方式发送给我们。</li>
+    </ol>
+
+    <h2>我们怎么处理</h2>
+    <ol>
+      <li><strong>核对。</strong>对照官网或官方文档确认反馈是否成立。只有截图而无法在官方渠道复核的，会作为第三方说法记录，而不是直接替换原有内容。</li>
+      <li><strong>修改。</strong>更新对应的资料或文章，并同步更新页面上的核对日期。</li>
+      <li><strong>登记。</strong>在本页添加一条记录，写明修改前后的内容。</li>
+    </ol>
+    <p>品牌方反馈自己的资料同样走这个流程。资料的来源分级和排名规则见<a href="/fangfa/">排名与核验方法</a>。</p>
+  </article>
+</BaseLayout>

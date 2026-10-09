@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { FAQ_CLUSTERS, FAQ_ITEMS } from '../../data/seo/faq-data';
+import { SEO_TAGS } from '../../data/seo/seo-tags';
+
+const clusters = FAQ_CLUSTERS.map((cluster) => ({ ...cluster, items: FAQ_ITEMS.filter((item) => item.cluster === cluster.id) })).filter((c) => c.items.length > 0);
+const count = clusters.reduce((n, c) => n + c.items.length, 0);
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: clusters.flatMap((c) => c.items).map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
+};
+---
+
+<BaseLayout
+  title={`梯子常见问题 ${count} 问｜梯子怎么选、机场多少钱、连不上怎么办`}
+  description={`梯子常见问题汇总：选梯子把读者问得最多的 ${count} 个问题分成 ${clusters.length} 个主题直接回答，涵盖梯子和机场是什么、便宜机场怎么选、流量与套餐、专线线路、梯子下载、订阅导入、ChatGPT 与奈飞使用、连不上排查和跑路避坑。`}
+  keywords={['梯子常见问题', '机场常见问题', '梯子怎么选', '机场怎么选', '梯子连不上', '梯子多少钱', '梯子FAQ']}
+>
+  <Breadcrumbs items={[{ name: '常见问题', href: '/faq/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">FAQ / 常见问题</span>
+    <h1>梯子常见问题：{count} 个问题，按主题直接回答</h1>
+    <p class="lead">这里收的是读者最常问的问题。每个回答第一句就是结论，后面是判断依据；涉及速度、稳定性这类没有测试数据的事，会明确告诉你选梯子没有数据，并给出自己判断的方法。</p>
+    <ul class="chips" aria-label="问题主题">
+      {clusters.map((cluster) => <li><a class="chip" href={`#${cluster.id}`}>{cluster.title.split(/[：:，,]/)[0]} · {cluster.items.length}</a></li>)}
+    </ul>
+  </header>
+  {
+    clusters.map((cluster) => (
+      <section class="section section--tight" id={cluster.id}>
+        <div class="section__head">
+          <div>
+            <h2>{cluster.title}</h2>
+            <p>{cluster.intro}</p>
+          </div>
+        </div>
+        <FaqBlock items={cluster.items} jsonLd={false} />
+      </section>
+    ))
+  }
+  {clusters.length === 0 && <div class="empty-state"><p class="empty-state__title">问答正在整理</p><p>可以先看<a href="/zhinan/">选购指南</a>。</p></div>}
+  <section class="section section--tight">
+    <h2>没找到答案？</h2>
+    <div class="grid grid--3">
+      <div class="card"><h3>按栏目找</h3><ul class="link-list"><li><a href="/zhinan/">梯子选购指南</a></li><li><a href="/jiaocheng/">梯子使用教程</a></li><li><a href="/paicha/">梯子故障排查</a></li><li><a href="/bikeng/">机场避坑指南</a></li></ul></div>
+      <div class="card"><h3>按场景找</h3><ul class="link-list"><li><a href="/changjing/">梯子使用场景</a></li><li><a href="/xiazai/">梯子下载</a></li><li><a href="/cidian/">梯子术语库</a></li><li><a href="/tag/">关键词专题</a></li></ul></div>
+      <div class="card"><h3>直接看结果</h3><ul class="link-list"><li><a href="/tuijian/">机场推荐榜</a></li><li><a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a></li><li><a href="/duibi/">机场对比</a></li><li><a href="/jiance/">机场官网检测</a></li></ul></div>
+    </div>
+    {SEO_TAGS.length > 0 && <ul class="chips" style="margin-top:1.2rem">{SEO_TAGS.map((tag) => <li><a class="chip" href={`/tag/${tag.slug}/`}>{tag.name}</a></li>)}</ul>}
+  </section>
+  {count > 0 && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+</BaseLayout>

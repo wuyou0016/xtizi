@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { getBoard } from '../../data/utils/board';
+import { articleTypeLabel, getArticleHref } from '../../data/utils/article-routing';
+import { priceLine, cleanList } from '../../data/utils/provider-facts';
+import { PROVIDER_MATCH_NOTE, SEO_TAGS, getArticlesForTag, getFaqForTag, providerMatchesTag, tagHasProviderSupport } from '../../data/seo/seo-tags';
+
+export function getStaticPaths() {
+  return SEO_TAGS.map((tag) => ({ params: { slug: tag.slug }, props: { slug: tag.slug } }));
+}
+
+const tag = SEO_TAGS.find((t) => t.slug === Astro.props.slug)!;
+const articles = getArticlesForTag(tag, await getCollection('articles', ({ id }) => !isDemoEntry(id)));
+const faqs = getFaqForTag(tag);
+const board = await getBoard();
+const providers = tagHasProviderSupport(tag) ? board.rows.filter((row) => providerMatchesTag(row.provider, tag)) : [];
+const types = [...new Set(articles.map((a) => a.data.type))];
+const others = SEO_TAGS.filter((t) => t.slug !== tag.slug);
+const sp = /[A-Za-z0-9]$/.test(tag.name) ? ' ' : '';
+let rawDesc = `${tag.name}${sp}专题：${tag.intro}`;
+if (rawDesc.length < 110) rawDesc += `选梯子把和${tag.name}有关的指南、教程、问答与机场资料收在同一页，方便按关键词查找。`;
+const title = `${tag.name}${sp}专题｜${tag.name}${sp}相关的指南、问答与机场资料`;
+const description = rawDesc.length > 150 ? `${rawDesc.slice(0, 148)}…` : rawDesc;
+---
+
+<BaseLayout title={title} description={description} keywords={[tag.name, ...tag.keywords.slice(0, 5)]}>
+  <Breadcrumbs items={[{ name: '关键词专题', href: '/tag/' }, { name: tag.name, href: `/tag/${tag.slug}/` }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">TAG / {tag.slug}</span>
+    <h1>{tag.name}{sp}专题：相关指南、问答与资料</h1>
+    <p class="lead">{tag.intro}</p>
+    <p class="muted" style="max-width:48rem">{tag.angle}</p>
+    <div class="btn-row">
+      {tag.links.map((link, index) => <a class:list={['btn', 'btn--small', { 'btn--ghost': index > 0 }]} href={link.href}>{link.label}</a>)}
+    </div>
+  </header>
+
+  {
+    providers.length > 0 && (
+      <section>
+        <h2 id="jichang">和{tag.name}有关的机场（{providers.length} 家）</h2>
+        <p class="muted">筛选依据：{PROVIDER_MATCH_NOTE[tag.slug]}。按榜单名次排列，资料来自官网或第三方，不代表选梯子的测试结论。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th class="num">推荐名次</th><th>机场</th><th>资料里的价格</th><th>线路</th><th>协议</th></tr></thead>
+            <tbody>
+              {providers.map((row) => {
+                const price = priceLine(row.provider);
+                return (
+                  <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                    <td class="num">{row.rank}</td>
+                    <td><a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a></td>
+                    <td>{price.text}<br /><span class="muted small">{price.note}</span></td>
+                    <td>{cleanList(row.provider.data.vendor.routes).join('、') || '资料暂缺'}</td>
+                    <td>{cleanList(row.provider.data.vendor.protocols).join('、') || '资料暂缺'}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    types.map((type) => (
+      <section class="section section--tight">
+        <h2>{tag.name} · {articleTypeLabel[type]}</h2>
+        <div class="entry-grid">
+          {articles.filter((a) => a.data.type === type).map((article) => (
+            <a class="entry-card" href={getArticleHref(article)}>
+              <span class="entry-card__kicker">{article.data.primaryKeyword}</span>
+              <span class="entry-card__title">{article.data.title}</span>
+              <p class="entry-card__description">{article.data.answer}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+
+  {faqs.length > 0 && <FaqBlock heading={`${tag.name}常见问题`} items={faqs} />}
+
+  <section class="section section--tight">
+    <h2>其他专题</h2>
+    <ul class="chips">
+      {others.map((t) => <li><a class="chip" href={`/tag/${t.slug}/`}>{t.name}</a></li>)}
+    </ul>
+  </section>
+</BaseLayout>

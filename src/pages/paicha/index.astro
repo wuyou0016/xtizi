@@ -1,0 +1,32 @@
+---
+import ArticleHub from '../../components/ArticleHub.astro';
+import { MONITOR, fmtDateTime } from '../../data/utils/live';
+
+const up = MONITOR.results.filter((r) => r.state === 'up' || r.state === 'guarded').length;
+---
+
+<ArticleHub
+  type="paicha"
+  title="梯子连不上怎么办｜梯子故障排查：速度慢、订阅失败、打不开"
+  description="梯子故障排查大全：梯子连不上、节点超时、订阅更新失败、梯子速度慢、晚上卡、ChatGPT 打不开、Netflix 提示代理、Telegram 一直连接中，每篇先描述你看到的现象，再给由易到难的排查顺序，按现象找到原因，一步步解决。"
+  h1="梯子故障排查：按现象找原因"
+  lead="出问题时最浪费时间的是乱试。这个栏目按“你看到的现象”组织：每篇先描述症状，再给由易到难的排查顺序，每一步都说明这个结果意味着什么、下一步去哪。"
+  breadcrumb="故障排查"
+  href="/paicha/"
+  eyebrow="PAICHA / 故障排查"
+  keywords={['梯子连不上', '梯子故障排查', '梯子速度慢', '节点超时', '订阅更新失败', 'ChatGPT打不开', '机场官网打不开']}
+  categoryOrder={['连接问题', '速度问题', '服务访问', '客户端报错']}
+  categoryIntro={{
+    连接问题: '完全连不上、节点全部超时、订阅拉不下来、官网进不去。',
+    速度问题: '能连但是慢：晚高峰、视频缓冲、国内网站变慢、流量掉得快。',
+    服务访问: '梯子本身正常，但某个服务用不了：AI 工具、流媒体、社交软件。',
+    客户端报错: '端口被占用、TUN 开不了、证书与时间、DNS 泄漏。',
+  }}
+>
+  <div slot="intro" class="callout">
+    <p class="callout__title">排查之前先做两件事</p>
+    <p>
+      一、确认套餐没有到期、流量没有用完，这是最常见的“故障”。二、看一眼<a href="/jiance/">机场官网检测</a>：最近一次检测（{fmtDateTime(MONITOR.checkedAt)}）{up}/{MONITOR.results.length} 家官网可以打开。如果你的机场官网在检测里也没有响应，问题多半不在你这边。
+    </p>
+  </div>
+</ArticleHub>

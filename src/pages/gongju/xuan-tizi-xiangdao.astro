@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { getBoard } from '../../data/utils/board';
+import { hasDedicatedRoute, planFacts } from '../../data/utils/provider-facts';
+
+const board = await getBoard();
+const tierLabel = Object.fromEntries(board.tiers.map((t) => [t.id, t.label]));
+const data = board.rows.map((row) => ({
+  rank: row.rank,
+  name: row.provider.data.name,
+  slug: row.provider.data.slug,
+  url: row.provider.data.vendor.officialWebsite,
+  tier: row.tier,
+  tierLabel: tierLabel[row.tier],
+  dedicated: hasDedicatedRoute(row.provider),
+  regions: row.provider.data.vendor.regions ?? [],
+  plans: planFacts(row.provider)
+    .filter((p) => p.monthly !== null)
+    .map((p) => ({ name: p.name, price: p.price, monthly: p.monthly, gb: p.gb, cycle: p.cycleId, cycleLabel: p.cycle, quota: p.quota })),
+}));
+const regions = [...new Set(data.flatMap((d) => d.regions))];
+const faqs = [
+  { q: '选梯子向导是怎么筛选的？', a: '向导只用机场资料里的真实字段做条件过滤：套餐的月均价、每月流量、付费周期，以及线路记录和节点地区。它不打分、不加权，结果按榜单名次排列。没有价格资料的机场无法参与筛选，会在结果下方单独说明。' },
+  { q: '为什么筛出来的结果很少，甚至没有？', a: '说明你的条件组合比较严，例如同时要求低预算、大流量和月付。可以按提示放宽其中一项：把预算提高一档、接受年付，或者取消专线要求。也可以先用流量计算器确认是否真的需要那么多流量。' },
+  { q: '向导的结果可以直接照着买吗？', a: '结果是候选，不是结论。它只说明这些套餐在资料上符合你的条件，线路在你的网络下表现如何没有数据。建议点进资料页看完整信息，再到官网核对价格，并优先用最短周期试用。' },
+  { q: '我填的内容会被上传吗？', a: '不会。筛选完全在你的浏览器里运行，页面不会把你的选择发送到任何服务器，刷新页面后选择也不会保留。' },
+];
+---
+
+<BaseLayout
+  title="选梯子向导｜30 秒按用途、流量、预算筛出合适的梯子机场"
+  description="选梯子向导：选择用途、每月流量、月均预算、付费方式和节点地区，工具会用机场资料里的真实字段筛出符合条件的梯子机场套餐，并按榜单名次列出每家符合条件的档位、价格与付费周期。筛选只在你的浏览器里进行，不打分、不加权，也不上传你的选择。"
+  keywords={['选梯子', '选梯子向导', '梯子怎么选', '机场推荐工具', '梯子推荐', '机场筛选']}
+>
+  <Breadcrumbs items={[{ name: '工具箱', href: '/gongju/' }, { name: '选梯子向导', href: '/gongju/xuan-tizi-xiangdao/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">XIANGDAO / 选梯子向导</span>
+    <h1>选梯子向导：按用途、流量和预算筛机场</h1>
+    <p class="lead">回答下面五个问题，向导会在 {data.length} 家机场的套餐里做条件过滤。它只看资料里的字段，不替任何品牌说好话；没有价格资料的机场不会出现在结果里。</p>
+  </header>
+
+  <div class="grid grid--2" style="align-items:start">
+    <form class="card tool" id="wizard" onsubmit="return false">
+      <fieldset class="field">
+        <legend>1. 主要拿来做什么？</legend>
+        <div class="options">
+          <label class="option"><input type="radio" name="use" value="light" checked /><span>聊天、查资料、AI 工具</span></label>
+          <label class="option"><input type="radio" name="use" value="video" /><span>经常看视频</span></label>
+          <label class="option"><input type="radio" name="use" value="work" /><span>工作办公</span></label>
+          <label class="option"><input type="radio" name="use" value="family" /><span>多设备 / 全家共用</span></label>
+        </div>
+        <small id="use-hint">流量需求很小，重点看价格和节点地区。</small>
+      </fieldset>
+      <fieldset class="field">
+        <legend>2. 每月至少要多少流量？</legend>
+        <div class="options">
+          <label class="option"><input type="radio" name="gb" value="0" checked /><span>不确定 / 不限</span></label>
+          <label class="option"><input type="radio" name="gb" value="50" /><span>50GB 以上</span></label>
+          <label class="option"><input type="radio" name="gb" value="100" /><span>100GB 以上</span></label>
+          <label class="option"><input type="radio" name="gb" value="200" /><span>200GB 以上</span></label>
+        </div>
+        <small>不确定可以先用<a href="/gongju/liuliang-jisuanqi/">流量计算器</a>估一下。</small>
+      </fieldset>
+      <fieldset class="field">
+        <legend>3. 月均预算上限</legend>
+        <div class="options">
+          <label class="option"><input type="radio" name="budget" value="10" /><span>¥10 以内</span></label>
+          <label class="option"><input type="radio" name="budget" value="20" /><span>¥20 以内</span></label>
+          <label class="option"><input type="radio" name="budget" value="30" /><span>¥30 以内</span></label>
+          <label class="option"><input type="radio" name="budget" value="9999" checked /><span>不限</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>4. 付费方式</legend>
+        <div class="options">
+          <label class="option"><input type="radio" name="cycle" value="any" checked /><span>年付月付都行</span></label>
+          <label class="option"><input type="radio" name="cycle" value="monthly" /><span>只要月付</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>5. 其他要求（可不选）</legend>
+        <div class="options">
+          <label class="option"><input type="checkbox" name="dedicated" /><span>资料里写明专线</span></label>
+          {regions.map((region) => <label class="option"><input type="checkbox" name="region" value={region} /><span>有{region}节点记录</span></label>)}
+        </div>
+      </fieldset>
+    </form>
+
+    <div>
+      <div class="output" id="wizard-summary" aria-live="polite"></div>
+      <div id="wizard-results" style="margin-top:1rem"></div>
+      <noscript><p class="callout callout--warn">这个工具需要启用 JavaScript。也可以直接查看<a href="/tuijian/">机场推荐榜</a>的总表。</p></noscript>
+    </div>
+  </div>
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>向导的筛选规则</h2>
+    <ul>
+      <li><strong>流量</strong>：套餐的每月流量不低于你选的数值。资料里没写流量的套餐，在你指定了流量下限时不参与。</li>
+      <li><strong>预算</strong>：套餐的月均价不高于上限。年付套餐按折算后的月均价比较，结果里会标明它需要按年付费。</li>
+      <li><strong>付费方式</strong>：选“只要月付”时，只保留资料里标明按月付费的套餐。</li>
+      <li><strong>专线</strong>：资料的线路记录里出现 IPLC、IEPL 或“专线”字样。</li>
+      <li><strong>节点地区</strong>：资料里记录了你勾选的全部地区。</li>
+      <li><strong>排序</strong>：按榜单名次，不按价格或其他指标重排。</li>
+    </ul>
+    <p>
+      规则之外的因素，例如线路在你当地的表现、客服响应、退款政策，向导无法判断。拿到候选后，建议看<a href="/zhinan/tizi-zenme-xuan/">梯子怎么选</a>里的七个维度，并用<a href="/gongju/xuangou-qingdan/">下单前核对清单</a>到官网确认。
+    </p>
+  </section>
+
+  <FaqBlock heading="选梯子向导常见问题" items={faqs} />
+
+  <script type="application/json" id="wizard-data" set:html={JSON.stringify(data)} />
+  <script is:inline>
+    (function () {
+      var data = JSON.parse(document.getElementById('wizard-data').textContent);
+      var form = document.getElementById('wizard');
+      var summary = document.getElementById('wizard-summary');
+      var results = document.getElementById('wizard-results');
+      var hints = {
+        light: '流量需求很小，重点看价格和节点地区。',
+        video: '视频最吃流量，建议把流量下限选到 100GB 以上。',
+        work: '工作时段不能掉，建议勾选“资料里写明专线”，并准备一条备用。',
+        family: '多人共用流量消耗快，建议选 100GB 或 200GB 以上，并确认设备数限制。'
+      };
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+      function val(name) { var el = form.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; }
+      function run() {
+        var use = val('use');
+        document.getElementById('use-hint').textContent = hints[use];
+        var gb = Number(val('gb'));
+        var budget = Number(val('budget'));
+        var cycle = val('cycle');
+        var dedicated = form.querySelector('input[name="dedicated"]').checked;
+        var regions = Array.prototype.map.call(form.querySelectorAll('input[name="region"]:checked'), function (el) { return el.value; });
+        var matched = [];
+        var noPrice = 0;
+        data.forEach(function (d) {
+          if (!d.plans.length) { noPrice++; return; }
+          if (dedicated && !d.dedicated) return;
+          for (var i = 0; i < regions.length; i++) if (d.regions.indexOf(regions[i]) === -1) return;
+          var plans = d.plans.filter(function (p) {
+            if (p.monthly > budget) return false;
+            if (cycle === 'monthly' && p.cycle !== 'monthly') return false;
+            if (gb > 0 && (p.gb === null || p.gb < gb)) return false;
+            return true;
+          });
+          if (plans.length) matched.push({ d: d, plans: plans });
+        });
+        summary.innerHTML = '<span class="muted small">符合条件的机场</span><b class="big">' + matched.length + ' 家</b>' +
+          '<span class="muted small">共 ' + data.length + ' 家参与筛选，其中 ' + noPrice + ' 家没有价格资料，无法参与。结果按榜单名次排列。</span>';
+        if (!matched.length) {
+          results.innerHTML = '<div class="empty-state"><p class="empty-state__title">没有同时满足这些条件的套餐</p><p>可以放宽一项试试：提高预算一档、接受年付、降低流量下限，或者取消专线与地区要求。</p></div>';
+          return;
+        }
+        results.innerHTML = matched.map(function (m) {
+          var d = m.d;
+          var plans = m.plans.map(function (p) {
+            return '<li><strong>' + esc(p.name) + '</strong>：' + esc(p.price) + (p.quota ? ' · ' + esc(p.quota) : '') + (p.cycleLabel ? ' · ' + esc(p.cycleLabel) : '') + '</li>';
+          }).join('');
+          return '<article class="pcard' + (d.rank === 1 ? ' pcard--gold' : '') + '" style="grid-template-columns:auto minmax(0,1fr)">' +
+            '<div class="num3d' + (d.rank === 1 ? ' num3d--gold' : '') + '">' + d.rank + '</div><div>' +
+            '<div class="pcard__head"><h3 class="pcard__name"><a href="/jichang/' + d.slug + '/">' + esc(d.name) + '</a></h3>' +
+            (d.rank === 1 ? '<span class="badge badge--gold"><span>首推 · 综合推荐第一</span></span>' : '<span class="tier-pill tier-pill--' + d.tier + '">' + esc(d.tierLabel) + '</span>') + '</div>' +
+            '<p class="muted small" style="margin:0 0 .4rem">符合条件的套餐：</p><ul style="margin:0 0 .8rem;padding-left:1.2rem">' + plans + '</ul>' +
+            '<div class="btn-row"><a class="btn btn--small btn--ghost" href="/jichang/' + d.slug + '/">' + esc(d.name) + '资料</a>' +
+            '<a class="btn btn--small' + (d.rank === 1 ? ' btn--gold' : '') + '" href="' + esc(d.url) + '" target="_blank" rel="nofollow sponsored noopener">前往官网</a></div></div></article>';
+        }).join('');
+      }
+      form.addEventListener('change', run);
+      run();
+    })();
+  </script>
+</BaseLayout>

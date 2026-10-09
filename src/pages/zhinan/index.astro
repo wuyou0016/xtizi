@@ -1,0 +1,41 @@
+---
+import ArticleHub from '../../components/ArticleHub.astro';
+import { getBoard } from '../../data/utils/board';
+
+const board = await getBoard();
+---
+
+<ArticleHub
+  type="zhinan"
+  title="梯子选购指南｜梯子是什么、机场怎么选、梯子多少钱一次讲清"
+  description="梯子选购指南：从梯子是什么、机场是什么、VPN 和梯子的区别讲起，到梯子怎么选、多少钱、流量够不够、专线和中转的区别、Clash 与 V2Ray 机场怎么挑，再到手机梯子、电脑梯子和学生、外贸这些人群的选法，帮第一次买梯子的人按步骤做决定。"
+  h1="梯子选购指南：从看懂名词到选定一家机场"
+  lead="这个栏目回答“买之前”的问题：梯子和机场到底是什么，价格由什么决定，线路和协议那些缩写要不要管，不同设备、不同人群该看哪几项。每篇都先给结论，再讲判断方法。"
+  breadcrumb="选购指南"
+  href="/zhinan/"
+  eyebrow="ZHINAN / 选购指南"
+  keywords={['梯子选购指南', '梯子怎么选', '机场怎么选', '梯子是什么', '科学上网', '梯子多少钱', 'VPN机场']}
+  categoryOrder={['入门概念', '怎么选', '价格与套餐', '线路与协议', '设备与人群']}
+  categoryIntro={{
+    入门概念: '梯子、机场、VPN、科学上网、魔法上网，这些词分别指什么，彼此是什么关系。',
+    怎么选: '把“哪家好”拆成用途、预算、流量、线路几个可以回答的问题。',
+    价格与套餐: '月均价、每 GB 价格、年付与月付、倍率和设备数，套餐页上的数字怎么读。',
+    线路与协议: 'Clash、V2Ray、IPLC、IEPL、原生 IP、流媒体解锁，这些说法背后是什么。',
+    设备与人群: '手机、电脑各怎么装，学生和外贸用户各该优先考虑什么。',
+  }}
+>
+  <div slot="intro" class="grid grid--3">
+    <div class="card">
+      <p class="card-title">完全没用过</p>
+      <p class="muted">先读<a href="/zhinan/tizi-shi-shenme/">梯子是什么</a>和<a href="/zhinan/xinshou-mai-tizi/">新手第一次买梯子</a>，再到<a href="/xiazai/">梯子下载</a>找自己系统的客户端。</p>
+    </div>
+    <div class="card">
+      <p class="card-title">准备下单了</p>
+      <p class="muted">读<a href="/zhinan/tizi-zenme-xuan/">梯子怎么选</a>，然后在<a href="/tuijian/">机场推荐榜</a>的 {board.rows.length} 家里筛，或者用<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>。</p>
+    </div>
+    <div class="card">
+      <p class="card-title">想弄懂参数</p>
+      <p class="muted">从<a href="/zhinan/jichang-zenme-xuan/">套餐页上的 9 个参数</a>看起，缩写不认识就查<a href="/cidian/">梯子术语库</a>。</p>
+    </div>
+  </div>
+</ArticleHub>

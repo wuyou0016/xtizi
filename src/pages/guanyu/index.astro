@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { siteConfig } from '../../config/site';
+import { getBoard } from '../../data/utils/board';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { CLIENTS } from '../../data/utils/live';
+
+const board = await getBoard();
+const articles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const jsonLd = { '@context': 'https://schema.org', '@type': 'AboutPage', name: '关于选梯子', url: `${siteConfig.url}/guanyu/`, inLanguage: 'zh-CN', about: { '@type': 'Organization', name: siteConfig.brandName, url: siteConfig.url } };
+---
+
+<BaseLayout
+  modifiedTime="2026-10-09"
+  title="关于选梯子｜一个讲证据的梯子选购指南站"
+  description="关于选梯子：xziti.com 是一个梯子选购指南站，整理机场的价格、线路、协议资料并逐项标注来源，提供梯子工具的官方下载地址与版本核验，按使用场景讲清该看哪些参数。这里说明我们是谁、做什么、不做什么以及如何联系。"
+  keywords={['关于选梯子', '选梯子', 'xziti', '选梯子编辑部', '梯子选购指南']}
+>
+  <Breadcrumbs items={[{ name: '关于选梯子', href: '/guanyu/' }]} />
+  <article class="prose" style="max-width:54rem">
+    <span class="section__eyebrow">GUANYU / 关于</span>
+    <h1>关于选梯子</h1>
+    <p class="lead">选梯子（xziti.com）是一个梯子选购指南站。我们想解决的问题很具体：一个人决定买梯子时，怎样在十几分钟里弄清楚该看什么、哪些信息可信、哪些需要自己核对。</p>
+
+    <h2>我们做什么</h2>
+    <ul>
+      <li><strong>整理资料。</strong>目前收录 {board.rows.length} 家机场的公开资料：价格、流量、付费周期、线路、协议、节点地区，每一项都标注来自官网、站长确认还是第三方资料。入口在<a href="/tuijian/">机场推荐榜</a>和<a href="/jichang/">机场大全</a>。</li>
+      <li><strong>核验工具。</strong>收录 {CLIENTS.length} 款梯子客户端的官方发布地址，由脚本定时读取最新版本并公开核验时间，见<a href="/xiazai/">梯子下载</a>。</li>
+      <li><strong>监测官网。</strong>定时检测每家机场官网能否打开，帮助区分“被墙”和“停运”，见<a href="/jiance/">机场官网检测</a>。</li>
+      <li><strong>写清方法。</strong>目前有 {articles.length} 篇指南、教程、场景说明和排查文章，每篇都先给结论，再给判断依据，并教你自己验证。</li>
+    </ul>
+
+    <h2>我们不做什么</h2>
+    <ul>
+      <li>不编造测速、延迟、解锁数据。没有测过的栏位，页面上写“实时检测中”。</li>
+      <li>不提供免费节点、订阅链接或共享账号。</li>
+      <li>不提供安装包下载，只指向官方仓库与官方商店。</li>
+      <li>不提供法律意见。请遵守你所在地区的法律法规使用网络服务。</li>
+    </ul>
+
+    <h2>内容由谁负责</h2>
+    <p>全站内容署名“{siteConfig.author.name}”。文章发布前经过三道检查：是否符合“不编造数据、不点名品牌”的底线；引用的外部链接是否来自我们逐个验证过的官方页面白名单；页面上的结构化数据是否与可见内容一致。排名和数据的规则写在<a href="/fangfa/">排名与核验方法</a>。</p>
+
+    <h2>如何反馈</h2>
+    <p>资料有误、链接失效、表述不清，都欢迎指出，处理方式和已处理的条目见<a href="/gengzheng/">更正记录</a>。品牌方希望补充或更正自己的资料，可以通过页脚的入驻申请联系。</p>
+
+    <h2>从哪里开始</h2>
+    <p>第一次来，可以从<a href="/zhinan/tizi-shi-shenme/">梯子是什么</a>读起，或者直接用<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>；想看全部栏目，打开<a href="/daohang/">梯子导航</a>。</p>
+  </article>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

@@ -1,0 +1,296 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProviderCard from '../../components/ProviderCard.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import SourceBadge from '../../components/SourceBadge.astro';
+import { resolveCanonicalUrl } from '../../config/seo';
+import { getBoard } from '../../data/utils/board';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { getArticleHref } from '../../data/utils/article-routing';
+import { bestPerGb, cheapestMonthly, cleanList, completeness, hasMonthlyPlan, largestPlan } from '../../data/utils/provider-facts';
+import { RANK_PAGES } from '../../data/copy/rank-pages';
+import { fmtDate } from '../../data/utils/live';
+
+const board = await getBoard();
+const tierLabel = new Map(board.tiers.map((tier) => [tier.id, tier.label]));
+const cardTiers = board.tiers.filter((tier) => ['shoutui', 'zhongdian', 'youxian'].includes(tier.id));
+const listTiers = board.tiers.filter((tier) => ['beixuan', 'daibu'].includes(tier.id));
+const snapshot = fmtDate(board.snapshotAt);
+
+const articles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const reads = ['tizi-zenme-xuan', 'jichang-zenme-xuan', 'xinshou-mai-tizi', 'tizi-duoshao-qian', 'jichang-ceping', 'zhongzhuan-jichang']
+  .map((id) => articles.find((a) => a.id === id))
+  .filter((a) => a !== undefined);
+
+const faqs = [
+  { q: '这份机场推荐榜的名次是怎么定的？', a: '名次不是测速名次。排序综合三件事：公开资料填了几栏（价格、线路、协议、节点地区、客户端支持）、价格与付费方式有多少可选范围，以及选梯子对品牌的跟进程度。价格与套餐资料没核实到的品牌排在最后，标为资料待核实。榜单里的每一项资料都标注了来源。' },
+  { q: '机场推荐第一名为什么是它？', a: `第一名${board.rows[0]!.provider.data.name}是收录品牌里资料最齐的一家：价格、线路、协议、节点地区、客户端支持五项全部有记录，并且同时有年付低价档和可以按月付费的档位。它也是编辑部的首推品牌。` },
+  { q: '排在后面的机场是不是不好？', a: '不是。备选和资料待核实两档的主要原因是公开资料不完整，或者状态为观察中，并不代表服务质量差。选梯子没有任何一家的测速数据，无法对服务质量下结论，只能如实告诉你哪些信息查得到、哪些查不到。' },
+  { q: '榜单里的价格准吗？多久更新一次？', a: '价格来自官网、站长确认或第三方资料，每条都标了来源和获取日期，页面顶部写有本次榜单的快照日期。机场调价不会通知第三方，所以付款前请到官网结账页面再核对一遍，发现不一致可以通过更正记录页告诉我们。' },
+  { q: '为什么榜单里没有速度和延迟？', a: '因为选梯子手里还没有自己测出来的数据。速度和延迟与你的地区、运营商、时段都有关，随手截一张测速图没有参考价值。在积累出固定条件下的长期记录之前，这一栏统一写“实时检测中”。' },
+  { q: '我应该直接买第一名吗？', a: '第一名是一个稳妥的起点，但不一定最适合你。流量用得多可以看大流量机场，只想按月付可以看月付机场，预算紧可以看便宜机场。也可以用选梯子向导按用途筛一遍，再从结果里选。' },
+];
+
+const itemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '2026 机场推荐榜',
+  description: board.description,
+  numberOfItems: board.rows.length,
+  itemListElement: board.rows.map((row) => ({
+    '@type': 'ListItem',
+    position: row.rank,
+    name: row.provider.data.name,
+    url: resolveCanonicalUrl(`/jichang/${row.provider.data.slug}/`),
+  })),
+};
+---
+
+<BaseLayout
+  title="机场推荐 2026｜梯子机场推荐排行榜，28 家机场价格线路对照"
+  description={`机场推荐排行榜 ${snapshot} 更新：选梯子把 ${board.rows.length} 家梯子机场按资料完整度和跟进情况分成首推、重点推荐、优先考虑、备选、资料待核实五档，价格资料没核实到的排在最后，逐家列出月均价、流量、线路、节点地区和资料来源，帮你快速缩小候选范围。`}
+  keywords={['机场推荐', '机场推荐排行榜', '梯子机场推荐', '2026机场推荐', '梯子推荐', '机场排行', '好用的机场']}
+>
+  <Breadcrumbs items={[{ name: '机场推荐榜', href: '/tuijian/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">TUIJIAN / 推荐榜</span>
+    <h1>机场推荐排行榜：2026 年 {board.rows.length} 家梯子机场分档对照</h1>
+    <p class="lead">
+      这份榜单把 {board.rows.length} 家机场按资料完整度与跟进情况排成五档，价格与套餐资料没核实到的品牌排在最后。每家都列出最低月均价（按资料）、最大流量、线路、节点地区和协议；查不到的写“资料暂缺”，没有测过的写“实时检测中”。榜单快照日期：<time datetime={snapshot}>{snapshot}</time>。
+    </p>
+    <ul class="chips" aria-label="专项榜单">
+      {
+        RANK_PAGES.map((page) => (
+          <li>
+            <a class="chip" href={`/tuijian/${page.slug}/`}>{page.navLabel}</a>
+          </li>
+        ))
+      }
+      <li><a class="chip" href="/duibi/">机场对比</a></li>
+      <li><a class="chip" href="/youhuima/">优惠码</a></li>
+    </ul>
+  </header>
+
+  <div class="callout">
+    <p class="callout__title">读榜之前先看这三句</p>
+    <p>
+      一、名次不是测速名次。二、价格和线路来自官网、站长确认或第三方资料，逐项标来源，付款时看官网结账页面显示的数字。三、没有测过的指标一律写“实时检测中”，完整规则见<a href="/fangfa/">排名与核验方法</a>。
+    </p>
+  </div>
+
+  {
+    cardTiers.map((tier) => (
+      <section class="band" id={tier.id}>
+        <div class="band__head">
+          <h2>
+            <span class={`tier-pill tier-pill--${tier.id}`}>{tier.label}</span> {tier.tagline}
+          </h2>
+          <p>{tier.rule}</p>
+        </div>
+        {tier.rows.map((row) => (
+          <ProviderCard row={row} tierLabel={tier.label} headingLevel="h3" />
+        ))}
+      </section>
+    ))
+  }
+
+  {
+    listTiers.map((tier) => (
+      <section class="band" id={tier.id}>
+        <div class="band__head">
+          <h2>
+            <span class={`tier-pill tier-pill--${tier.id}`}>{tier.label}</span> {tier.tagline}
+          </h2>
+          <p>{tier.rule}</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="num">名次</th>
+                <th>机场</th>
+                <th>资料里的价格</th>
+                <th>线路</th>
+                <th>选梯子的说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tier.rows.map((row) => {
+                const best = cheapestMonthly(row.provider);
+                const routes = cleanList(row.provider.data.vendor.routes);
+                return (
+                  <tr>
+                    <td class="num">{row.rank}</td>
+                    <td>
+                      <a href={`/jichang/${row.provider.data.slug}/`}>
+                        <strong>{row.provider.data.name}</strong>
+                      </a>
+                      {row.provider.data.status === 'watch' && <span class="chip chip--empty">观察中</span>}
+                    </td>
+                    <td>{best ? `${best.plan.price}${best.plan.quota ? ` · ${best.plan.quota}` : ''}${best.plan.cycle ? `（${best.plan.cycle}）` : ''}` : '资料暂缺'}</td>
+                    <td>{routes.length ? routes.join('、') : '资料暂缺'}</td>
+                    <td class="muted small">{row.reason}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section" id="zongbiao">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">ALL IN ONE / 总表</span>
+        <h2>{board.rows.length} 家机场一张表：月均价、流量、每 GB 价格与资料完整度</h2>
+        <p>默认按榜单名次。点击带箭头的表头可以按该列排序，再点一次反向，第三次恢复默认。</p>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table data-sortable>
+        <thead>
+          <tr>
+            <th class="num" data-sort>名次</th>
+            <th>机场</th>
+            <th>推荐档</th>
+            <th class="num" data-sort>最低月均价</th>
+            <th class="num" data-sort>最大流量</th>
+            <th class="num" data-sort>每 GB 折算价</th>
+            <th>月付</th>
+            <th>线路</th>
+            <th class="num" data-sort>资料完整度</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            board.rows.map((row) => {
+              const best = cheapestMonthly(row.provider);
+              const largest = largestPlan(row.provider);
+              const perGb = bestPerGb(row.provider);
+              const routes = cleanList(row.provider.data.vendor.routes);
+              const comp = completeness(row.provider);
+              return (
+                <tr class:list={[{ 'is-first': row.rank === 1 }]}>
+                  <td class="num" data-v={row.rank}>{row.rank}</td>
+                  <td>
+                    <a href={`/jichang/${row.provider.data.slug}/`}>{row.provider.data.name}</a>
+                  </td>
+                  <td>
+                    <span class={`tier-pill tier-pill--${row.tier}`}>{tierLabel.get(row.tier)}</span>
+                  </td>
+                  <td class="num" data-v={best?.monthly ?? ''}>{best ? `¥${best.monthly}` : '—'}</td>
+                  <td class="num" data-v={largest?.gb ?? ''}>{largest ? `${largest.gb}GB` : '—'}</td>
+                  <td class="num" data-v={perGb?.perGb ?? ''}>{perGb ? `¥${perGb.perGb.toFixed(3)}` : '—'}</td>
+                  <td>{hasMonthlyPlan(row.provider) ? '有' : '资料里没有'}</td>
+                  <td>{routes.length ? routes.join('、') : '—'}</td>
+                  <td class="num" data-v={comp.have.length}>{comp.have.length}/5</td>
+                </tr>
+              );
+            })
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">
+      最低月均价的取法：把各档套餐写明的月价挑出最小的一个，年付档用的是折算后的数；每 GB 折算价 = 月均价 ÷ 每月流量 <SourceBadge type="calculated" />；资料完整度 = 价格、线路、协议、节点地区、客户端支持五项里查得到的项数。“—”表示资料暂缺。
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">METHOD / 方法</span>
+        <h2>梯子机场推荐榜的排名规则</h2>
+      </div>
+      <a class="section__more" href="/fangfa/">完整方法说明</a>
+    </div>
+    <div class="card">
+      <p>{board.methodology}</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>推荐档</th>
+              <th>含义</th>
+              <th>进入这一档的条件</th>
+              <th class="num">家数</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              board.tiers.map((tier) => (
+                <tr>
+                  <td>
+                    <a href={`#${tier.id}`}>
+                      <span class={`tier-pill tier-pill--${tier.id}`}>{tier.label}</span>
+                    </a>
+                  </td>
+                  <td>{tier.tagline}</td>
+                  <td>{tier.rule}</td>
+                  <td class="num">{tier.rows.length}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div>
+        <span class="section__eyebrow">HOW TO / 怎么用</span>
+        <h2>怎么用这份机场推荐榜选出自己的那一家</h2>
+      </div>
+    </div>
+    <ol class="steps">
+      <li>
+        <h3>先按付费方式筛</h3>
+        <p>第一次买、想先试试的，看总表里“月付”一列为“有”的品牌，或直接去<a href="/tuijian/yuefu/">月付机场</a>；确定长期用、想压低月均价的，再考虑年付档。</p>
+      </li>
+      <li>
+        <h3>再按流量筛</h3>
+        <p>把总表按“最大流量”排序，对照自己的用量。用量不确定就用<a href="/gongju/liuliang-jisuanqi/">流量计算器</a>估一下；流量需求大的直接看<a href="/tuijian/daliuliang/">大流量机场</a>。</p>
+      </li>
+      <li>
+        <h3>看线路和节点地区</h3>
+        <p>晚高峰用得多、工作依赖的，优先看线路栏写明 IPLC 或 IEPL 的品牌（<a href="/tuijian/zhuanxian/">专线机场</a>）；如果你要用的服务认地区，就点进资料页看节点地区一栏。</p>
+      </li>
+      <li>
+        <h3>剩下两三家，逐项对比</h3>
+        <p>用<a href="/duibi/">机场对比</a>把候选放进同一张表；再按<a href="/gongju/xuangou-qingdan/">下单前核对清单</a>到官网确认价格、流量和退款规则。</p>
+      </li>
+    </ol>
+  </section>
+
+  {
+    reads.length > 0 && (
+      <section class="section">
+        <div class="section__head">
+          <div>
+            <span class="section__eyebrow">READ / 延伸</span>
+            <h2>读懂榜单需要的几篇指南</h2>
+          </div>
+          <a class="section__more" href="/zhinan/">全部选购指南</a>
+        </div>
+        <div class="entry-grid">
+          {reads.map((article) => (
+            <a class="entry-card" href={getArticleHref(article)}>
+              <span class="entry-card__kicker">{article.data.primaryKeyword}</span>
+              <span class="entry-card__title">{article.data.title}</span>
+              <p class="entry-card__description">{article.data.answer}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <FaqBlock heading="机场推荐榜常见问题" items={faqs} />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListJsonLd)} />
+</BaseLayout>

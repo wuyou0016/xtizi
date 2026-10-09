@@ -1,0 +1,82 @@
+---
+// 推荐卡：名次、品牌、推荐档、一句话理由 + 资料里的五项事实。所有文字都来自 board.json / providers.json。
+import type { BoardRow } from '../data/utils/board';
+import { cleanList, priceLine, largestPlan } from '../data/utils/provider-facts';
+
+interface Props {
+  row: BoardRow;
+  tierLabel: string;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { row, tierLabel, headingLevel = 'h3' } = Astro.props;
+const { provider } = row;
+const v = provider.data.vendor;
+const H = headingLevel;
+const isFirst = row.rank === 1;
+const price = priceLine(provider);
+const routes = cleanList(v.routes);
+const protocols = cleanList(v.protocols);
+const regions = v.regions ?? [];
+const largest = largestPlan(provider);
+const href = `/jichang/${provider.data.slug}/`;
+---
+
+<article class:list={['pcard', 'tilt', 'reveal', { 'pcard--gold': isFirst }]}>
+  <div class:list={['num3d', { 'num3d--gold': isFirst }]} aria-label={`第 ${row.rank} 名`}>{row.rank}</div>
+  <div>
+    <div class="pcard__head">
+      <H class="pcard__name"><a href={href}>{provider.data.name}</a></H>
+      {
+        isFirst && (
+          <span class="badge badge--gold">
+            <span>首推 · 综合推荐第一</span>
+          </span>
+        )
+      }
+      {!isFirst && <span class={`tier-pill tier-pill--${row.tier}`}>{tierLabel}</span>}
+      {provider.data.status === 'watch' && <span class="chip chip--empty">观察中</span>}
+    </div>
+    <p class="pcard__reason">{row.reason}</p>
+    <dl class="facts">
+      <div>
+        <dt>最低月均价（按资料）</dt>
+        <dd>
+          <span class="price">{price.text}</span>
+          <small>{price.note}</small>
+        </dd>
+      </div>
+      <div>
+        <dt>最大一档流量</dt>
+        <dd>
+          {largest ? `${largest.gb}GB` : '资料暂缺'}
+          {largest && <small>{largest.plan.name}</small>}
+        </dd>
+      </div>
+      <div>
+        <dt>线路</dt>
+        <dd>{routes.length ? routes.join('、') : '资料暂缺'}</dd>
+      </div>
+      <div>
+        <dt>节点地区</dt>
+        <dd>{regions.length ? regions.join('、') : '资料暂缺'}</dd>
+      </div>
+      <div>
+        <dt>协议</dt>
+        <dd>{protocols.length ? protocols.join('、') : '资料暂缺'}</dd>
+      </div>
+      <div>
+        <dt>速度 / 延迟</dt>
+        <dd>
+          <span class="live-tag">实时检测中</span>
+        </dd>
+      </div>
+    </dl>
+    <div class="btn-row">
+      <a class:list={['btn', 'btn--small', { 'btn--gold': isFirst }]} href={v.officialWebsite} target="_blank" rel="nofollow sponsored noopener">
+        前往{provider.data.name}官网
+      </a>
+      <a class="btn btn--small btn--ghost" href={href}>{provider.data.name}资料与评价</a>
+    </div>
+  </div>
+</article>

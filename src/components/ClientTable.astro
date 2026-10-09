@@ -1,0 +1,55 @@
+---
+// 客户端对照表：名称 / 类型与内核 / 最新版本 / 发布日期 / 官方地址。数据全部来自 src/data/live。
+import { PLATFORM_LABEL, fmtDate, getRelease, officialUrl, shortName, type ClientInfo } from '../data/utils/live';
+
+interface Props {
+  clients: ClientInfo[];
+  showPlatforms?: boolean;
+}
+
+const { clients, showPlatforms = true } = Astro.props;
+---
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>客户端</th>
+        <th>类型 / 内核</th>
+        {showPlatforms && <th>支持系统</th>}
+        <th>最新版本</th>
+        <th>发布日期</th>
+        <th>官方地址</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        clients.map((client) => {
+          const release = getRelease(client.slug);
+          return (
+            <tr>
+              <td>
+                <a href={`/xiazai/${client.slug}/`}>
+                  <strong>{shortName(client)}</strong>
+                </a>
+              </td>
+              <td>
+                {client.kind}
+                <br />
+                <span class="muted small">内核：{client.core}</span>
+              </td>
+              {showPlatforms && <td>{client.platforms.map((p) => PLATFORM_LABEL[p]).join('、')}</td>}
+              <td class="num">{release?.latestTag ?? '以商店为准'}</td>
+              <td class="num">{release ? fmtDate(release.publishedAt) : '—'}</td>
+              <td>
+                <a href={officialUrl(client)} target="_blank" rel="noopener">
+                  {release ? 'GitHub 发布页' : 'App Store'}
+                </a>
+              </td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+</div>

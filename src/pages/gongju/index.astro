@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Icon from '../../components/Icon.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+
+const tools = [
+  { icon: 'spark', title: '选梯子向导', href: '/gongju/xuan-tizi-xiangdao/', desc: '回答用途、流量、预算、付费方式几个问题，按机场资料里的真实字段筛出符合条件的套餐。' },
+  { icon: 'bolt', title: '梯子流量计算器', href: '/gongju/liuliang-jisuanqi/', desc: '按每天看视频、刷网页、听歌的时长估算每月流量，码率可以自己改，算法完全公开。' },
+  { icon: 'scale', title: '梯子成本计算器', href: '/gongju/chengben-jisuanqi/', desc: '把年付、季付、月付套餐统一折成月均价和每 GB 价格，三个套餐并排比较。' },
+  { icon: 'device', title: '梯子客户端选择器', href: '/gongju/kehuduan-xuanze/', desc: '选系统和使用习惯，列出对应的梯子客户端、最新版本和官方下载地址。' },
+  { icon: 'check', title: '下单前核对清单', href: '/gongju/xuangou-qingdan/', desc: '付款前在官网逐项确认的十二件事，勾选进度保存在你的浏览器里。' },
+];
+const more = [
+  { title: '机场官网检测', href: '/jiance/', desc: '脚本定时检测每家机场官网能否打开。' },
+  { title: '机场对比', href: '/duibi/', desc: '两家机场逐项对照，另有全部品牌总表。' },
+  { title: '机场优惠码', href: '/youhuima/', desc: '资料里记录过的优惠码与来源。' },
+  { title: '梯子术语库', href: '/cidian/', desc: 'IPLC、TUN、倍率这些词的简明解释。' },
+];
+
+const faqs = [
+  { q: '这些工具的结果可信吗？', a: '工具只做算术和条件过滤，不做主观判断。向导用的是机场资料里的真实字段，计算器的公式公开写在页面上，码率和用量参数都可以自己改。结果的可信度取决于你填的数字和资料本身的时效，所以每个工具旁边都提示了要到官网再核对。' },
+  { q: '我填的内容会被保存或上传吗？', a: '不会上传。所有计算都在你的浏览器里完成，页面刷新后选择不会保留。唯一会保存的是下单前核对清单的勾选进度，它存在你自己浏览器的本地存储里，可以随时清空。' },
+  { q: '为什么没有“机场测速”工具？', a: '因为一次性的测速没有参考价值：速度取决于你的地区、运营商和时段，换个地方结果就不同。选梯子手里也还没有自己测出来的数据，所以不提供测速工具，也不转载别人的测速截图。想判断线路表现，请按故障排查栏目里的方法在自己的网络下对比。' },
+  { q: '工具箱里的客户端和版本数据从哪来？', a: '客户端的最新版本、发布日期和开源协议由脚本调用 GitHub 官方接口读取，页面上写有核验时间；iPhone 上的客户端以 App Store 页面为准。机场的价格与线路资料来自官网、站长确认或第三方页面，在每家机场的资料页里逐项标了出处。' },
+];
+---
+
+<BaseLayout
+  title="选梯子工具箱｜选梯子向导、流量计算器、成本计算器与客户端选择器"
+  description="选梯子工具箱：选梯子向导按用途和预算筛机场，梯子流量计算器估算每月用量，成本计算器把套餐折成月均价和每 GB 价格，客户端选择器按系统找梯子软件，另有下单前核对清单。不经过服务器、只在本机浏览器里运行，不收集输入内容。"
+  keywords={['选梯子工具', '梯子流量计算器', '机场成本计算器', '梯子客户端选择', '选梯子向导', '梯子工具箱']}
+>
+  <Breadcrumbs items={[{ name: '工具箱', href: '/gongju/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">GONGJU / 工具箱</span>
+    <h1>选梯子工具箱：把“感觉”换成能算清的数</h1>
+    <p class="lead">五个小工具，对应选梯子时最容易凭感觉的五个环节：该看哪几家、要多少流量、哪个套餐更划算、装哪个客户端、付款前核对什么。算数这一步全在你自己的浏览器里跑，页面不会上传你填写的内容。</p>
+  </header>
+  <div class="grid grid--3">
+    {
+      tools.map((tool, index) => (
+        <a class="card nav-card tilt glow-border reveal" style={`--d:${index}`} href={tool.href}>
+          <span class="nav-card__icon"><Icon name={tool.icon} /></span>
+          <span class="nav-card__title">{tool.title}</span>
+          <p class="nav-card__desc">{tool.desc}</p>
+          <span class="nav-card__cta">打开{tool.title}</span>
+        </a>
+      ))
+    }
+  </div>
+  <section class="section section--tight">
+    <h2>数据类页面</h2>
+    <div class="mini-grid">
+      {more.map((item) => <a class="mini" href={item.href}><span class="mini__top">{item.title}</span><span class="mini__meta">{item.desc}</span></a>)}
+    </div>
+  </section>
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>建议的使用顺序</h2>
+    <ol>
+      <li>先用<a href="/gongju/liuliang-jisuanqi/">流量计算器</a>估出每月大概用多少 GB。</li>
+      <li>带着这个数去<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>，加上预算和付费方式，筛出候选。</li>
+      <li>候选之间拿不准，用<a href="/gongju/chengben-jisuanqi/">成本计算器</a>把套餐折成同一口径，或者看<a href="/duibi/">机场对比</a>。</li>
+      <li>决定之后，对着<a href="/gongju/xuangou-qingdan/">下单前核对清单</a>到官网确认一遍。</li>
+      <li>付款后用<a href="/gongju/kehuduan-xuanze/">客户端选择器</a>找到对应的软件，按<a href="/jiaocheng/">使用教程</a>导入订阅。</li>
+    </ol>
+  </section>
+  <FaqBlock heading="工具箱常见问题" items={faqs} />
+</BaseLayout>

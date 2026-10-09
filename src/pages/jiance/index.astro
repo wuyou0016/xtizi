@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { getBoard } from '../../data/utils/board';
+import { MONITOR, STATE_LABEL, fmtDate, fmtDateTime, monitorFor } from '../../data/utils/live';
+
+const board = await getBoard();
+const rows = board.rows.map((row) => ({ row, m: monitorFor(row.provider.id) }));
+const count = (state: string) => MONITOR.results.filter((r) => r.state === state).length;
+const up = count('up');
+const guarded = count('guarded');
+const bad = count('error') + count('down');
+const days = Math.max(1, ...rows.map(({ m }) => m.days));
+const totalChecks = Math.max(0, ...rows.map(({ m }) => m.checks));
+
+const faqs = [
+  { q: '机场官网打不开，是不是跑路了？', a: '不一定。官网打不开常见有四种原因：域名在你的网络下被阻断、机场更换了域名、服务器临时故障，以及停止运营。可以先看本页的检测记录：如果检测点能打开而你打不开，多半是本地网络的问题；如果检测点连续多天也没有响应，才需要提高警惕。' },
+  { q: '这里显示“可以打开”，就说明这家机场能用吗？', a: '不能。检测只请求官网入口并记录是否有响应，反映的是官网是否在线。节点能不能用、速度如何，这项检测完全不涉及，选梯子也没有这方面的测试数据。' },
+  { q: '检测是从哪里发起的？', a: '由脚本从海外的检测点发起，具体检测点写在页面顶部。它不代表中国大陆网络下的情况：有的官网在海外能打开，在大陆直连打不开，这是正常现象，通常需要开着代理或换网络访问。' },
+  { q: '“有响应（拦截了自动请求）”是什么意思？', a: '表示服务器返回了响应，但状态码是 401、403、429 这一类，通常是防护系统拦截了自动化请求。这说明官网在线，只是不允许脚本访问，用浏览器正常打开一般没有问题。' },
+  { q: '多久检测一次？历史记录保留多久？', a: '检测由定时任务运行，每次运行的时间显示在页面顶部；每家品牌保留最近三十天的每日统计，包括检测次数和有响应的次数。记录从首次检测日期开始累计，早于这个日期的情况没有数据。' },
+  { q: '怎么判断一家机场是不是真的停止运营了？', a: '综合看几个信号：官网连续多天在检测点和你本地都打不开、官方公告渠道长期没有更新、已有订阅无法更新且节点全部失效、客服没有回应。单独一个信号说明不了问题，几个同时出现时应当尽快做好更换准备。' },
+];
+---
+
+<BaseLayout
+  title={`机场官网检测｜机场跑路了吗？${board.rows.length} 家机场官网可访问性在线检测`}
+  description={`机场官网检测：选梯子的脚本定时请求 ${board.rows.length} 家机场官网入口，记录能否打开、状态码、耗时和近 30 天有响应次数，帮你判断机场官网打不开是被墙还是停运。最近检测 ${fmtDate(MONITOR.checkedAt)}，${up + guarded}/${MONITOR.results.length} 家有响应。`}
+  keywords={['机场官网检测', '机场跑路了吗', '机场官网打不开', '机场跑路', '机场官网', '机场还能用吗', '机场在线检测']}
+>
+  <Breadcrumbs items={[{ name: '机场官网检测', href: '/jiance/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">JIANCE / 官网检测</span>
+    <h1>机场官网检测：{board.rows.length} 家机场官网现在能打开吗</h1>
+    <p class="lead">
+      “官网打不开”是买梯子的人最紧张的时刻。这一页由脚本定时请求每家机场的官网入口，记录有没有响应。它回答的只有一个问题：<strong>检测点当时能不能打开官网</strong>。
+    </p>
+  </header>
+
+  <div class="hero__stats" style="margin-top:0">
+    <div class="stat"><b>{up}</b><span>可以打开</span></div>
+    <div class="stat"><b>{guarded}</b><span>有响应但拦截脚本</span></div>
+    <div class="stat"><b>{bad}</b><span>报错或没有响应</span></div>
+    <div class="stat"><b>{totalChecks}</b><span>累计检测轮次</span></div>
+  </div>
+  <p class="muted small" style="margin-top:0.9rem">
+    最近一次检测：<strong>{fmtDateTime(MONITOR.checkedAt)}</strong> · 检测点：{MONITOR.vantage} · 记录自 {fmtDate(MONITOR.firstCheckedAt)} 起，已累计 {days} 天
+  </p>
+
+  <section class="section section--tight">
+    <h2 id="jilu">逐家检测记录</h2>
+    <div class="table-wrap">
+      <table data-sortable>
+        <thead>
+          <tr>
+            <th class="num" data-sort>推荐名次</th>
+            <th>机场</th>
+            <th>最近一次检测</th>
+            <th class="num" data-sort>状态码</th>
+            <th class="num" data-sort>耗时</th>
+            <th class="num" data-sort>有响应 / 检测次数</th>
+            <th>选梯子的状态标记</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map(({ row, m }) => (
+              <tr>
+                <td class="num" data-v={row.rank}>{row.rank}</td>
+                <td>
+                  <a href={`/jichang/${row.provider.data.slug}/`}><strong>{row.provider.data.name}</strong></a>
+                </td>
+                <td>{m.result ? <span class={`state state--${m.result.state}`}>{STATE_LABEL[m.result.state]}</span> : <span class="state state--pending">尚未检测</span>}</td>
+                <td class="num" data-v={m.result?.status ?? ''}>{m.result ? m.result.status || '—' : '—'}</td>
+                <td class="num" data-v={m.result?.ms ?? ''}>{m.result ? `${m.result.ms} ms` : '—'}</td>
+                <td class="num" data-v={m.checks ? m.reachable / m.checks : ''}>{m.reachable} / {m.checks}</td>
+                <td>{row.provider.data.status === 'watch' ? <span class="chip chip--empty">观察中</span> : '运营中'}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">耗时是检测点到官网服务器的一次请求耗时，与节点速度无关。“状态标记”是选梯子根据资料情况给出的，与检测结果相互独立。</p>
+  </section>
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2>这项检测能说明什么，不能说明什么</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>能说明</th><th>不能说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>检测点在那个时间能否收到官网的响应</td><td>节点是否可用、速度快不快</td></tr>
+          <tr><td>官网是否长期、连续地没有响应</td><td>你所在的网络能否直接打开官网</td></tr>
+          <tr><td>服务器返回的状态码和大致耗时</td><td>这家机场的服务质量和信誉</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>官网打不开时，按这个顺序判断</h2>
+    <ol>
+      <li><strong>看本页记录。</strong>检测点能打开而你打不开，说明官网在线，问题在本地网络到官网这一段。</li>
+      <li><strong>换一种方式访问。</strong>开着已有的代理再打开官网，或者换用手机流量、其他网络试一次。</li>
+      <li><strong>找官方公告。</strong>机场更换域名时通常会在公告渠道或已登录的面板里通知，注意只相信官方渠道，警惕搜索结果里的仿冒站。</li>
+      <li><strong>看已有订阅。</strong>订阅还能更新、节点还能连，说明服务仍在运行，只是官网入口有问题。</li>
+      <li><strong>连续多天都没有响应。</strong>检测点和本地都打不开，公告也没有说明，就要做更换的准备了。</li>
+    </ol>
+    <p>
+      更详细的判断方法见<a href="/paicha/guanwang-dabukai/">机场官网打不开怎么办</a>和<a href="/bikeng/jichang-paolu-qianzhao/">机场跑路前兆</a>；如果已经确认停止运营，看<a href="/bikeng/jichang-paolu-zenmeban/">机场跑路了怎么办</a>。想降低这类风险，优先选可以按月付费的<a href="/tuijian/yuefu/">月付机场</a>。
+    </p>
+    <h2>检测是怎么做的</h2>
+    <p>
+      脚本对每家机场资料里登记的官网入口域名发起一次普通的网页请求，超时时间十五秒，记录状态码与耗时。状态码小于 400 记为“可以打开”；401、403、429 这类记为“有响应（拦截了自动请求）”；500 以上记为“服务器报错”；超时或连接失败记为“没有响应”。每天的检测次数和有响应次数累计保存三十天。完整说明见<a href="/fangfa/">排名与核验方法</a>。
+    </p>
+  </section>
+
+  <FaqBlock heading="机场官网检测常见问题" items={faqs} />
+</BaseLayout>

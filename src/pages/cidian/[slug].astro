@@ -1,0 +1,96 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { resolveCanonicalUrl } from '../../config/seo';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { getArticleHref, articleTypeLabel } from '../../data/utils/article-routing';
+
+export async function getStaticPaths() {
+  const terms = await getCollection('glossary', ({ id }) => !isDemoEntry(id));
+  return terms.map((term) => ({ params: { slug: term.id }, props: { term } }));
+}
+
+const { term } = Astro.props;
+const { Content } = await render(term);
+const d = term.data;
+const [terms, articles] = await Promise.all([getCollection('glossary', ({ id }) => !isDemoEntry(id)), getCollection('articles', ({ id }) => !isDemoEntry(id))]);
+const relatedTerms = (d.relatedTerms ?? []).map((id) => terms.find((t) => t.id === id)).filter((t) => t !== undefined);
+const relatedArticles = (d.relatedArticles ?? []).map((id) => articles.find((a) => a.id === id)).filter((a) => a !== undefined);
+const updated = d.updatedAt.toISOString().slice(0, 10);
+const url = resolveCanonicalUrl(`/cidian/${term.id}/`);
+const title = `${d.term}是什么意思？${d.term}的解释与判断方法`;
+const raw = `${d.term}是什么意思：${d.definition}${d.extendedExplanation ?? ''}`;
+const description = raw.length > 150 ? `${raw.slice(0, 148)}…` : raw.length < 70 ? `${raw}选梯子术语库用一句话定义加详细说明，解释它在机场套餐页和客户端里的含义与常见误解。` : raw;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: d.term,
+  description: d.definition,
+  url,
+  inDefinedTermSet: resolveCanonicalUrl('/cidian/'),
+  ...(d.aliases?.length ? { alternateName: d.aliases } : {}),
+};
+---
+
+<BaseLayout title={title} description={description} keywords={[d.term, `${d.term}是什么`, `${d.term}是什么意思`, ...(d.aliases ?? [])]} modifiedTime={updated}>
+  <Breadcrumbs items={[{ name: '梯子术语库', href: '/cidian/' }, { name: d.term, href: `/cidian/${term.id}/` }]} />
+  <div class="article-layout">
+    <article class="prose">
+      <h1>{d.term}是什么意思？</h1>
+      <p class="article-meta">
+        <span>术语</span>
+        {d.aliases?.map((alias) => <span>又称：{alias}</span>)}
+        <span>更新于 {updated}</span>
+      </p>
+      <div class="answer-box">
+        <span class="answer-box__label">一句话解释</span>
+        <p>{d.definition}</p>
+      </div>
+      {d.extendedExplanation && <p>{d.extendedExplanation}</p>}
+      <Content />
+      {
+        relatedArticles.length > 0 && (
+          <>
+            <h2 id="xiangguan-wenzhang">讲到{d.term}的指南</h2>
+            <ul class="quick-links">
+              {relatedArticles.map((article) => (
+                <li>
+                  <a href={getArticleHref(article)}>
+                    <span class="muted small">{articleTypeLabel[article.data.type]} · </span>
+                    {article.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+      <div class="callout callout--gold">
+        <h3>想看各家机场在这一项上的资料？</h3>
+        <p><a href="/tuijian/">机场推荐榜</a>逐家列出了价格、线路、协议和节点地区；拿不准怎么选，可以用<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>。</p>
+      </div>
+    </article>
+    <aside class="article-side">
+      {
+        relatedTerms.length > 0 && (
+          <div class="side-card">
+            <p class="side-card__title">相关术语</p>
+            <ul class="link-list">
+              {relatedTerms.map((t) => <li><a href={`/cidian/${t.id}/`}>{t.data.term}</a></li>)}
+            </ul>
+          </div>
+        )
+      }
+      <div class="side-card">
+        <p class="side-card__title">术语库</p>
+        <ul class="link-list">
+          <li><a href="/cidian/">全部 {terms.length} 个词条</a></li>
+          <li><a href="/zhinan/">梯子选购指南</a></li>
+          <li><a href="/faq/">梯子常见问题</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

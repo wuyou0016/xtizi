@@ -1,0 +1,36 @@
+---
+import ArticleHub from '../../components/ArticleHub.astro';
+---
+
+<ArticleHub
+  type="jiaocheng"
+  title="梯子教程｜Clash、V2Ray、小火箭使用教程与订阅导入设置"
+  description="梯子使用教程：Clash Verge Rev、v2rayN、v2rayNG、小火箭、sing-box 等客户端的安装与订阅导入步骤，以及规则模式、系统代理、TUN 模式、分流规则、策略组这些通用设置，按步骤教你把梯子用起来。"
+  h1="梯子使用教程：从导入订阅到调好分流"
+  lead="买好机场只是第一步。这个栏目讲“怎么用”：各客户端怎么导入订阅、怎么选模式，以及系统代理、TUN、分流、DNS 这些每个客户端都绕不开的通用设置。客户端版本以数据卡里的核验时间为准，界面名称可能随版本变化。"
+  breadcrumb="使用教程"
+  href="/jiaocheng/"
+  eyebrow="JIAOCHENG / 使用教程"
+  keywords={['梯子教程', '梯子怎么用', 'Clash教程', 'v2rayN教程', '小火箭教程', '订阅链接怎么用', '机场使用教程']}
+  categoryOrder={['客户端教程', '通用设置', '进阶玩法']}
+  categoryIntro={{
+    客户端教程: '按客户端和系统分的上手教程：安装、导入订阅、选节点、验证生效。',
+    通用设置: '不管用哪个客户端都会遇到的概念：订阅、模式、系统代理、TUN、分流、策略组。',
+    进阶玩法: '终端代理、局域网共享、DNS、订阅转换、电视与外区账号。',
+  }}
+>
+  <div slot="intro" class="grid grid--3">
+    <div class="card">
+      <p class="card-title">还没装客户端</p>
+      <p class="muted">先到<a href="/xiazai/">梯子下载</a>按系统找官方地址，或者用<a href="/gongju/kehuduan-xuanze/">客户端选择器</a>。</p>
+    </div>
+    <div class="card">
+      <p class="card-title">第一次导入</p>
+      <p class="muted">从<a href="/jiaocheng/dingyue-daoru/">订阅链接怎么用</a>看起，再看<a href="/jiaocheng/guize-quanju-zhilian/">规则模式和全局模式</a>的区别。</p>
+    </div>
+    <div class="card">
+      <p class="card-title">照着做还是不行</p>
+      <p class="muted">去<a href="/paicha/">故障排查</a>按现象对照，先看<a href="/paicha/tizi-lianbushang/">梯子连不上怎么办</a>。</p>
+    </div>
+  </div>
+</ArticleHub>

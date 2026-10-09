@@ -1,0 +1,224 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import { getBoard } from '../../data/utils/board';
+import { isDemoEntry } from '../../data/utils/demo-filter';
+import { articleBasePathByType, articleTypeLabel } from '../../data/utils/article-routing';
+import { priceLine } from '../../data/utils/provider-facts';
+import { RANK_PAGES } from '../../data/copy/rank-pages';
+import { SEO_TAGS } from '../../data/seo/seo-tags';
+import { CLIENTS, MONITOR, PLATFORM_LABEL, RELEASES_CHECKED_AT, STATE_LABEL, fmtDateTime, getRelease, monitorFor, officialUrl, shortName } from '../../data/utils/live';
+import sources from '../../data/sources.json';
+
+const board = await getBoard();
+const articles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const typeCounts = Object.keys(articleTypeLabel).map((type) => ({
+  type,
+  label: articleTypeLabel[type as keyof typeof articleTypeLabel],
+  href: articleBasePathByType[type as keyof typeof articleBasePathByType],
+  count: articles.filter((a) => a.data.type === type).length,
+}));
+
+const groupOf = (key: string) =>
+  /^(openai|anthropic|gemini)/.test(key)
+    ? 'AI 服务的官方地区与状态页面'
+    : /^(netflix|youtube|disney|spotify|telegram|x-|discord|steam)/.test(key)
+      ? '流媒体、社交与游戏平台的官方帮助'
+      : /^(apple|appstore|googleplay|harmonyos|android|ms-)/.test(key)
+        ? '系统与应用商店的官方说明'
+        : /^repo-/.test(key)
+          ? ''
+          : '协议、内核与网络基础的官方文档';
+const docGroups = new Map<string, typeof sources>();
+for (const s of sources) {
+  const g = groupOf(s.key);
+  if (!g) continue;
+  docGroups.set(g, [...(docGroups.get(g) ?? []), s]);
+}
+
+const tools = [
+  { label: '选梯子向导', href: '/gongju/xuan-tizi-xiangdao/', desc: '回答四个问题，按资料字段筛出候选机场' },
+  { label: '流量计算器', href: '/gongju/liuliang-jisuanqi/', desc: '按看视频、聊天、下载的习惯估算每月流量' },
+  { label: '成本计算器', href: '/gongju/chengben-jisuanqi/', desc: '把年付、月付套餐折成月均价和每 GB 价格' },
+  { label: '客户端选择器', href: '/gongju/kehuduan-xuanze/', desc: '按系统和使用习惯找到合适的梯子客户端' },
+  { label: '下单前核对清单', href: '/gongju/xuangou-qingdan/', desc: '付款前在官网逐项确认的十二件事' },
+  { label: '机场官网检测', href: '/jiance/', desc: '逐家记录官网能否打开，区分被墙与停运' },
+  { label: '机场对比', href: '/duibi/', desc: '两家机场逐项对照价格、流量、线路' },
+  { label: '机场优惠码', href: '/youhuima/', desc: '资料里记录过的优惠码与来源' },
+];
+
+const faqs = [
+  { q: '梯子导航是做什么用的？', a: '梯子导航把买梯子和用梯子会用到的入口收在一页：各家机场的官网入口与资料页、梯子客户端的官方下载地址、相关服务的官方帮助文档，以及本站的榜单、教程和工具。目的是让你不必在搜索结果里分辨哪个链接是真的。' },
+  { q: '导航里的机场官网链接安全吗？', a: '链接指向的是各品牌资料里登记的官网入口，选梯子的脚本会定时检测这些入口能否打开。即便如此，输入账号密码前仍应自己核对一次域名，机场更换域名后请以其官方公告为准。' },
+  { q: '为什么不直接提供节点或订阅？', a: '选梯子不提供任何免费节点、订阅或账号。公开分享的节点来源不明，稳定性和安全性都无法保证。这里只提供选购参考、官方下载地址和使用说明，节点需要你向机场购买订阅后获得。' },
+  { q: '客户端地址为什么都是 GitHub？', a: '因为开源客户端的官方发布渠道就是它的 GitHub 仓库。导航里每个客户端都直接指向仓库的发布页，并标注脚本核验到的最新版本。iPhone 上的付费客户端指向 App Store 页面。' },
+  { q: '导航里的信息多久更新？', a: '客户端版本和机场官网检测由脚本定时刷新，页面上写有各自的核验时间；机场资料的核对日期写在各自的资料页；官方文档链接在收录时逐个验证过可以访问。' },
+];
+---
+
+<BaseLayout
+  title="梯子导航｜机场官网导航、梯子工具官方地址与翻墙资源导航"
+  description={`梯子导航：一页收齐 ${board.rows.length} 家机场官网入口与资料页、${CLIENTS.length} 款梯子工具的官方下载地址、ChatGPT 与奈飞等服务的官方帮助文档，以及选梯子的榜单、教程和在线工具。机场导航与翻墙导航的每个链接都标注来源。`}
+  keywords={['梯子导航', '机场导航', '翻墙导航', '梯子官网导航', '机场官网', '科学上网导航', '梯子网址']}
+>
+  <Breadcrumbs items={[{ name: '梯子导航', href: '/daohang/' }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">DAOHANG / 梯子导航</span>
+    <h1>梯子导航：机场官网、梯子工具与官方文档一页直达</h1>
+    <p class="lead">
+      搜索“某某机场官网”时，排在前面的不一定是真的。这份梯子导航把四类入口收在一起：机场官网、客户端官方地址、相关服务的官方文档，以及本站的榜单与工具。每个外部链接都标注了它是什么、来自哪里。
+    </p>
+    <ul class="chips">
+      <li><a class="chip" href="#jichang">机场官网导航</a></li>
+      <li><a class="chip" href="#gongju">梯子工具官方地址</a></li>
+      <li><a class="chip" href="#wendang">官方文档</a></li>
+      <li><a class="chip" href="#benzhan">本站栏目</a></li>
+      <li><a class="chip" href="#zhuanti">关键词专题</a></li>
+    </ul>
+  </header>
+
+  <section id="jichang">
+    <div class="section__head">
+      <div>
+        <h2>机场官网导航（{board.rows.length} 家）</h2>
+        <p>按选梯子的推荐档分组。官网检测状态来自最近一次自动检测（{fmtDateTime(MONITOR.checkedAt)}）。</p>
+      </div>
+      <a class="section__more" href="/tuijian/">机场推荐榜</a>
+    </div>
+    {
+      board.tiers.map((tier) => (
+        <div class="band" style="margin-top:1.5rem">
+          <div class="band__head">
+            <h3><span class={`tier-pill tier-pill--${tier.id}`}>{tier.label}</span></h3>
+            <p>{tier.tagline}</p>
+          </div>
+          <div class="mini-grid">
+            {tier.rows.map((row) => {
+              const m = monitorFor(row.provider.id);
+              const price = priceLine(row.provider);
+              return (
+                <div class="mini">
+                  <span class="mini__top">
+                    <span class="mini__no">#{row.rank}</span>
+                    <a href={`/jichang/${row.provider.data.slug}/`}>{row.provider.data.name}</a>
+                    {row.rank === 1 && <span class="badge badge--gold"><span>首推</span></span>}
+                  </span>
+                  <span class="mini__meta">{price.text} · {m.result ? STATE_LABEL[m.result.state] : '尚未检测'}</span>
+                  <span class="mini__meta">
+                    <a href={row.provider.data.vendor.officialWebsite} target="_blank" rel="nofollow sponsored noopener">{row.provider.data.name}官网</a>
+                    {' · '}
+                    <a href={`/jichang/${row.provider.data.slug}/`}>资料页</a>
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="section" id="gongju">
+    <div class="section__head">
+      <div>
+        <h2>梯子工具官方地址（{CLIENTS.length} 款）</h2>
+        <p>只收官方仓库与官方商店。版本核验于 {fmtDateTime(RELEASES_CHECKED_AT)}。</p>
+      </div>
+      <a class="section__more" href="/xiazai/">梯子下载</a>
+    </div>
+    <div class="mini-grid">
+      {
+        CLIENTS.map((client) => {
+          const release = getRelease(client.slug);
+          return (
+            <div class="mini">
+              <span class="mini__top"><a href={`/xiazai/${client.slug}/`}>{shortName(client)}</a></span>
+              <span class="mini__meta">{client.platforms.map((p) => PLATFORM_LABEL[p]).join('、')}</span>
+              <span class="mini__meta">{release?.latestTag ? `最新 ${release.latestTag}` : '版本以商店为准'}</span>
+              <span class="mini__meta">
+                <a href={officialUrl(client)} target="_blank" rel="noopener">{release ? '官方发布页' : 'App Store 页面'}</a>
+              </span>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="section" id="wendang">
+    <div class="section__head">
+      <div>
+        <h2>官方文档与帮助中心</h2>
+        <p>遇到“这个服务支持哪些地区”“这个协议是什么”这类问题，以官方页面为准。以下链接收录时均验证过可以访问。</p>
+      </div>
+    </div>
+    <div class="grid grid--2">
+      {
+        [...docGroups.entries()].map(([group, list]) => (
+          <div class="card">
+            <h3>{group}</h3>
+            <ul class="link-list">
+              {list.map((s) => (
+                <li>
+                  <a href={s.url} target="_blank" rel="noopener">{s.title}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section" id="benzhan">
+    <div class="section__head">
+      <div>
+        <h2>选梯子的栏目与工具</h2>
+      </div>
+    </div>
+    <div class="grid grid--3">
+      <div class="card">
+        <h3>榜单</h3>
+        <ul class="link-list">
+          <li><a href="/tuijian/">机场推荐榜</a></li>
+          {RANK_PAGES.map((page) => <li><a href={`/tuijian/${page.slug}/`}>{page.navLabel}</a></li>)}
+          <li><a href="/jichang/">机场大全</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>内容栏目</h3>
+        <ul class="link-list">
+          {typeCounts.map((item) => <li><a href={item.href}>{item.label}（{item.count} 篇）</a></li>)}
+          <li><a href="/cidian/">梯子术语库</a></li>
+          <li><a href="/faq/">梯子常见问题</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>工具</h3>
+        <ul class="link-list">
+          {tools.map((tool) => <li><a href={tool.href} title={tool.desc}>{tool.label}</a></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {
+    SEO_TAGS.length > 0 && (
+      <section class="section" id="zhuanti">
+        <div class="section__head">
+          <div>
+            <h2>按关键词找内容</h2>
+          </div>
+          <a class="section__more" href="/tag/">全部专题</a>
+        </div>
+        <ul class="chips">
+          {SEO_TAGS.map((tag) => <li><a class="chip" href={`/tag/${tag.slug}/`}>{tag.name}</a></li>)}
+        </ul>
+      </section>
+    )
+  }
+
+  <FaqBlock heading="梯子导航常见问题" items={faqs} />
+</BaseLayout>

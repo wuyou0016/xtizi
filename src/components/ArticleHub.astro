@@ -1,0 +1,109 @@
+---
+// 栏目 Hub 页通用外壳：顶部是栏目导语（slot="intro"），按 category 分组列出该栏目的全部文章，底部是补充内容（默认 slot）。
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { resolveCanonicalUrl } from '../config/seo';
+import { getArticleHref } from '../data/utils/article-routing';
+import { isDemoEntry } from '../data/utils/demo-filter';
+
+interface Props {
+  type: CollectionEntry<'articles'>['data']['type'];
+  title: string;
+  description: string;
+  h1: string;
+  lead: string;
+  breadcrumb: string;
+  href: string;
+  keywords?: string[];
+  eyebrow: string;
+  categoryOrder: string[];
+  categoryIntro?: Record<string, string>;
+}
+
+const { type, title, description, h1, lead, breadcrumb, href, keywords, eyebrow, categoryOrder, categoryIntro = {} } = Astro.props;
+const articles = (await getCollection('articles', ({ id, data }) => !isDemoEntry(id) && data.type === type)).sort((a, b) => a.data.title.localeCompare(b.data.title, 'zh-CN'));
+const found = [...new Set(articles.map((article) => article.data.category))];
+const categories = [...categoryOrder.filter((c) => found.includes(c)), ...found.filter((c) => !categoryOrder.includes(c))];
+const anchor = (index: number) => `fenlei-${index + 1}`;
+
+const listJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: h1,
+  description,
+  url: resolveCanonicalUrl(href),
+  inLanguage: 'zh-CN',
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: articles.length,
+    itemListElement: articles.map((article, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: article.data.title,
+      url: resolveCanonicalUrl(getArticleHref(article)),
+    })),
+  },
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords}>
+  <Breadcrumbs items={[{ name: breadcrumb, href }]} />
+  <header class="page-head">
+    <span class="section__eyebrow">{eyebrow}</span>
+    <h1>{h1}</h1>
+    <p class="lead">{lead}</p>
+    {
+      categories.length > 1 && (
+        <ul class="chips" aria-label="本栏目分类">
+          {categories.map((category, index) => (
+            <li>
+              <a class="chip" href={`#${anchor(index)}`}>
+                {category} · {articles.filter((a) => a.data.category === category).length}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </header>
+  <slot name="intro" />
+
+  {
+    categories.map((category, index) => (
+      <section class="section section--tight" id={anchor(index)}>
+        <div class="section__head">
+          <div>
+            <h2>{category}</h2>
+            {categoryIntro[category] && <p>{categoryIntro[category]}</p>}
+          </div>
+        </div>
+        <div class="entry-grid">
+          {articles
+            .filter((article) => article.data.category === category)
+            .map((article) => (
+              <a class="entry-card reveal" href={getArticleHref(article)}>
+                <span class="entry-card__kicker">{article.data.primaryKeyword}</span>
+                <span class="entry-card__title">{article.data.title}</span>
+                <p class="entry-card__description">{article.data.answer}</p>
+                <span class="entry-card__cta">阅读全文</span>
+              </a>
+            ))}
+        </div>
+      </section>
+    ))
+  }
+  {
+    articles.length === 0 && (
+      <div class="empty-state">
+        <p class="empty-state__title">这个栏目的内容正在整理</p>
+        <p>
+          可以先看<a href="/tuijian/">机场推荐榜</a>。
+        </p>
+      </div>
+    )
+  }
+  <slot />
+  <script type="application/ld+json" set:html={JSON.stringify(listJsonLd)} />
+</BaseLayout>

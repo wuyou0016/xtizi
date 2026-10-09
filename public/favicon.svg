@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="xz-bg" x1="6" y1="4" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101a45"/><stop offset="1" stop-color="#050816"/>
+    </linearGradient>
+    <linearGradient id="xz-top" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#c9f6ff"/><stop offset="1" stop-color="#5fd8f5"/>
+    </linearGradient>
+    <linearGradient id="xz-left" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#6b96ff"/><stop offset="1" stop-color="#3550c9"/>
+    </linearGradient>
+    <linearGradient id="xz-right" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#8f73f2"/><stop offset="1" stop-color="#4a2fb0"/>
+    </linearGradient>
+    <linearGradient id="xz-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fff1b8"/><stop offset="1" stop-color="#ffab1f"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="url(#xz-bg)"/>
+  <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="14.25" stroke="#6b96ff" stroke-opacity=".55" stroke-width="1.5"/>
+  <!-- 三级等距阶梯：左低右高，最高一级为金色 -->
+  <path d="M10 41l9-5 9 5-9 5z" fill="url(#xz-top)"/>
+  <path d="M10 41v7l9 5v-7z" fill="url(#xz-left)"/>
+  <path d="M28 41v7l-9 5v-7z" fill="url(#xz-right)"/>
+  <path d="M24 31l9-5 9 5-9 5z" fill="url(#xz-top)"/>
+  <path d="M24 31v15l9 5V36z" fill="url(#xz-left)"/>
+  <path d="M42 31v15l-9 5V36z" fill="url(#xz-right)"/>
+  <path d="M38 19l9-5 9 5-9 5z" fill="url(#xz-gold)"/>
+  <path d="M38 19v25l9 5V24z" fill="#ffbf3c"/>
+  <path d="M56 19v25l-9 5V24z" fill="#d9730d"/>
+  <path d="M43.500 12.5l3.5-4 3.5 4" stroke="#fff1b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

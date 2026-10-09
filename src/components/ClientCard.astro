@@ -1,0 +1,64 @@
+---
+// 客户端数据卡：版本号、发布日期、核验时间、开源协议、支持系统与官方地址。
+// 版本数据来自 GitHub 官方 API（scripts/fetch-releases.mjs），商店应用没有版本数据，只给官方商店地址。
+import { PLATFORM_LABEL, daysBetween, fmtDate, fmtDateTime, getRelease, officialUrl, shortName, type ClientInfo } from '../data/utils/live';
+
+interface Props {
+  client: ClientInfo;
+  compact?: boolean;
+}
+
+const { client, compact = false } = Astro.props;
+const release = getRelease(client.slug);
+const url = officialUrl(client);
+const age = release ? daysBetween(release.publishedAt, release.checkedAt) : null;
+const isPre = release?.latestTag ? /alpha|beta|rc|pre/i.test(release.latestTag) : false;
+---
+
+<div class="data-card">
+  <p class="data-card__title">
+    <span>{shortName(client)}</span>
+    {release?.latestTag && <span class="version">{release.latestTag}</span>}
+    {isPre && <span class="chip chip--empty">测试版</span>}
+    {release?.archived && <span class="chip chip--empty">仓库已归档</span>}
+    {!release && <span class="chip">App Store 应用</span>}
+  </p>
+  <dl class="kv">
+    <dt>类型</dt>
+    <dd>{client.kind}</dd>
+    <dt>内核</dt>
+    <dd>{client.core}</dd>
+    <dt>支持系统</dt>
+    <dd>{client.platforms.map((p) => PLATFORM_LABEL[p]).join('、')}</dd>
+    {
+      release ? (
+        <>
+          <dt>最新版本发布于</dt>
+          <dd>
+            {fmtDate(release.publishedAt)}
+            {age !== null && <span class="muted small">（核验时已发布 {age} 天）</span>}
+          </dd>
+          {!compact && (
+            <>
+              <dt>开源协议</dt>
+              <dd>{release.license ?? '仓库未声明'}</dd>
+              <dt>仓库最近提交</dt>
+              <dd>{fmtDate(release.pushedAt)}</dd>
+            </>
+          )}
+          <dt>版本核验时间</dt>
+          <dd>{fmtDateTime(release.checkedAt)}（来源：GitHub 官方接口）</dd>
+        </>
+      ) : (
+        <>
+          <dt>获取方式</dt>
+          <dd>App Store 付费应用，需要非中国大陆地区的 Apple ID；版本与价格以商店页面为准</dd>
+        </>
+      )
+    }
+    <dt>官方地址</dt>
+    <dd>
+      <a href={url} target="_blank" rel="noopener">{url.replace(/^https:\/\//, '')}</a>
+    </dd>
+  </dl>
+</div>

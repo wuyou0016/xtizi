@@ -1,0 +1,340 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import FaqBlock from './FaqBlock.astro';
+import TagChips from './TagChips.astro';
+import RankBlock from './RankBlock.astro';
+import ClientCard from './ClientCard.astro';
+import ClientTable from './ClientTable.astro';
+import { siteConfig } from '../config/site';
+import { ogImageFor, resolveCanonicalUrl } from '../config/seo';
+import { estimateReadingTimeMinutes } from '../data/utils/reading-time';
+import { articleBasePathByType, articleTypeLabel, getArticleHref } from '../data/utils/article-routing';
+import { isDemoEntry } from '../data/utils/demo-filter';
+import { getBoard } from '../data/utils/board';
+import { getTagsForArticle } from '../data/seo/seo-tags';
+import { PLATFORM_LABEL, RELEASES_CHECKED_AT, clientsForPlatform, fmtDateTime, getClient, getRelease, shortName } from '../data/utils/live';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+const data = article.data;
+const hubLabel = articleTypeLabel[data.type];
+const hubHref = articleBasePathByType[data.type];
+
+const tocHeadings = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+const h2s = headings.filter((h) => h.depth === 2);
+const showToc = h2s.length >= 3;
+
+const difficultyLabel = { beginner: '入门', intermediate: '进阶', advanced: '高级' } as const;
+const readingTime = estimateReadingTimeMinutes(article.body ?? '');
+const fmt = (value: Date) => value.toISOString().slice(0, 10);
+const publishedAtLabel = fmt(data.publishedAt);
+const updatedAtLabel = fmt(data.updatedAt);
+
+const allArticles = await getCollection('articles', ({ id }) => !isDemoEntry(id));
+const glossary = await getCollection('glossary', ({ id }) => !isDemoEntry(id));
+const related: { title: string; href: string; kind: string }[] = [];
+for (const topicId of data.relatedTopics ?? []) {
+  const a = allArticles.find((entry) => entry.id === topicId);
+  if (a) {
+    related.push({ title: a.data.title, href: getArticleHref(a), kind: articleTypeLabel[a.data.type] });
+    continue;
+  }
+  const g = glossary.find((entry) => entry.id === topicId);
+  if (g) related.push({ title: `${g.data.term}是什么意思`, href: `/cidian/${g.id}/`, kind: '术语' });
+}
+// 同分类补齐：相关内容不足 6 条时，从同分类、同栏目的文章里补，保证每篇文章都有足够的内链。
+for (const candidate of allArticles) {
+  if (related.length >= 6) break;
+  if (candidate.id === article.id) continue;
+  if (related.some((item) => item.href === getArticleHref(candidate))) continue;
+  if (candidate.data.type === data.type && candidate.data.category === data.category) {
+    related.push({ title: candidate.data.title, href: getArticleHref(candidate), kind: articleTypeLabel[candidate.data.type] });
+  }
+}
+
+// 文中出现过的术语：按出现次数排序，给术语库页面增加站内入口（过于泛化的词不列）。
+const GENERIC_TERMS = new Set(['jichang', 'tizi', 'jiedian', 'dingyue']);
+const bodyLower = (article.body ?? '').toLowerCase();
+const termHits = glossary
+  .filter((g) => !GENERIC_TERMS.has(g.id) && g.id !== article.id)
+  .map((g) => ({ g, n: [g.data.term, ...(g.data.aliases ?? [])].reduce((sum, name) => sum + (bodyLower.split(name.toLowerCase()).length - 1), 0) }))
+  .filter((x) => x.n > 0)
+  .sort((a, b) => b.n - a.n)
+  .slice(0, 8);
+
+const board = await getBoard();
+const top5 = board.rows.slice(0, 5);
+const tags = getTagsForArticle(article);
+const faqs = data.faqs ?? [];
+const limits = data.limits ?? [];
+const sources = data.sources ?? [];
+
+const client = data.client ? getClient(data.client) : undefined;
+const release = client ? getRelease(client.slug) : undefined;
+const isClientDownload = data.type === 'xiazai' && Boolean(client);
+const platformClients = data.type === 'xiazai' && data.platform && !client ? clientsForPlatform(data.platform) : null;
+
+const canonicalUrl = resolveCanonicalUrl(getArticleHref(article));
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': data.type === 'jiaocheng' || data.type === 'paicha' ? 'TechArticle' : 'Article',
+  headline: data.title,
+  description: data.description,
+  abstract: data.answer,
+  datePublished: publishedAtLabel,
+  dateModified: updatedAtLabel,
+  inLanguage: 'zh-CN',
+  mainEntityOfPage: canonicalUrl,
+  author: { '@type': 'Organization', name: siteConfig.author.name, url: resolveCanonicalUrl('/guanyu/') },
+  publisher: { '@type': 'Organization', name: siteConfig.brandName, logo: { '@type': 'ImageObject', url: resolveCanonicalUrl('/').replace(/\/$/, '') + '/icon-512.png' } },
+  image: resolveCanonicalUrl('/').replace(/\/$/, '') + ogImageFor(getArticleHref(article)),
+  keywords: [data.primaryKeyword, ...(data.secondaryKeywords ?? [])].join(','),
+  articleSection: hubLabel,
+  url: canonicalUrl,
+  ...(sources.length ? { citation: sources.map((s) => s.url) } : {}),
+};
+const OS_NAME: Record<string, string> = { windows: 'Windows', mac: 'macOS', android: 'Android', iphone: 'iOS', hongmeng: 'HarmonyOS', linux: 'Linux', luyouqi: 'OpenWrt' };
+const softwareJsonLd =
+  isClientDownload && client
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: shortName(client),
+        applicationCategory: 'NetworkingApplication',
+        operatingSystem: client.platforms.map((p) => OS_NAME[p]).join(', '),
+        ...(release?.latestTag ? { softwareVersion: release.latestTag } : {}),
+        ...(release?.publishedAt ? { datePublished: release.publishedAt.slice(0, 10) } : {}),
+        ...(release?.license ? { license: `https://spdx.org/licenses/${release.license}.html` } : {}),
+        url: canonicalUrl,
+        sameAs: release?.repoUrl ?? client.store,
+      }
+    : null;
+const keywords = [data.primaryKeyword, ...(data.secondaryKeywords ?? [])].flatMap((k) => (k.includes(' ') ? [k, k.replace(/\s+/g, '')] : [k]));
+---
+
+<BaseLayout title={data.title} description={data.description} ogType="article" publishedTime={publishedAtLabel} modifiedTime={updatedAtLabel} keywords={keywords}>
+  <Breadcrumbs
+    items={[
+      { name: hubLabel, href: hubHref },
+      { name: data.title, href: getArticleHref(article) },
+    ]}
+  />
+
+  <div class="article-layout">
+    <article class="prose">
+      <h1>{data.title}</h1>
+      <div class="byline">
+        <img class="byline__avatar" src="/favicon.svg" alt="" width="26" height="26" loading="lazy" decoding="async" />
+        <span>
+          <a href="/guanyu/">{siteConfig.author.name}</a> · 更新于 <time datetime={updatedAtLabel}>{updatedAtLabel}</time>
+        </span>
+      </div>
+      <p class="article-meta">
+        <span>{hubLabel}</span>
+        <span>{data.category}</span>
+        {data.difficulty && <span>难度：{difficultyLabel[data.difficulty]}</span>}
+        {data.platform && <span>系统：{PLATFORM_LABEL[data.platform]}</span>}
+        <span>约 {readingTime} 分钟读完</span>
+      </p>
+
+      <div class="answer-box">
+        <span class="answer-box__label">先说结论</span>
+        <p>{data.answer}</p>
+      </div>
+
+      {
+        data.symptom && (
+          <div class="callout callout--warn">
+            <p class="callout__title">你遇到的现象</p>
+            <p>{data.symptom}</p>
+          </div>
+        )
+      }
+
+      {client && <ClientCard client={client} compact={!isClientDownload} />}
+      {
+        platformClients && (
+          <section aria-label={`${PLATFORM_LABEL[data.platform!]}可用的梯子客户端`}>
+            <h2 id="kehuduan-duizhao">{PLATFORM_LABEL[data.platform!]}可用的梯子客户端对照</h2>
+            {platformClients.length > 0 ? (
+              <>
+                <ClientTable clients={platformClients} showPlatforms={false} />
+                <p class="table-note">版本号与发布日期来自 GitHub 官方接口，核验于 {fmtDateTime(RELEASES_CHECKED_AT)}。只收录官方仓库或官方商店地址。</p>
+              </>
+            ) : (
+              <div class="empty-state">
+                <p class="empty-state__title">暂未收录这个系统的原生客户端</p>
+                <p>选梯子只收录能核对到官方发布地址的客户端。这个系统目前没有符合条件的条目，可行的替代做法见下文。</p>
+              </div>
+            )}
+          </section>
+        )
+      }
+
+      {
+        h2s.length >= 4 && (
+          <div class="takeaways">
+            <span class="takeaways__label">本文要点</span>
+            <ol>
+              {h2s.slice(0, 8).map((h) => (
+                <li>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )
+      }
+
+      <Content />
+
+      {
+        limits.length > 0 && (
+          <section class="limits-box" aria-label="这篇没有覆盖的">
+            <h2 id="meiyou-fugai">这篇没有覆盖的</h2>
+            <ul>
+              {limits.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      {data.rankBlock !== 'none' && <RankBlock kind={data.rankBlock} rows={board.rows} tiers={board.tiers} heading={data.rankBlockHeading} />}
+
+      {
+        sources.length > 0 && (
+          <section class="sources-box" aria-label="本文引用的官方来源">
+            <h2 id="yinyong-laiyuan">本文引用的官方来源</h2>
+            <ol>
+              {sources.map((source) => (
+                <li>
+                  <a href={source.url} target="_blank" rel="noopener">
+                    {source.title}
+                  </a>
+                  <small>（{new URL(source.url).hostname}）</small>
+                </li>
+              ))}
+            </ol>
+            <p class="small muted" style="margin:0.6rem 0 0">以上链接均为官方页面，选梯子在 {updatedAtLabel} 核对过；个别网站会拦截自动化访问，用浏览器直接打开即可。平台规则可能随时调整，以官方页面当前内容为准。</p>
+          </section>
+        )
+      }
+
+      {faqs.length > 0 && <FaqBlock heading={`${data.primaryKeyword}常见问题`} items={faqs} id="changjian-wenti" />}
+
+      {
+        related.length > 0 && (
+          <>
+            <h2 id="yanshen-yuedu">接着读</h2>
+            <ul class="quick-links">
+              {related.map((item) => (
+                <li>
+                  <a href={item.href}>
+                    <span class="muted small">{item.kind} · </span>
+                    {item.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      {
+        termHits.length > 0 && (
+          <>
+            <h2 id="wenzhong-shuyu">文中出现的术语</h2>
+            <ul class="chips">
+              {termHits.map(({ g }) => (
+                <li>
+                  <a class="chip" href={`/cidian/${g.id}/`} title={g.data.definition}>
+                    {g.data.term}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      <TagChips tags={tags} label="相关专题" />
+
+      <div class="callout callout--gold">
+        <h3>还没定下来买哪家？</h3>
+        <p>
+          <a href="/tuijian/">机场推荐榜</a>把 {board.rows.length} 家机场的价格、流量、线路和资料来源放在了一起；想省事可以用<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>按用途筛一遍，或者直接看<a href="/tuijian/pianyi/">便宜机场</a>、<a href="/tuijian/xingjiabi/">性价比机场</a>和<a href="/tuijian/zhuanxian/">专线机场</a>。
+        </p>
+      </div>
+    </article>
+
+    <aside class="article-side">
+      {
+        showToc && (
+          <nav class="article-toc" aria-label="文章目录">
+            <p class="article-toc__label">本文目录</p>
+            <ol>
+              {tocHeadings.map((heading) => (
+                <li>
+                  <a href={`#${heading.slug}`} class={heading.depth === 3 ? 'toc-h3' : undefined}>
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      <div class="side-rank">
+        <p class="side-rank__title">推荐榜前五</p>
+        <ol>
+          {
+            top5.map((row) => (
+              <li>
+                <a href={`/jichang/${row.provider.data.slug}/`}>
+                  <span class="side-rank__no">{row.rank}</span>
+                  {row.provider.data.name}
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+        <p style="margin:0.7rem 0 0"><a href="/tuijian/">完整机场推荐榜</a></p>
+      </div>
+      <div class="side-card">
+        <p class="side-card__title">常用入口</p>
+        <ul class="link-list">
+          <li><a href="/xiazai/">梯子下载</a></li>
+          <li><a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a></li>
+          <li><a href="/jiance/">机场官网检测</a></li>
+          <li><a href="/paicha/">故障排查</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+  <script is:inline>
+    (function () {
+      var bar = document.getElementById('reading-progress');
+      if (!bar) return;
+      function update() {
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? Math.min(100, (h.scrollTop / max) * 100) : 0) + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    })();
+  </script>
+  <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+  {softwareJsonLd && <script type="application/ld+json" set:html={JSON.stringify(softwareJsonLd)} />}
+</BaseLayout>
