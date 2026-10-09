@@ -1,6 +1,6 @@
 ---
 type: jiaocheng
-title: "Clash DNS 怎么设置？fake-ip 与 redir-host 的区别"
+title: "Clash DNS 怎么设置？fake-ip 与 redir-host"
 description: "Clash DNS 怎么设置？本文讲清代理软件为什么要接管 DNS，fake-ip 与 redir-host 两种模式的原理和取舍，nameserver、fallback 的作用，DNS 污染与国内网站变慢怎么区分，以及普通用户为什么优先用默认配置。"
 category: 进阶玩法
 primaryKeyword: Clash DNS

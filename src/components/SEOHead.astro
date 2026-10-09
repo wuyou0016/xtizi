@@ -49,7 +49,7 @@ const robotsContent = robotsToString(robots);
 
 <title>{resolvedTitle}</title>
 <meta name="description" content={description} />
-{keywords && keywords.length > 0 && <meta name="keywords" content={keywords.join(',')} />}
+{/* meta keywords 已停用：Bing 不把它作为排名依据，堆词时还可能被当作垃圾信号；keywords 属性保留，用于 article:tag 等。 */}
 <link rel="canonical" href={canonicalUrl} />
 <meta name="robots" content={robotsContent} />
 <meta name="author" content={siteConfig.author.name} />

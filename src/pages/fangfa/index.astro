@@ -69,7 +69,7 @@ const snapshot = fmtDate(board.snapshotAt);
     <h3>客户端版本</h3>
     <p>脚本调用 GitHub 官方接口，读取 {CLIENTS.length} 款客户端仓库的最新发布版本、发布日期、开源协议和最近提交时间，并记录核验时间。最近一次核验：{fmtDateTime(RELEASES_CHECKED_AT)}。App Store 上的应用没有公开的版本接口，页面只给出官方商店地址。</p>
     <h3>机场官网可访问性</h3>
-    <p>脚本对每家机场登记的官网入口发起一次普通网页请求，十五秒超时，记录状态码与耗时，并按天累计检测次数和有响应的次数，保留三十天。最近一次检测：{fmtDateTime(MONITOR.checkedAt)}，检测点为{MONITOR.vantage}，记录自 {fmtDate(MONITOR.firstCheckedAt)} 起。它只说明检测点当时能否打开官网，不代表节点可用，也不代表中国大陆网络下的情况。</p>
+    <p>脚本对每家机场登记的官网入口发起一次普通网页请求，十五秒超时，记录状态码与耗时，并按天累计检测次数和有响应的次数，保留一年。最近一次检测：{fmtDateTime(MONITOR.checkedAt)}，检测点为{MONITOR.vantage}，记录自 {fmtDate(MONITOR.firstCheckedAt)} 起。它只说明检测点当时能否打开官网，不代表节点可用，也不代表中国大陆网络下的情况。</p>
 
     <h2 id="buzuo">六、我们明确不做的事</h2>
     <ul>

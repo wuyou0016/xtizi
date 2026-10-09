@@ -1,6 +1,6 @@
 ---
 type: jiaocheng
-title: "电视怎么用梯子？Android TV 与 Apple TV 的三种方案"
+title: "电视怎么用梯子？Android TV 与 Apple TV"
 description: "电视梯子有三种做法：在电视上直接装客户端、用电脑做局域网共享代理、把代理放到路由器。本文对照 Android TV 梯子和 Apple TV 梯子的可行方案，并讲清电视看流媒体时对节点和流量的具体要求。"
 category: 进阶玩法
 primaryKeyword: 电视梯子

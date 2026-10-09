@@ -3,3 +3,26 @@
 # @astrojs/sitemap 只生成 sitemap-index.xml，不生成 sitemap.xml，但后者是最常见的
 # 默认猜测路径，不重定向会 404。
 /sitemap.xml /sitemap-index.xml 301
+
+# 2026-10-09 对比页由 28 对收敛为 6 对：被收掉的配对页 301 到对比总览页，不留 404。
+/duibi/feimao-cloud-vs-firefly/ /duibi/ 301
+/duibi/feimao-cloud-vs-guangsu-cloud/ /duibi/ 301
+/duibi/feimao-cloud-vs-shanyue/ /duibi/ 301
+/duibi/feimao-cloud-vs-xingdaomeng/ /duibi/ 301
+/duibi/firefly-vs-guangsu-cloud/ /duibi/ 301
+/duibi/firefly-vs-shanyue/ /duibi/ 301
+/duibi/firefly-vs-xingdaomeng/ /duibi/ 301
+/duibi/guangsu-cloud-vs-shanyue/ /duibi/ 301
+/duibi/twilight-vs-firefly/ /duibi/ 301
+/duibi/twilight-vs-guangsu-cloud/ /duibi/ 301
+/duibi/twilight-vs-shanyue/ /duibi/ 301
+/duibi/twilight-vs-xingdaomeng/ /duibi/ 301
+/duibi/weifeng-network-vs-firefly/ /duibi/ 301
+/duibi/weifeng-network-vs-guangsu-cloud/ /duibi/ 301
+/duibi/weifeng-network-vs-shanyue/ /duibi/ 301
+/duibi/weifeng-network-vs-xingdaomeng/ /duibi/ 301
+/duibi/wuyou-lianjie-vs-firefly/ /duibi/ 301
+/duibi/wuyou-lianjie-vs-guangsu-cloud/ /duibi/ 301
+/duibi/wuyou-lianjie-vs-shanyue/ /duibi/ 301
+/duibi/wuyou-lianjie-vs-xingdaomeng/ /duibi/ 301
+/duibi/xingdaomeng-vs-guangsu-cloud/ /duibi/ 301

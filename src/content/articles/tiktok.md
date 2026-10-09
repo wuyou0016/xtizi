@@ -1,6 +1,6 @@
 ---
 type: changjing
-title: TikTok 梯子怎么选？为什么 TikTok 对网络环境特别挑
+title: TikTok 梯子怎么选？网络环境有什么要求
 description: "TikTok 梯子只能解决网络这一层。本文说明国际版抖音判断地区时通常不只看 IP，梳理哪些信号梯子改得了、哪些改不了，对比只看视频与运营账号的不同要求，给出 TikTok 节点的挑选顺序、流量估算办法，以及分辨问题出在网络侧还是设备侧的核对步骤。"
 category: 流媒体
 primaryKeyword: TikTok 梯子

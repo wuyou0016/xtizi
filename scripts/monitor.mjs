@@ -1,5 +1,5 @@
 // 官网可访问性检测：逐家请求 providers.json 里的官网入口，记录能否收到响应、状态码与耗时。
-// 结果写入 src/data/live/monitor.json，并滚动保留最近 30 天的每日统计。
+// 结果写入 src/data/live/monitor.json，并滚动保留最近 365 天的每日统计。
 // 只证明"检测点当时能不能打开官网入口"，不代表节点可用，也不代表中国大陆网络下的情况。
 // 用法：node scripts/monitor.mjs [检测点说明]
 import fs from 'node:fs';
@@ -50,7 +50,7 @@ for (const r of results) {
   }
   today.checks += 1;
   if (r.state === 'up' || r.state === 'guarded') today.reachable += 1;
-  history[r.id] = list.filter((d) => (now - new Date(d.day)) / 86400000 <= 30);
+  history[r.id] = list.filter((d) => (now - new Date(d.day)) / 86400000 <= 365);
 }
 const firstCheckedAt = prev.firstCheckedAt ?? now.toISOString();
 fs.writeFileSync(outFile, JSON.stringify({ checkedAt: now.toISOString(), firstCheckedAt, vantage, results, history }, null, 2) + '\n');

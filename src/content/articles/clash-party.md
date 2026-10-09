@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: Clash Party 下载：原 Mihomo Party 的官方地址与版本
+title: Clash Party 下载：原 Mihomo Party 官方地址
 description: "Clash Party 下载的官方渠道是 GitHub 上 mihomo-party-org 组织的 clash-party 仓库发布页。它原名 Mihomo Party，改名后新旧名字常被混淆。本页讲清两个名字的关系、适合谁、安装包怎么挑、怎么认准官方构建，以及与同类客户端的区别。"
 category: 客户端下载
 primaryKeyword: Clash Party 下载

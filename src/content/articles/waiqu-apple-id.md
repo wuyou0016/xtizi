@@ -1,6 +1,6 @@
 ---
 type: jiaocheng
-title: "外区 Apple ID 怎么准备？下载 iPhone 梯子 App 的前提"
+title: "外区 Apple ID 怎么准备？下载梯子 App 的前提"
 description: "外区 Apple ID 是下载 Shadowrocket 等 iPhone 梯子 App 的前提。本文按 Apple 官方说明讲两条正规路径：新建美区 Apple ID，或更改现有账户的地区，并说明登录方式、共享账号的风险和生效后的核对方法。"
 category: 进阶玩法
 primaryKeyword: 外区 Apple ID

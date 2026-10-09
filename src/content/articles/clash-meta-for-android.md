@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: Clash Meta for Android 下载：官方地址与最新版本
+title: Clash Meta for Android 下载：官方地址与版本
 description: "Clash Meta for Android 下载只认 GitHub 上 MetaCubeX 组织名下的 ClashMetaForAndroid 仓库。本页说明这款 mihomo 内核的 Clash 安卓客户端（CMFA）适合谁、APK 怎么挑、怎么判断仓库是否仍在更新，以及第一次打开的三件事。"
 category: 客户端下载
 primaryKeyword: Clash Meta for Android 下载

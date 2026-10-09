@@ -1,6 +1,6 @@
 ---
 type: jiaocheng
-title: Clash Verge Rev 使用教程（Windows）：导入订阅到系统代理
+title: Clash Verge Rev Windows 教程：订阅与系统代理
 description: "这篇 Clash Verge Rev 教程带你在 Windows 上走完安装、导入订阅、选节点与模式、打开系统代理的全流程，并教你用系统设置和连接页确认代理真的生效，附常见卡点对照表，也是一份够用的 Clash Windows 教程。"
 category: 客户端教程
 primaryKeyword: Clash Verge Rev 教程

@@ -1,6 +1,6 @@
 ---
 type: changjing
-title: 下载外区 App 用什么梯子？App Store 与 Google Play
+title: 外区 App 下载用什么梯子？应用商店要点
 description: "外区 App 下载要分清账号地区和网络环境：App Store 看 Apple 账户所在地区，Google Play 还要求网络能连上 Google 服务。本文讲外区 App Store 与 Google Play 梯子各自的前提、海外 App 下载更新时的流量处理，以及下载失败的排查步骤。"
 category: 游戏与下载
 primaryKeyword: 外区 App 下载

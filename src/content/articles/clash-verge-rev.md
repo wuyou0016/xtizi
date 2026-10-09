@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: Clash Verge Rev 下载：官方地址、最新版本与适用系统
+title: Clash Verge Rev 下载：官方地址与最新版本
 description: "Clash Verge Rev 下载的官方渠道是 GitHub 上的 clash-verge-rev 仓库发布页。本页说明这款内置 mihomo 内核的 Clash 系桌面客户端适合谁，Windows、macOS、Linux 各选哪个安装包，怎么确认是官方构建，以及第一次打开要做的三件事。"
 category: 客户端下载
 primaryKeyword: Clash Verge Rev 下载

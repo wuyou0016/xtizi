@@ -1,6 +1,6 @@
 ---
 type: jiaocheng
-title: "Stash 使用教程：iPhone 导入 Clash 配置与策略组"
+title: "Stash 使用教程：iPhone 导入配置与策略组"
 description: "Stash 教程：讲清这款 iOS Clash 应用的获取前提，Stash 配置的导入方式、首次 VPN 授权和出站模式，再拆解策略组里选择、自动测速、故障转移怎么用，并给出自己验证是否生效的步骤和卡点排查表。"
 category: 客户端教程
 primaryKeyword: Stash 教程

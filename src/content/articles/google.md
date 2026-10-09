@@ -1,6 +1,6 @@
 ---
 type: changjing
-title: 谷歌梯子怎么选？Google 搜索、Gmail 与学术的网络要求
+title: 谷歌梯子怎么选？搜索、Gmail 与学术访问
 description: "谷歌梯子的门槛不高：搜索、Gmail、文档和谷歌学术流量都很小，真正麻烦的是共享 IP 带来的人机验证，以及账号与 Google Play 的国家设置。本文对照各项 Google 服务的网络要求，讲 Google 梯子的节点选择，以及自己验证的步骤。"
 category: 工作与学习
 primaryKeyword: 谷歌梯子

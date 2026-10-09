@@ -1,6 +1,6 @@
 ---
 type: jiaocheng
-title: Clash Verge Rev Mac 教程：安装、授权与订阅导入
+title: Clash Verge Rev Mac 教程：安装与订阅导入
 description: "Clash Verge Rev Mac 版从安装到可用的完整流程：Apple 芯片与 Intel 安装包怎么选、首次打开怎么放行、系统代理与 TUN 为什么要授权，以及如何导入订阅并验证。附一份 macOS Clash 常见卡点对照表。"
 category: 客户端教程
 primaryKeyword: Clash Verge Rev Mac

@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: Windows 梯子下载：2026 电脑端梯子软件对照与官方地址
+title: Windows 梯子下载：电脑端软件对照与官方地址
 description: "Windows 梯子下载只认各客户端官方仓库的发布页。本页对照 Clash 系、V2Ray 系、sing-box 系三类 Windows 梯子软件各适合谁，讲清安装版与便携版、x64 与 arm64 怎么挑，SmartScreen 和杀毒软件的提示怎么判断，以及首次运行的权限和卸载残留怎么处理。"
 category: 按系统下载
 primaryKeyword: Windows 梯子下载

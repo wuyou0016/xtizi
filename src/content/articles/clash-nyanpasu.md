@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: Clash Nyanpasu 下载：官方地址、最新版本与适用系统
+title: Clash Nyanpasu 下载：官方地址与最新版本
 description: "Clash Nyanpasu 下载的官方渠道是 GitHub 上 libnyanpasu 组织的 clash-nyanpasu 仓库。本页讲这款 Clash 系桌面客户端适合谁、发布页上稳定版与测试版怎么分、怎么认准官方包，以及与 Clash Verge Rev 的区别。"
 category: 客户端下载
 primaryKeyword: Clash Nyanpasu 下载

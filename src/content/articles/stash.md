@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: Stash 下载：iOS 版 App Store 官方地址与购买须知
+title: Stash 下载：iOS 官方地址与购买须知
 description: "Stash 下载只走 App Store 商店页，它是兼容 Clash 配置的付费客户端，需要大陆以外的 Apple ID。本页讲 Stash iOS 适合谁、获取步骤、付款前后要核对什么、订阅格式怎么看，以及它和 Shadowrocket 的取舍。"
 category: 客户端下载
 primaryKeyword: Stash 下载

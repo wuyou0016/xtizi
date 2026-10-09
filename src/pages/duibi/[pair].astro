@@ -34,7 +34,7 @@ const others = top
   .slice(0, 12);
 const ma = monitorFor(a.provider.id);
 const mb = monitorFor(b.provider.id);
-const title = `${na} vs ${nb}：价格、流量、线路对比，2026 哪个更适合你`;
+const title = `${na} vs ${nb}：价格、流量、线路对比`;
 const description = `${na}和${nb}哪个好？选梯子把两家机场的最低月均价、月付套餐、最大流量、每 GB 折算价、线路、协议、节点地区放进同一张表逐项对比，标出资料上的差别，并按“想省钱、想月付、流量大”等需求给出取舍建议，两家都没有测速数据，所以不比速度。`;
 ---
 
@@ -134,7 +134,7 @@ const description = `${na}和${nb}哪个好？选梯子把两家机场的最低�
     <p>还想把别的机场放进来比，回到<a href="/duibi/">机场对比</a>总表；想按用途直接筛，用<a href="/gongju/xuan-tizi-xiangdao/">选梯子向导</a>。</p>
   </section>
 
-  <FaqBlock heading={`${na} vs ${nb} 常见问题`} items={result.faqs} />
+  <FaqBlock heading={`${na} vs ${nb} 常见问题`} items={result.faqs} jsonLd={false} />
 
   <section class="section section--tight">
     <h2>相关对比</h2>

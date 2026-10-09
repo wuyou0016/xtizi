@@ -1,6 +1,6 @@
 ---
 type: zhinan
-title: "机场协议怎么选？VLESS、Trojan、Hysteria2、SS 对照"
+title: "机场协议怎么选？VLESS、Trojan、Hysteria2 对照"
 description: "机场协议怎么选？把 Shadowsocks、VMess、VLESS、Trojan、Hysteria2 放进同一张对照表，讲各自的设计思路、客户端内核支持面和适合的网络环境，并说明协议对体感的影响为什么通常小于线路，以及怎么自己核对节点用的是哪种协议。"
 category: 线路与协议
 primaryKeyword: 机场协议

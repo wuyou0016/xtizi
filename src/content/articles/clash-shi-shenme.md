@@ -1,6 +1,6 @@
 ---
 type: zhinan
-title: "Clash 是什么？2026 还能用的 Clash 分支与内核"
+title: "Clash 是什么？2026 还能用的分支与内核"
 description: "Clash 是什么？它是一类按规则分流的代理内核，加上围绕它做的图形客户端。原版已停更，现在说的 Clash 多指 Mihomo（Clash Meta）内核及其客户端。本文讲清 Clash 内核、YAML 配置、规则分流和各平台还能用的分支。"
 category: 线路与协议
 primaryKeyword: Clash 是什么

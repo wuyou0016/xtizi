@@ -1,6 +1,6 @@
 ---
 type: changjing
-title: "远程办公用什么梯子？Zoom、Slack、Notion 的稳定性要求"
+title: "远程办公用什么梯子？Zoom、Slack、Notion"
 description: "远程办公梯子的标准是工作时段不掉线。本文拆解 Zoom 梯子、Slack、Notion 对上行、抖动和长连接的要求，对比专线、中转与直连，讲主备搭配、公司 VPN 与办公梯子同开的冲突，并给出开会前的自检步骤。"
 category: 工作与学习
 primaryKeyword: 远程办公梯子

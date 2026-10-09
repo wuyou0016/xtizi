@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: Shadowrocket 下载：小火箭 App Store 官方地址与购买须知
+title: Shadowrocket 下载：小火箭官方地址与购买须知
 description: "Shadowrocket 下载的唯一官方渠道是 App Store 商店页，它是付费应用，不在中国大陆区上架。本页讲小火箭下载前要准备什么、正版购买与共享账号差在哪、买之前怎么核对，以及装好后先做哪三件事。"
 category: 客户端下载
 primaryKeyword: Shadowrocket 下载

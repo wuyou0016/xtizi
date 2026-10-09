@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: iPhone 梯子下载：iOS 梯子 App 对照与外区下载方法
+title: iPhone 梯子下载：iOS 梯子 App 对照与方法
 description: "iPhone 梯子下载只能通过 App Store，而这类应用不在中国大陆区商店上架，前提是准备外区 Apple ID。本页对照 Shadowrocket、Stash 等 iPhone 梯子 App 的付费与免费选择，给出外区下载的五个步骤，并说明共享账号和 TestFlight 版本的风险。"
 category: 按系统下载
 primaryKeyword: iPhone 梯子下载

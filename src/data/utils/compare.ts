@@ -3,8 +3,9 @@
 import type { BoardRow } from './board';
 import { bestPerGb, cheapestMonthly, cheapestMonthlyBilled, cleanList, completeness, largestPlan } from './provider-facts';
 
-// 对比页覆盖推荐榜前 N 名之间的所有组合（N=8 → 28 对）。
-export const PAIR_COUNT_TOP = 8;
+// 对比页覆盖推荐榜前 N 名之间的所有组合（N=4 → 6 对）。2026-10 由 8 名 28 对收敛：新域名先放少量有区分度的配对页，
+// 其余配对互相相似度高（0.6 以上）且每页只有极少入链，放出来只会稀释整站质量。
+export const PAIR_COUNT_TOP = 4;
 
 export function pairSlug(a: string, b: string): string {
   return `${a}-vs-${b}`;

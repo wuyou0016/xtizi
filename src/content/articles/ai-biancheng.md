@@ -1,6 +1,6 @@
 ---
 type: changjing
-title: AI 编程工具用什么梯子？Copilot、Cursor 与终端代理
+title: AI 编程工具用什么梯子？Copilot 与 Cursor
 description: "AI 编程梯子的难点不在买哪条线路，而在让编辑器和终端真的走代理。本文讲清 Copilot 梯子、Cursor 梯子的流量从哪个进程发出，编辑器代理、环境变量与 TUN 三种接法怎么选，流式输出对线路的要求，以及用几条命令自己验证编程代理是否生效。"
 category: AI 工具
 primaryKeyword: AI 编程梯子

@@ -32,3 +32,25 @@ for (const file of walk(dist).filter((f) => f.endsWith('.html'))) {
   if (wrapped !== html) fs.writeFileSync(file, wrapped);
 }
 console.log(`postbuild: patched ${patched} external links, wrapped ${tables} tables`);
+
+// 官网检测历史整理成可下载、可引用的数据文件（只含机场名、日期、检测次数与有响应次数；不含入口域名）。
+{
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const monitor = JSON.parse(fs.readFileSync(path.join(root, 'src/data/live/monitor.json'), 'utf8'));
+  const providers = JSON.parse(fs.readFileSync(path.join(root, 'src/data/providers/providers.json'), 'utf8'));
+  const nameOf = new Map(providers.map((p) => [p.id, p.name]));
+  const rows = [];
+  for (const [id, list] of Object.entries(monitor.history ?? {})) {
+    for (const d of list) rows.push({ provider_id: id, provider_name: nameOf.get(id) ?? id, date: d.day, checks: d.checks, reachable: d.reachable });
+  }
+  rows.sort((a, b) => a.date.localeCompare(b.date) || a.provider_id.localeCompare(b.provider_id));
+  const outDir = path.join(dist, 'data');
+  fs.mkdirSync(outDir, { recursive: true });
+  const csv = ['provider_id,provider_name,date,checks,reachable', ...rows.map((r) => `${r.provider_id},${r.provider_name},${r.date},${r.checks},${r.reachable}`)].join('\n') + '\n';
+  fs.writeFileSync(path.join(outDir, 'guanwang-jiance.csv'), '﻿' + csv);
+  fs.writeFileSync(
+    path.join(outDir, 'guanwang-jiance.json'),
+    JSON.stringify({ source: 'https://xtizi.com/jiance/', vantage: monitor.vantage, firstCheckedAt: monitor.firstCheckedAt, checkedAt: monitor.checkedAt, note: '只记录检测点当时能否收到机场官网入口的响应，不代表节点可用，也不代表中国大陆网络下的情况。', rows }, null, 1) + '\n',
+  );
+  console.log(`postbuild: wrote data/guanwang-jiance.csv/json (${rows.length} rows)`);
+}

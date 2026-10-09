@@ -19,7 +19,7 @@ const relatedTerms = (d.relatedTerms ?? []).map((id) => terms.find((t) => t.id =
 const relatedArticles = (d.relatedArticles ?? []).map((id) => articles.find((a) => a.id === id)).filter((a) => a !== undefined);
 const updated = d.updatedAt.toISOString().slice(0, 10);
 const url = resolveCanonicalUrl(`/cidian/${term.id}/`);
-const title = `${d.term}是什么意思？${d.term}的解释与判断方法`;
+const title = `${d.term}是什么意思？含义与判断方法`;
 const raw = `${d.term}是什么意思：${d.definition}${d.extendedExplanation ?? ''}`;
 const description = raw.length > 150 ? `${raw.slice(0, 148)}…` : raw.length < 70 ? `${raw}选梯子术语库用一句话定义加详细说明，解释它在机场套餐页和客户端里的含义与常见误解。` : raw;
 const jsonLd = {

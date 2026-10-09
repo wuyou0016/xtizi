@@ -1,6 +1,6 @@
 ---
 type: jiaocheng
-title: "Clash Meta for Android 使用教程：配置导入与规则"
+title: "Clash Meta for Android 教程：导入配置与规则"
 description: "Clash Meta for Android 教程：说明 CMFA 是什么、怎样新建配置并用 URL 导入订阅、设置自动更新间隔，再到代理页选策略组和节点、用访问控制分应用。这篇 Clash 安卓教程附验证步骤与卡点排查表。"
 category: 客户端教程
 primaryKeyword: Clash Meta for Android 教程

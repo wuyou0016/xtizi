@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: Mihomo 内核下载：Clash Meta 内核官方地址与版本
+title: Mihomo 内核下载：官方地址与最新版本
 description: "Mihomo 下载只认 GitHub 上 MetaCubeX 组织的 mihomo 仓库发布页。它是没有界面的 Clash Meta 内核，多数 Clash 客户端已内置。本页讲谁需要单独下载、各系统文件怎么挑、第一次运行怎么验证，以及与 sing-box 内核的区别。"
 category: 客户端下载
 primaryKeyword: Mihomo 下载

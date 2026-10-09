@@ -18,7 +18,7 @@ export const siteConfig = {
   description:
     '选梯子：2026 梯子推荐与机场推荐导航站。整理性价比机场、便宜机场、专线机场的价格与线路资料，提供 Clash、V2Ray 等梯子工具下载与教程，按 ChatGPT、Claude、奈飞、Telegram、YouTube 场景讲清科学上网该怎么选。',
 
-  defaultTitle: '选梯子｜2026 梯子推荐与机场推荐，梯子导航、性价比机场、便宜机场一站选',
+  defaultTitle: '选梯子｜2026 梯子推荐、机场推荐、梯子导航与性价比机场',
   defaultDescription:
     '选梯子：2026 梯子推荐与机场推荐导航站。整理性价比机场、便宜机场、专线机场的价格与线路资料，提供 Clash、V2Ray 等梯子工具下载与教程，按 ChatGPT、Claude、奈飞、Telegram、YouTube 场景讲清科学上网该怎么选。',
 

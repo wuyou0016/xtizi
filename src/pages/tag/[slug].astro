@@ -23,7 +23,7 @@ const others = SEO_TAGS.filter((t) => t.slug !== tag.slug);
 const sp = /[A-Za-z0-9]$/.test(tag.name) ? ' ' : '';
 let rawDesc = `${tag.name}${sp}专题：${tag.intro}`;
 if (rawDesc.length < 110) rawDesc += `选梯子把和${tag.name}有关的指南、教程、问答与机场资料收在同一页，方便按关键词查找。`;
-const title = `${tag.name}${sp}专题｜${tag.name}${sp}相关的指南、问答与机场资料`;
+const title = `${tag.name}${sp}专题｜相关指南、问答与机场资料`;
 const description = rawDesc.length > 150 ? `${rawDesc.slice(0, 148)}…` : rawDesc;
 ---
 
@@ -84,7 +84,7 @@ const description = rawDesc.length > 150 ? `${rawDesc.slice(0, 148)}…` : rawDe
     ))
   }
 
-  {faqs.length > 0 && <FaqBlock heading={`${tag.name}常见问题`} items={faqs} />}
+  {faqs.length > 0 && <FaqBlock heading={`${tag.name}常见问题`} items={faqs} jsonLd={false} />}
 
   <section class="section section--tight">
     <h2>其他专题</h2>

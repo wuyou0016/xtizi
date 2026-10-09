@@ -54,8 +54,8 @@ const SOURCE_TEXT: Record<string, string> = { vendor: '官网公开信息', 'thi
 
 const lineWord = routes[0] ? `${routes[0]}线路` : protocols[0] ? `${protocols[0]} 协议` : '';
 const title = cheapest
-  ? `${p.name}怎么样？2026 ${p.name}机场价格、${routes.length ? '线路' : '套餐'}与官网资料核对`
-  : `${p.name}怎么样？2026 ${p.name}机场官网、套餐资料与购买前核对`;
+  ? `${p.name}怎么样？机场价格、${routes.length ? '线路' : '套餐'}与官网资料核对`
+  : `${p.name}怎么样？官网资料、套餐与购买前核对`;
 const priceBit = cheapest ? `资料里最低一档 ${cheapest.plan.price}${cheapest.plan.quota ? `、${cheapest.plan.quota}` : ''}${cheapest.plan.cycle ? `（${cheapest.plan.cycle}）` : ''}` : '价格资料暂缺';
 let description = `${p.name}怎么样？选梯子整理的${p.name}机场资料：${priceBit}${lineWord ? `，${lineWord}` : ''}${regions.length ? `，节点含${regions.slice(0, 4).join('、')}` : ''}。推荐榜第 ${row.rank} 名，逐项标注资料来源，并附官网可访问性检测与购买前核对清单。`;
 if (description.length > 150) description = `${p.name}怎么样？选梯子整理的${p.name}机场资料：${priceBit}${lineWord ? `，${lineWord}` : ''}。推荐榜第 ${row.rank} 名，逐项标注来源，附官网检测与购买前核对清单。`;
@@ -384,7 +384,7 @@ const webPageJsonLd = {
       </ul>
       <p>完整清单见<a href="/gongju/xuangou-qingdan/">下单前核对清单</a>；拿不准时，先买最短周期，在晚高峰用几天再决定是否续费。</p>
 
-      <FaqBlock heading={`${p.name}常见问题`} items={faq} id="changjian-wenti" />
+      <FaqBlock heading={`${p.name}常见问题`} items={faq} id="changjian-wenti" jsonLd={false} />
 
       {
         pairLinks.length > 0 && (

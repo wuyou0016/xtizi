@@ -1,6 +1,6 @@
 ---
 type: xiazai
-title: OpenClash 下载：OpenWrt 插件官方地址与最新版本
+title: OpenClash 下载：OpenWrt 插件官方地址
 description: "OpenClash 下载只认 GitHub 上 vernesong 的 OpenClash 仓库发布页。本页讲清这款 OpenWrt 路由器插件适合谁、ipk 与 apk 包怎么挑、安装前要查什么、装好先做哪三件事，以及 OpenClash 安装与电脑客户端的取舍。"
 category: 客户端下载
 primaryKeyword: OpenClash 下载

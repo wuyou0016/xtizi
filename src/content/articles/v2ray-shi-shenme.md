@@ -1,6 +1,6 @@
 ---
 type: zhinan
-title: "V2Ray 是什么？V2Ray、Xray 与 VMess、VLESS 的关系"
+title: "V2Ray 是什么？与 Xray、VMess、VLESS 的关系"
 description: "V2Ray 是什么？它是 Project V 下的代理平台和内核项目，现由 V2Fly 社区维护，Xray 是它的分支，VMess 与 VLESS 是协议。本文讲清这些名字的关系、V2Ray 与 Clash 的区别，以及怎么判断手里的订阅和客户端属于哪一类。"
 category: 线路与协议
 primaryKeyword: V2Ray 是什么

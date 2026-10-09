@@ -1,6 +1,6 @@
 ---
 type: zhinan
-title: "原生 IP 是什么？原生 IP、机房 IP 和住宅 IP 的区别"
+title: "原生 IP 是什么？与机房 IP、住宅 IP 的区别"
 description: "原生 IP 是什么？讲清原生 IP 的含义，以及它和机房 IP、住宅 IP 为什么是按不同维度划分的概念，解释 IP 纯净度指什么、为什么影响流媒体和 AI 服务，并教你自己能查哪些、查不了哪些，帮你读懂机场的宣传口径。"
 category: 线路与协议
 primaryKeyword: 原生 IP
