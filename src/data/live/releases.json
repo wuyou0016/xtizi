@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-09T06:28:49.241Z",
+  "checkedAt": "2026-10-09T06:42:23.792Z",
   "source": "GitHub REST API",
   "items": {
     "clash-verge-rev": {
@@ -12,7 +12,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-09T05:55:42Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "clash-party": {
       "repo": "mihomo-party-org/clash-party",
@@ -24,7 +24,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-06T17:55:33Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "flclash": {
       "repo": "chen08209/FlClash",
@@ -36,7 +36,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-03T12:55:19Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "v2rayn": {
       "repo": "2dust/v2rayN",
@@ -48,7 +48,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-08T18:48:21Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "v2rayng": {
       "repo": "2dust/v2rayNG",
@@ -60,7 +60,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-06T07:32:20Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "clash-meta-for-android": {
       "repo": "MetaCubeX/ClashMetaForAndroid",
@@ -72,7 +72,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-08T08:06:55Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "sing-box": {
       "repo": "SagerNet/sing-box",
@@ -84,7 +84,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-10-09T05:38:31Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "nekobox": {
       "repo": "MatsuriDayo/NekoBoxForAndroid",
@@ -96,7 +96,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-02-09T03:54:59Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "hiddify": {
       "repo": "hiddify/hiddify-app",
@@ -108,7 +108,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-10-08T19:53:41Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "karing": {
       "repo": "KaringX/karing",
@@ -120,7 +120,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-10-09T05:16:39Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "clashx-meta": {
       "repo": "MetaCubeX/ClashX.Meta",
@@ -132,7 +132,7 @@
       "archived": false,
       "license": "AGPL-3.0",
       "pushedAt": "2026-10-01T12:04:39Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "clash-nyanpasu": {
       "repo": "libnyanpasu/clash-nyanpasu",
@@ -144,7 +144,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-09T05:40:56Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "openclash": {
       "repo": "vernesong/OpenClash",
@@ -156,7 +156,7 @@
       "archived": false,
       "license": "MIT",
       "pushedAt": "2026-10-09T04:04:26Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     },
     "mihomo": {
       "repo": "MetaCubeX/mihomo",
@@ -168,7 +168,7 @@
       "archived": false,
       "license": "MIT",
       "pushedAt": "2026-10-08T08:35:28Z",
-      "checkedAt": "2026-10-09T06:28:49.241Z"
+      "checkedAt": "2026-10-09T06:42:23.792Z"
     }
   }
 }
