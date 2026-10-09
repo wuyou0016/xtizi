@@ -35,3 +35,8 @@ node scripts/indexnow.mjs        # 向 IndexNow 提交 sitemap 里的全部 URL
 ## 数据原则
 
 没有自己测过的指标（速度、延迟、解锁）不写数字，页面显示“实时检测中”；价格、线路等资料逐项标注来源；客户端版本与官网可访问性由脚本定时采集并公开核验时间（`.github/workflows/refresh-data.yml`）。
+
+## 部署
+
+推送到 `main` 后，Cloudflare Workers Builds 会执行 `npm run build` 并用 `npx wrangler deploy` 发布（Worker 名 `xuan-tizi`，域名 `xtizi.com`）。
+`.github/workflows/refresh-data.yml` 每 6 小时刷新一次 `src/data/live/`，有变化就提交到 `main`，同样会触发自动部署。
