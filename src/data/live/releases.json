@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-11T21:59:34.747Z",
+  "checkedAt": "2026-10-12T06:01:01.560Z",
   "source": "GitHub REST API",
   "items": {
     "clash-verge-rev": {
@@ -11,8 +11,8 @@
       "releaseUrl": "https://github.com/clash-verge-rev/clash-verge-rev/releases/tag/v2.5.8",
       "archived": false,
       "license": "GPL-3.0",
-      "pushedAt": "2026-10-11T21:31:45Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "pushedAt": "2026-10-12T01:57:10Z",
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "clash-party": {
       "repo": "mihomo-party-org/clash-party",
@@ -24,7 +24,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-10T21:02:50Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "flclash": {
       "repo": "chen08209/FlClash",
@@ -35,8 +35,8 @@
       "releaseUrl": "https://github.com/chen08209/FlClash/releases/tag/v0.8.99",
       "archived": false,
       "license": "GPL-3.0",
-      "pushedAt": "2026-10-11T04:48:23Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "pushedAt": "2026-10-12T02:35:54Z",
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "v2rayn": {
       "repo": "2dust/v2rayN",
@@ -48,7 +48,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-11T05:59:58Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "v2rayng": {
       "repo": "2dust/v2rayNG",
@@ -60,7 +60,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-11T07:07:53Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "clash-meta-for-android": {
       "repo": "MetaCubeX/ClashMetaForAndroid",
@@ -72,7 +72,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-11T05:29:33Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "sing-box": {
       "repo": "SagerNet/sing-box",
@@ -84,7 +84,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-10-11T06:24:54Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "nekobox": {
       "repo": "MatsuriDayo/NekoBoxForAndroid",
@@ -96,7 +96,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-02-09T03:54:59Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "hiddify": {
       "repo": "hiddify/hiddify-app",
@@ -108,7 +108,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-10-08T19:53:41Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "karing": {
       "repo": "KaringX/karing",
@@ -119,8 +119,8 @@
       "releaseUrl": "https://github.com/KaringX/karing/releases/tag/v1.2.25.2802",
       "archived": false,
       "license": null,
-      "pushedAt": "2026-10-09T05:16:39Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "pushedAt": "2026-10-12T05:53:50Z",
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "clashx-meta": {
       "repo": "MetaCubeX/ClashX.Meta",
@@ -132,7 +132,7 @@
       "archived": false,
       "license": "AGPL-3.0",
       "pushedAt": "2026-10-01T12:04:39Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "clash-nyanpasu": {
       "repo": "libnyanpasu/clash-nyanpasu",
@@ -143,20 +143,20 @@
       "releaseUrl": "https://github.com/libnyanpasu/clash-nyanpasu/releases/tag/v2.0.0-rc.1",
       "archived": false,
       "license": "GPL-3.0",
-      "pushedAt": "2026-10-11T16:56:33Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "pushedAt": "2026-10-12T05:48:41Z",
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "openclash": {
       "repo": "vernesong/OpenClash",
       "repoUrl": "https://github.com/vernesong/OpenClash",
       "releasesUrl": "https://github.com/vernesong/OpenClash/releases",
-      "latestTag": "v0.47.156",
-      "publishedAt": "2026-08-10T14:59:36Z",
-      "releaseUrl": "https://github.com/vernesong/OpenClash/releases/tag/v0.47.156",
+      "latestTag": "v0.48.002",
+      "publishedAt": "2026-10-12T03:40:07Z",
+      "releaseUrl": "https://github.com/vernesong/OpenClash/releases/tag/v0.48.002",
       "archived": false,
       "license": "MIT",
-      "pushedAt": "2026-10-11T05:16:55Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "pushedAt": "2026-10-12T05:00:27Z",
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     },
     "mihomo": {
       "repo": "MetaCubeX/mihomo",
@@ -168,7 +168,7 @@
       "archived": false,
       "license": "MIT",
       "pushedAt": "2026-10-11T02:16:58Z",
-      "checkedAt": "2026-10-11T21:59:34.747Z"
+      "checkedAt": "2026-10-12T06:01:01.560Z"
     }
   }
 }
