@@ -16,11 +16,11 @@ export const siteConfig = {
   // 避坑（/bikeng/）和官网检测（/jiance/）十个栏目，每个搜索意图只分配一个主战页面
   // （见 docs/keyword-registry.md）。
   description:
-    '选梯子：2026 梯子推荐与机场推荐导航站。整理性价比机场、便宜机场、专线机场的价格与线路资料，提供 Clash、V2Ray 等梯子工具下载与教程，按 ChatGPT、Claude、奈飞、Telegram、YouTube 场景讲清科学上网该怎么选。',
+    '选梯子是梯子导航与选购资料站：整理 Clash、V2Ray 等梯子工具的官方下载入口和配置教程，收录机场的价格、线路与订阅方式资料，并按 ChatGPT、Claude、奈飞、Telegram、YouTube 等场景讲清梯子怎么选、连不上怎么查。',
 
-  defaultTitle: '选梯子｜2026 梯子推荐、机场推荐、梯子导航与性价比机场',
+  defaultTitle: '选梯子｜梯子导航、梯子下载与机场订阅教程',
   defaultDescription:
-    '选梯子：2026 梯子推荐与机场推荐导航站。整理性价比机场、便宜机场、专线机场的价格与线路资料，提供 Clash、V2Ray 等梯子工具下载与教程，按 ChatGPT、Claude、奈飞、Telegram、YouTube 场景讲清科学上网该怎么选。',
+    '选梯子是梯子导航与选购资料站：整理 Clash、V2Ray 等梯子工具的官方下载入口和配置教程，收录机场的价格、线路与订阅方式资料，并按 ChatGPT、Claude、奈飞、Telegram、YouTube 等场景讲清梯子怎么选、连不上怎么查。',
 
   defaultOgImage: '/images/og/default.png',
 
