@@ -106,7 +106,7 @@ for (const f of pages) {
     if (!/nofollow/.test(m[0]) || !/sponsored/.test(m[0])) problems.push(`${route}: 推广链接缺 nofollow sponsored`);
   }
   // 友情链接：首页放行，内页必须 nofollow
-  for (const m of html.matchAll(/<a [^>]*href="(https:\/\/(?:jcniu\.com|jichangbao\.com)[^"]*)"[^>]*>/g)) {
+  for (const m of html.matchAll(/<a [^>]*href="(https:\/\/(?:jcniu\.com)[^"]*)"[^>]*>/g)) {
     const nofollow = /nofollow/.test(m[0]);
     if (route === '/' && nofollow) problems.push(`${route}: 首页友情链接不应加 nofollow ${m[1]}`);
     if (route !== '/' && !nofollow) problems.push(`${route}: 内页页脚友情链接应加 nofollow ${m[1]}`);
@@ -147,8 +147,8 @@ for (const name of order) {
   if (at < last) problems.push(`推荐榜前五顺序不对：${name}`);
   last = at;
 }
-for (const host of ['jcniu.com', 'jichangbao.com']) if (!home.includes(host)) problems.push(`页脚缺少友情链接 ${host}`);
-for (const host of ['rocketjichang.com', 'ejichang.com', 'jichangtj.net', 'jichanglabs.co']) if (home.includes(host)) problems.push(`页脚不应出现 ${host}（站长指定友情链接只保留机场牛与机场宝）`);
+for (const host of ['jcniu.com']) if (!home.includes(host)) problems.push(`页脚缺少友情链接 ${host}`);
+for (const host of ['rocketjichang.com', 'ejichang.com', 'jichangtj.net', 'jichanglabs.co', 'jichangbao.com']) if (home.includes(host)) problems.push(`页脚不应出现 ${host}（2026-10-16 起友情链接只保留机场牛；机场宝已被 Bing 拿掉）`);
 if (!fs.existsSync(path.join(dist, '0175f9ea32311ab38b30219e61520f7b.txt'))) problems.push('缺少 IndexNow key 文件');
 
 console.log(JSON.stringify({ ...stats, avgChars: Math.round(stats.words / stats.pages) }));

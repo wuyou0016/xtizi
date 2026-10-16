@@ -57,10 +57,10 @@ const columns = [
   },
 ];
 
-// 友情链接：只保留机场牛与机场宝，文字带关键词，新窗口打开。
+// 友情链接：只保留机场牛，文字带关键词，新窗口打开。
+// 2026-10-16：机场宝（jichangbao.com）被 Bing 从展示中拿掉，不再链向它（避免给被降权站背书、减少链接网络足迹）。
 const friendLinks = [
   { label: '机场推荐 - 机场牛', href: 'https://jcniu.com' },
-  { label: '机场导航 - 机场宝', href: 'https://jichangbao.com' },
 ];
 const year = 2026;
 // 友情链接只在首页传递权重；内页页脚的同样链接加 nofollow，避免全站页脚链接的链接网络特征。
