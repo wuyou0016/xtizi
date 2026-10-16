@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-16T11:27:13.951Z",
+  "checkedAt": "2026-10-16T16:41:19.151Z",
   "source": "GitHub REST API",
   "items": {
     "clash-verge-rev": {
@@ -11,8 +11,8 @@
       "releaseUrl": "https://github.com/clash-verge-rev/clash-verge-rev/releases/tag/v2.5.8",
       "archived": false,
       "license": "GPL-3.0",
-      "pushedAt": "2026-10-16T06:37:34Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "pushedAt": "2026-10-16T15:54:03Z",
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "clash-party": {
       "repo": "mihomo-party-org/clash-party",
@@ -24,7 +24,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-15T18:35:48Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "flclash": {
       "repo": "chen08209/FlClash",
@@ -35,8 +35,8 @@
       "releaseUrl": "https://github.com/chen08209/FlClash/releases/tag/v0.9.0",
       "archived": false,
       "license": "GPL-3.0",
-      "pushedAt": "2026-10-16T08:50:06Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "pushedAt": "2026-10-16T15:01:34Z",
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "v2rayn": {
       "repo": "2dust/v2rayN",
@@ -48,7 +48,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-14T07:37:12Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "v2rayng": {
       "repo": "2dust/v2rayNG",
@@ -60,7 +60,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-11T07:07:53Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "clash-meta-for-android": {
       "repo": "MetaCubeX/ClashMetaForAndroid",
@@ -72,7 +72,7 @@
       "archived": false,
       "license": "GPL-3.0",
       "pushedAt": "2026-10-13T14:10:35Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "sing-box": {
       "repo": "SagerNet/sing-box",
@@ -84,7 +84,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-10-13T14:06:29Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "nekobox": {
       "repo": "MatsuriDayo/NekoBoxForAndroid",
@@ -96,7 +96,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-02-09T03:54:59Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "hiddify": {
       "repo": "hiddify/hiddify-app",
@@ -108,7 +108,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-10-14T09:59:13Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "karing": {
       "repo": "KaringX/karing",
@@ -120,7 +120,7 @@
       "archived": false,
       "license": null,
       "pushedAt": "2026-10-12T05:53:50Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "clashx-meta": {
       "repo": "MetaCubeX/ClashX.Meta",
@@ -132,7 +132,7 @@
       "archived": false,
       "license": "AGPL-3.0",
       "pushedAt": "2026-10-01T12:04:39Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "clash-nyanpasu": {
       "repo": "libnyanpasu/clash-nyanpasu",
@@ -143,8 +143,8 @@
       "releaseUrl": "https://github.com/libnyanpasu/clash-nyanpasu/releases/tag/v2.0.0-rc.2",
       "archived": false,
       "license": "GPL-3.0",
-      "pushedAt": "2026-10-16T10:54:34Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "pushedAt": "2026-10-16T16:07:59Z",
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "openclash": {
       "repo": "vernesong/OpenClash",
@@ -156,7 +156,7 @@
       "archived": false,
       "license": "MIT",
       "pushedAt": "2026-10-16T01:56:20Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     },
     "mihomo": {
       "repo": "MetaCubeX/mihomo",
@@ -168,7 +168,7 @@
       "archived": false,
       "license": "MIT",
       "pushedAt": "2026-10-13T14:26:57Z",
-      "checkedAt": "2026-10-16T11:27:13.951Z"
+      "checkedAt": "2026-10-16T16:41:19.151Z"
     }
   }
 }
