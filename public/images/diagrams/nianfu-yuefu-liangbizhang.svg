@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 330" width="960" height="330" role="img" aria-label="年付与月付的两笔账：账面成本（折算月价）和风险调整后的成本（中途出问题时最多多花多少）"><title>年付与月付的两笔账：账面成本（折算月价）和风险调整后的成本（中途出问题时最多多花多少）</title><style>
+  svg{--bg:#f7f9ff;--card:#ffffff;--line:#c9d4f5;--ink:#14203f;--sub:#51608a;--acc:#2447d6;--accs:#e6ecff;--warn:#b45309;}
+  @media (prefers-color-scheme: dark){svg{--bg:#10162b;--card:#182041;--line:#34406e;--ink:#eaf0ff;--sub:#a9b6de;--acc:#6b96ff;--accs:#202b57;--warn:#f5b85c;}}
+  text{font-family:-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;fill:var(--ink)}
+  .bg{fill:var(--bg)}
+  .card{fill:var(--card);stroke:var(--line);stroke-width:1.5}
+  .accbox{fill:var(--accs);stroke:var(--acc);stroke-width:1.5}
+  .ttl{font-size:20px;font-weight:700}
+  .h{font-size:17px;font-weight:700}
+  .b{font-size:15px}
+  .s{font-size:13.5px;fill:var(--sub)}
+  .acc{fill:var(--acc)}
+  .warn{fill:var(--warn)}
+  .ln{stroke:var(--acc);stroke-width:2.2;fill:none}
+  .lnl{stroke:var(--line);stroke-width:1.5;fill:none}
+  .num{font-size:15px;font-weight:700;fill:var(--acc)}
+  </style><defs><filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter></defs><rect class="bg" width="960" height="330"/><text class="ttl" x="34" y="44">年付划不划算：要同时算两笔账</text><rect class="card" x="34" y="70" width="430" height="176" rx="14" filter="url(#sh)"/><rect class="accbox" x="496" y="70" width="430" height="176" rx="14" /><text class="acc h" x="58" y="104">第一笔：账面成本</text><text class="b" x="58" y="140">折算月价 = 年付总价 ÷ 12</text><text class="s" x="58" y="172" text-anchor="start">把折算月价和月付单价放在一起比，</text><text class="s" x="58" y="193" text-anchor="start">看一年下来账面上省了多少。</text><text class="acc h" x="520" y="104">第二笔：风险调整后的成本</text><text class="b" x="520" y="140">中途出问题，我最多会多花多少？</text><text class="s" x="520" y="172" text-anchor="start">跑路、线路变差、不再需要……</text><text class="s" x="520" y="193" text-anchor="start">已经付了、还没用完的那一部分，就是风险敞口。</text><path class="lnl" d="M249 250 L249 276 L480 276 M711 250 L711 276 L480 276"/><path class="ln" d="M480 276 L480 292"/><rect class="card" x="250" y="296" width="460" height="0.01" rx="14" filter="url(#sh)"/><text class="h" x="480" y="316" text-anchor="middle">两笔账一起看：账面省得多，不等于真的更省钱</text></svg>

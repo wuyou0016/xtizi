@@ -7,7 +7,7 @@ primaryKeyword: 机场是什么
 secondaryKeywords: [机场梯子, 机场节点, 机场订阅]
 difficulty: beginner
 publishedAt: 2026-10-08
-updatedAt: 2026-10-08
+updatedAt: 2026-10-19
 answer: "机场是梯子圈对代理服务商的称呼。你付钱买到的是三样东西：一条订阅链接、一份按周期重置的流量额度、一张可以切换的节点列表。机场通常不提供专用软件，需要你把订阅导入通用客户端使用。"
 limits:
   - 本文不评价任何一家机场的线路质量，选梯子目前没有自己的测速、延迟或解锁测试数据。
@@ -38,6 +38,11 @@ faqs:
 机场是一类商家的统称。它们在多个国家和地区租用或部署服务器，把这些服务器的使用权打包成套餐，按月、按季或按年卖给个人用户。
 
 和你打交道的是机场的官网。你在上面注册账号、选套餐、付款，然后进入一个用户后台。后台里有你的订阅链接、已用流量、到期时间，通常还有公告和工单入口。
+
+<figure class="article-figure">
+<img src="/images/diagrams/jichang-shiyong-liucheng.svg" alt="机场使用流程示意：在官网付款后得到订阅链接，导入开源客户端，客户端列出节点，选定节点后访问网站" width="960" height="270" loading="lazy" decoding="async">
+<figcaption>图：买机场之后，你实际拿到和用到的东西（示意图）</figcaption>
+</figure>
 
 有三点可以帮你把机场和别的东西区分开：
 
