@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '../config/site';
+import { friendLinksAllowed } from '../config/crawl-rules.mjs';
 
 const telegramUrl = 'https://t.me/wyolink';
 
@@ -63,8 +64,10 @@ const friendLinks = [
   { label: '机场推荐 - 机场牛', href: 'https://jcniu.com' },
 ];
 const year = 2026;
-// 友情链接只在首页传递权重；内页页脚的同样链接加 nofollow，避免全站页脚链接的链接网络特征。
+// 2026-10-19：友情链接只出现在首页与关于页（原来每页页脚都有，三个新站互挂，是“站群页脚”足迹）；
+// 首页传递权重，关于页 nofollow。其余页面整块不输出（见 config/crawl-rules.mjs）。
 const isHome = Astro.url.pathname === '/';
+const showFriends = friendLinksAllowed(Astro.url.pathname);
 const friendRel = isHome ? 'noopener' : 'noopener nofollow';
 ---
 
@@ -92,16 +95,18 @@ const friendRel = isHome ? 'noopener' : 'noopener nofollow';
     }
   </div>
   <div class="container site-footer__bar">
-    <p class="friend-links">
-      <span>友情链接：</span>
-      {
-        friendLinks.map((link) => (
-          <a href={link.href} target="_blank" rel={friendRel}>
-            {link.label}
-          </a>
-        ))
-      }
-    </p>
+    {
+      showFriends && (
+        <p class="friend-links">
+          <span>友情链接：</span>
+          {friendLinks.map((link) => (
+            <a href={link.href} target="_blank" rel={friendRel}>
+              {link.label}
+            </a>
+          ))}
+        </p>
+      )
+    }
     <p>
       <b>推广披露：</b>本站的品牌官网入口使用品牌方提供的推广链接，你通过这些链接购买时，选梯子可能获得佣金，你支付的价格不会因此变化。榜单名次不是测速名次，排名规则见<a href="/fangfa/">排名与核验方法</a>。
     </p>

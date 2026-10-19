@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { isNoindexPath } from './src/config/crawl-rules.mjs';
 
 // ---- sitemap 的 lastmod：只写“内容真的更新过”的日期，来源都是仓库里的真实字段 ----
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -85,6 +86,10 @@ function isSitemapExcluded(pageUrl) {
     return true;
   }
   if (url.pathname === '/sousuo/' || url.pathname === '/sousuo') {
+    return true;
+  }
+  // 2026-10-19 收敛：noindex 的栏目/页面不进 sitemap（规则见 src/config/crawl-rules.mjs）
+  if (isNoindexPath(url.pathname)) {
     return true;
   }
   return false;
