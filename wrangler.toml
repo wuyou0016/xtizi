@@ -1,9 +1,12 @@
 name = "xuan-tizi"
 compatibility_date = "2026-10-01"
 
-routes = [
-  { pattern = "xtizi.com", custom_domain = true }
-]
+# 2026-10-19：xtizi.com 已迁到东京服务器（Cloudflare DNS 里 A 记录 → 193.3.191.141，橙云代理），
+# 域名不再绑定到这个 Worker；保留下面的 routes 注释，回滚时取消注释并运行 `npx wrangler deploy`
+# （先在 Cloudflare DNS 里删掉 xtizi.com 的 A 记录）。
+# routes = [
+#   { pattern = "xtizi.com", custom_domain = true }
+# ]
 
 [assets]
 directory = "./dist"
