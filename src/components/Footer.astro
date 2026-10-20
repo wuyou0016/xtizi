@@ -66,9 +66,8 @@ const friendLinks = [
 const year = 2026;
 // 2026-10-19：友情链接只出现在首页与关于页（原来每页页脚都有，三个新站互挂，是“站群页脚”足迹）；
 // 首页传递权重，关于页 nofollow。其余页面整块不输出（见 config/crawl-rules.mjs）。
-const isHome = Astro.url.pathname === '/';
 const showFriends = friendLinksAllowed(Astro.url.pathname);
-const friendRel = isHome ? 'noopener' : 'noopener nofollow';
+const friendRel = 'noopener nofollow';
 ---
 
 <footer class="site-footer">
