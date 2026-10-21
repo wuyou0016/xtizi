@@ -14,7 +14,7 @@ limits:
   - "报错文字因客户端和内核而异，文中的对应关系只是常见情况，以你看到的实际提示和日志为准。"
   - "订阅是否被重置、套餐是否有效，只有机场后台能确认，本文无法替你判断。"
 rankBlock: overall
-relatedTopics: [dingyue-daoru, guanwang-dabukai, dingyue-zhuanhuan, tizi-lianbushang, dingyue-xielou, dingyue]
+relatedTopics: [dingyue-daoru, guanwang-dabukai, dingyue-zhuanhuan, tizi-lianbushang, dingyue-xielou, dingyue, shadowrocket-iphone]
 symptom: "点击更新订阅后提示失败、超时或解析错误，节点列表为空或不更新。"
 faqs:
   - q: 更新订阅提示失败，是不是机场的问题？

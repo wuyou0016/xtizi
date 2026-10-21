@@ -18,7 +18,7 @@ sources:
     url: https://wiki.metacubex.one/
   - title: Android 开发者文档：VpnService
     url: https://developer.android.com/reference/android/net/VpnService
-relatedTopics: [xitong-daili, tun, tun-moshi-shibai, clash-dns, discord, fake-ip]
+relatedTopics: [xitong-daili, tun, tun-moshi-shibai, clash-dns, discord, fake-ip, clash-verge-rev-windows]
 rankBlock: overall
 faqs:
   - q: TUN 模式一定要管理员权限吗？

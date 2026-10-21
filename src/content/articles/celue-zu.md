@@ -16,7 +16,7 @@ limits:
 sources:
   - title: Mihomo（Clash Meta）文档
     url: https://wiki.metacubex.one/
-relatedTopics: [fenliu-guize, jiedian-cesu, guize-quanju-zhilian, fenliu, chatgpt, yanchi]
+relatedTopics: [fenliu-guize, jiedian-cesu, guize-quanju-zhilian, fenliu, chatgpt, yanchi, clash-dns]
 rankBlock: clash
 faqs:
   - q: 自动选择和故障转移有什么区别？

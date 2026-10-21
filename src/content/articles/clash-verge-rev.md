@@ -20,7 +20,7 @@ sources:
     url: https://wiki.metacubex.one/
 client: clash-verge-rev
 rankBlock: clash
-relatedTopics: [clash-verge-rev-windows, clash-verge-rev-mac, windows, clash-shi-shenme, clash-party]
+relatedTopics: [clash-verge-rev-windows, clash-verge-rev-mac, windows, clash-shi-shenme, clash-party, tun-moshi-shibai, clash-dns]
 faqs:
   - q: Clash Verge 和 Clash Verge Rev 是什么关系？
     a: Clash Verge Rev 是 Clash Verge 的社区延续版本。原版 Clash Verge 停止维护后，由社区接手继续开发，仓库放在 GitHub 的 clash-verge-rev 组织下。现在搜索 Clash Verge 下载，要找的通常就是带 Rev 的这一版；网上仍在流传的原版安装包已经不再更新。

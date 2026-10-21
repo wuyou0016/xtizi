@@ -18,7 +18,7 @@ sources:
   - title: GitHub 文档
     url: https://docs.github.com/en
 rankBlock: dedicated
-relatedTopics: [zhongduan-daili, tun-moshi, github, xitong-daili, app-buzou-daili, tun]
+relatedTopics: [zhongduan-daili, tun-moshi, github, xitong-daili, app-buzou-daili, tun, claude-yongbuliao, gemini]
 faqs:
   - q: 浏览器能打开 GitHub，编辑器里的 Copilot 却一直连不上，为什么？
     a: "浏览器通常跟随系统代理，编辑器和它的扩展不一定。常见情况是编辑器没有读取系统代理，请求直接从本机网络发出去了。可以在编辑器设置里填入本地代理地址，或者在梯子客户端里打开 TUN 模式接管全部流量，然后在客户端的连接列表里确认有没有来自编辑器进程的连接。"

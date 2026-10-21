@@ -24,7 +24,7 @@ sources:
     url: https://developer.android.com/reference/android/net/VpnService
 platform: android
 rankBlock: overall
-relatedTopics: [v2rayng, flclash, clash-meta-for-android, v2rayng-android, anzhuo-tizi]
+relatedTopics: [v2rayng, flclash, clash-meta-for-android, v2rayng-android, anzhuo-tizi, flclash-android]
 faqs:
   - q: 安卓梯子 App 在应用商店能下载吗？
     a: 国内手机自带的应用商店一般没有这些开源客户端的官方版本，搜到的同名应用多是第三方重新打包或名字相近的其他产品，来源无法核对。官方渠道是各项目的 GitHub 仓库发布页，少数项目同时上架 Google Play，是否上架以官方仓库的说明为准。

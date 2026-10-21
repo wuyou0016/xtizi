@@ -14,7 +14,7 @@ limits:
   - 文中的端口带宽、用户数等数字都是虚构的举例，仅用来说明算法。
   - 不同线路和时段的表现差异很大，所有结论都需要你在自己的网络下验证。
 rankBlock: dedicated
-relatedTopics: [wan-gaofeng-ka, iplc-iepl, jiedian-cesu, tizi-sudu-man, chaoshou, wan-gaofeng]
+relatedTopics: [wan-gaofeng-ka, iplc-iepl, jiedian-cesu, tizi-sudu-man, chaoshou, wan-gaofeng, bt-xiazai]
 faqs:
   - q: 机场超售是骗人的吗？
     a: 超售本身不等于欺骗。共享带宽的网络服务普遍会把总容量卖给比同时满载人数更多的用户，因为大家不会在同一时刻都跑满。区别在比例是否合理、是否透明，以及宣传有没有暗示你独享。比例失控的超售，才会在高峰期变成体验问题。

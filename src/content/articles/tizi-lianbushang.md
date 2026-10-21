@@ -14,7 +14,7 @@ limits:
   - "不同客户端的菜单名称不同，文中只描述功能位置，以你使用的客户端当前界面为准。"
   - "服务商停止运营、封停账号等情况只能判断迹象，本文无法替你确认具体原因。"
 rankBlock: overall
-relatedTopics: [jiedian-chaoshi, dingyue-gengxin-shibai, guanwang-dabukai, guan-tizi-meiwang, beiyong-jichang, zhengshu-shijian]
+relatedTopics: [jiedian-chaoshi, dingyue-gengxin-shibai, guanwang-dabukai, guan-tizi-meiwang, beiyong-jichang, zhengshu-shijian, shadowrocket-iphone]
 symptom: "客户端显示已连接，但网页打不开；或所有节点延迟显示超时。"
 faqs:
   - q: 客户端显示已连接，为什么网页还是打不开？

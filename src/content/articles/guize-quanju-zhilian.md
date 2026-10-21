@@ -13,7 +13,7 @@ limits:
   - 各客户端里模式开关的位置和叫法会随版本变化，操作细节以当前界面和官方文档为准。
   - 本文不提供任何测速结果，也不判断某个节点或某家机场的好坏。
   - 规则本身怎么写、策略组怎么建不在本文展开，分别见站内对应教程。
-relatedTopics: [fenliu-guize, celue-zu, xitong-daili, fenliu, zhilian, guonei-wangzhan-man]
+relatedTopics: [fenliu-guize, celue-zu, xitong-daili, fenliu, zhilian, guonei-wangzhan-man, clash-dns]
 rankBlock: clash
 faqs:
   - q: 日常应该选规则模式还是全局模式？

@@ -20,7 +20,7 @@ sources:
     url: https://wiki.metacubex.one/
 client: clash-meta-for-android
 rankBlock: clash
-relatedTopics: [clash-meta-android, android, flclash, clash-shi-shenme, clash-jichang, dingyue-zhuanhuan]
+relatedTopics: [clash-meta-android, android, flclash, clash-shi-shenme, clash-jichang, dingyue-zhuanhuan, flclash-android]
 faqs:
   - q: CMFA 是什么意思，和 Clash Meta for Android 是同一个吗？
     a: "是同一个。CMFA 是 Clash Meta for Android 的常用简称，指的是 MetaCubeX 组织维护的这款安卓客户端。搜索 Clash 安卓下载时看到的 CMFA，通常就是它。核对时认准发布仓库的组织名是 MetaCubeX、仓库名是 ClashMetaForAndroid。"

@@ -20,7 +20,7 @@ sources:
     url: https://wiki.metacubex.one/
 client: mihomo
 rankBlock: clash
-relatedTopics: [clash-shi-shenme, linux, clash-verge-rev, clash-dns, neihe]
+relatedTopics: [clash-shi-shenme, linux, clash-verge-rev, clash-dns, neihe, tun-moshi-shibai, openclash-luyouqi]
 faqs:
   - q: Mihomo 和 Clash Meta 是同一个东西吗？
     a: 是同一个项目。它最早叫 Clash Meta，是在原版 Clash 内核停更之后由社区接手并增强的分支，后来改名为 Mihomo，仓库在 GitHub 的 MetaCubeX 组织下。网上的教程里 Clash Meta、Meta 内核、Mihomo 说的通常都是它，只是新旧名字并存。

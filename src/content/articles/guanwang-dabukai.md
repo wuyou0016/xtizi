@@ -14,7 +14,7 @@ limits:
   - "本站检测页的检测点在海外，只能说明海外是否可达，不能代表你所在网络的访问情况。"
   - "本文不列出任何机场的官网地址，新地址请从机场自己的官方渠道获取。"
 rankBlock: overall
-relatedTopics: [jichang-paolu-qianzhao, jichang-paolu-zenmeban, jia-guanwang, tizi-lianbushang, dingyue-gengxin-shibai, paolu]
+relatedTopics: [jichang-paolu-qianzhao, jichang-paolu-zenmeban, jia-guanwang, tizi-lianbushang, dingyue-gengxin-shibai, paolu, claude-yongbuliao]
 symptom: "平时能打开的机场官网突然打不开，无法登录、续费或复制订阅。"
 faqs:
   - q: 机场官网打不开就是跑路了吗？

@@ -19,7 +19,7 @@ sources:
   - title: "Mozilla MDN：HTTP 代理与隧道"
     url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Proxy_servers_and_tunneling
 rankBlock: overall
-relatedTopics: [xitong-daili, tun, zhongduan-daili, juyuwang-gongxiang, tun-moshi]
+relatedTopics: [xitong-daili, tun, zhongduan-daili, juyuwang-gongxiang, tun-moshi, clash-verge-rev-windows]
 faqs:
   - q: 电脑上用系统代理还是 TUN？
     a: 日常浏览网页、用读取系统代理的软件，系统代理通常够用，设置简单、冲突少。终端命令行、部分游戏和不读取系统代理的软件，就需要 TUN 或在软件里手动设置代理。TUN 需要更高的权限，也更容易与其他网络软件冲突，建议先用系统代理，不够再开。

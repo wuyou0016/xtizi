@@ -105,12 +105,12 @@ for (const f of pages) {
   for (const m of html.matchAll(/<a [^>]*href="(https:\/\/[^"]*#\/\?code=[^"]*)"[^>]*>/g)) {
     if (!/nofollow/.test(m[0]) || !/sponsored/.test(m[0])) problems.push(`${route}: 推广链接缺 nofollow sponsored`);
   }
-  // 友情链接（2026-10-19 收缩）：只允许出现在首页（不加 nofollow）与 /guanyu/（必须 nofollow），其余页面一律不应有
+  // 友情链接（2026-10-19 收缩，2026-10-20 站长决定一律 nofollow）：只允许出现在首页与 /guanyu/，且必须 nofollow，其余页面一律不应有
   for (const m of html.matchAll(/<a [^>]*href="(https:\/\/(?:jcniu\.com)[^"]*)"[^>]*>/g)) {
     const nofollow = /nofollow/.test(m[0]);
-    if (route === '/' && nofollow) problems.push(`${route}: 首页友情链接不应加 nofollow ${m[1]}`);
-    else if (route === '/guanyu/' && !nofollow) problems.push(`${route}: 关于页友情链接应加 nofollow ${m[1]}`);
-    else if (route !== '/' && route !== '/guanyu/') problems.push(`${route}: 友情链接只应出现在首页与关于页 ${m[1]}`);
+    const allowed = route === '/' || route === '/guanyu/';
+    if (allowed && !nofollow) problems.push(`${route}: 友情链接应加 nofollow ${m[1]}`);
+    else if (!allowed) problems.push(`${route}: 友情链接只应出现在首页与关于页 ${m[1]}`);
   }
   // 页脚：恰好一个 Telegram 文字链接
   if ((html.match(/t\.me\/wyolink/g) ?? []).length !== 1) problems.push(`${route}: 页脚 Telegram 链接数量不是 1`);

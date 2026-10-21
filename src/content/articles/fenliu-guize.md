@@ -16,7 +16,7 @@ limits:
 sources:
   - title: Mihomo（Clash Meta）文档
     url: https://wiki.metacubex.one/
-relatedTopics: [guize-quanju-zhilian, celue-zu, fenliu, zhilian, guonei-wangzhan-man, clash-dns]
+relatedTopics: [guize-quanju-zhilian, celue-zu, fenliu, zhilian, guonei-wangzhan-man, clash-dns, openclash-luyouqi]
 rankBlock: clash
 faqs:
   - q: 分流规则是从上往下匹配还是从下往上？

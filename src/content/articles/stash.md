@@ -20,7 +20,7 @@ sources:
     url: https://support.apple.com/en-us/118283
 client: stash
 rankBlock: clash
-relatedTopics: [stash-iphone, waiqu-apple-id, iphone, shadowrocket, clash-shi-shenme, celue-zu]
+relatedTopics: [stash-iphone, waiqu-apple-id, iphone, shadowrocket, clash-shi-shenme, celue-zu, shadowrocket-iphone]
 faqs:
   - q: Stash 和 Clash 是什么关系？
     a: Stash 不是 Clash 本身，而是一款能读取 Clash 风格配置的客户端：策略组、规则、规则集这些写法在它里面大体通用，所以习惯了 Clash 的人换到 iPhone 上不必重新学一套。它在此基础上还有自己的扩展功能，兼容的具体范围以官方文档为准，不要默认所有 Clash 配置都能原样运行。

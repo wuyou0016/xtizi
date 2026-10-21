@@ -21,7 +21,7 @@ sources:
   - title: Clash Verge Rev 官方仓库
     url: https://github.com/clash-verge-rev/clash-verge-rev
 rankBlock: clash
-relatedTopics: [clash-jichang, v2ray-shi-shenme, tizi-gongju, neihe, fenliu, celue-zu]
+relatedTopics: [clash-jichang, v2ray-shi-shenme, tizi-gongju, neihe, fenliu, celue-zu, clash-verge-rev-windows, clash-dns]
 faqs:
   - q: Clash 现在还能用吗？
     a: 原版 Clash 内核已经停更，但社区延续下来的 Mihomo（Clash Meta）内核仍在被多款客户端使用，所以说的 Clash 通常还能用。要注意的是，应该选基于 Mihomo 的客户端，并从官方仓库或应用商店下载，不要继续安装旧教程里停更的原版软件。

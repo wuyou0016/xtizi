@@ -18,7 +18,7 @@ sources:
     url: https://wiki.metacubex.one/
   - title: Cloudflare：What is DNS
     url: https://www.cloudflare.com/learning/dns/what-is-dns/
-relatedTopics: [fake-ip, dns-xielou, tun-moshi, fenliu-guize, guonei-wangzhan-man, neihe]
+relatedTopics: [fake-ip, dns-xielou, tun-moshi, fenliu-guize, guonei-wangzhan-man, neihe, openclash-luyouqi]
 rankBlock: clash
 faqs:
   - q: fake-ip 和 redir-host 该选哪个？

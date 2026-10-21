@@ -14,7 +14,7 @@ limits:
   - "测速网站和客户端的延迟数字，只在同一条件下的前后对照里才有意义，不能用来评价线路好坏。"
   - "线路质量、超售和限速由服务商决定，用户无法在本地调整，本文不替你判断某家服务商。"
 rankBlock: dedicated
-relatedTopics: [wan-gaofeng-ka, jiedian-cesu, zhongzhuan-jichang, guonei-wangzhan-man, chaoshou-xiansu, yanchi]
+relatedTopics: [wan-gaofeng-ka, jiedian-cesu, zhongzhuan-jichang, guonei-wangzhan-man, chaoshou-xiansu, yanchi, bt-xiazai]
 symptom: "网页加载慢、视频缓冲、下载速度远低于本地宽带。"
 faqs:
   - q: 梯子速度慢，是不是机场的问题？

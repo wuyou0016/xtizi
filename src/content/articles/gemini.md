@@ -19,7 +19,7 @@ sources:
   - title: Google：Gemini API 可用地区
     url: https://ai.google.dev/gemini-api/docs/available-regions
 rankBlock: overseas
-relatedTopics: [google, chatgpt, claude, jiedian-diqu, google-yanzhengma, dns-xielou]
+relatedTopics: [google, chatgpt, claude, jiedian-diqu, google-yanzhengma, dns-xielou, claude-yongbuliao]
 faqs:
   - q: Gemini 提示所在地区不支持，一定是节点的问题吗？
     a: "不一定。常见原因有四类：出口 IP 所在地区不在官方可用列表内；部分请求没有走代理，Google 看到了真实位置；Google 对这个 IP 的地区判断和节点名不一致；账号本身不满足官方页面列出的条件。建议按这个顺序逐项排除，而不是一上来就换机场。"

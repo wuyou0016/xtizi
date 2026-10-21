@@ -19,7 +19,7 @@ sources:
 client: clash-verge-rev
 platform: mac
 rankBlock: clash
-relatedTopics: [clash-verge-rev, mac, clashx-meta, tun-moshi, xitong-daili, dingyue-daoru]
+relatedTopics: [clash-verge-rev, mac, clashx-meta, tun-moshi, xitong-daili, dingyue-daoru, clash-verge-rev-windows]
 faqs:
   - q: 怎么知道我的 Mac 是 Apple 芯片还是 Intel？
     a: 点屏幕左上角的苹果菜单，选“关于本机”。看到“芯片”一栏写着 Apple 的 M 系列，就是 Apple 芯片；看到“处理器”一栏写着 Intel，就是 Intel 机型。也可以在终端输入 uname -m，输出 arm64 对应 Apple 芯片，输出 x86_64 对应 Intel。选安装包时以此为准。

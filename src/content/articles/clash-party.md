@@ -20,7 +20,7 @@ sources:
     url: https://wiki.metacubex.one/
 client: clash-party
 rankBlock: clash
-relatedTopics: [clash-party-jiaocheng, clash-verge-rev, windows, clash-shi-shenme, neihe]
+relatedTopics: [clash-party-jiaocheng, clash-verge-rev, windows, clash-shi-shenme, neihe, clash-verge-rev-windows]
 faqs:
   - q: Clash Party 和 Mihomo Party 是同一个软件吗？
     a: 是同一个项目。它原名 Mihomo Party，后来改名为 Clash Party，GitHub 仓库也随之改为 mihomo-party-org 组织下的 clash-party。网上很多教程、截图和机场文档仍然写着旧名字，内容大体通用，只是界面上的名称和安装包文件名可能与现在不同。

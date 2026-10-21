@@ -21,7 +21,7 @@ sources:
   - title: Apple 支持：更改 Apple 账户的国家或地区
     url: https://support.apple.com/en-us/118283
 rankBlock: overall
-relatedTopics: [anzhuo-tizi, dingyue-daoru, xitong-daili, tizi-liuliang, duo-shebei]
+relatedTopics: [anzhuo-tizi, dingyue-daoru, xitong-daili, tizi-liuliang, duo-shebei, flclash-android, shadowrocket-iphone]
 faqs:
   - q: 手机梯子和手机 VPN 是一回事吗？
     a: 不完全是。手机系统里的 VPN 是一种网络接口机制，梯子客户端借助它接管手机的流量，所以界面上会显示 VPN 图标。应用商店里一键连接的 VPN 应用是另一种产品形态，内置线路、不需要订阅链接；机场方案则是自备客户端加订阅，两者在计费和可替换性上不同。

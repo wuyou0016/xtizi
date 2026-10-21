@@ -18,7 +18,7 @@ sources:
     url: https://github.com/libnyanpasu/clash-nyanpasu
 client: clash-nyanpasu
 rankBlock: clash
-relatedTopics: [clash-verge-rev, clash-party, windows, clash-shi-shenme, neihe]
+relatedTopics: [clash-verge-rev, clash-party, windows, clash-shi-shenme, neihe, tun-moshi-shibai]
 faqs:
   - q: Nyanpasu 怎么读，和 Clash Nyanpasu 是一回事吗？
     a: 是一回事。Nyanpasu 是项目名里最有辨识度的部分，口头和搜索时常被省略掉 Clash。读音不影响下载，关键是认准仓库：GitHub 上 libnyanpasu 组织下的 clash-nyanpasu。搜索时如果拼写差一两个字母，结果里会混进不相干的页面，务必核对地址。

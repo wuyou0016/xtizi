@@ -17,7 +17,7 @@ sources:
   - title: GitHub 文档
     url: https://docs.github.com/en
 rankBlock: overall
-relatedTopics: [zhongduan-daili, ai-biancheng, fenliu-guize, tizi-liuliang, jiedian-cesu, liuliang-beilv]
+relatedTopics: [zhongduan-daili, ai-biancheng, fenliu-guize, tizi-liuliang, jiedian-cesu, liuliang-beilv, gemini]
 faqs:
   - q: GitHub 网页能打开，但 git clone 很慢或直接失败，是线路问题吗？
     a: "不一定。网页走浏览器或系统代理，git clone 走的是 git 自己的网络设置，两者可以一个走了代理、一个没走。先看终端里有没有给 git 或环境变量配置代理，再用 git ls-remote 测一下连接。只有网页和命令行都慢时，才值得怀疑线路本身。"

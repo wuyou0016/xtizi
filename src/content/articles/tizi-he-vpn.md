@@ -19,7 +19,7 @@ sources:
   - title: WireGuard 官网
     url: https://www.wireguard.com/
 rankBlock: overall
-relatedTopics: [vpn-tizi, vpn-jichang, tizi-shi-shenme, jichang-xieyi, fenliu]
+relatedTopics: [vpn-tizi, vpn-jichang, tizi-shi-shenme, jichang-xieyi, fenliu, tizi-he-jiasuqi]
 faqs:
   - q: 公司发的 VPN 能当梯子用吗？
     a: 一般不能，也不应该。公司 VPN 的作用是让你访问内部系统，它的出口和访问策略由公司决定，未必能到达你想访问的境外服务。更重要的是，经过公司 VPN 的流量处在公司的管理范围内，用它处理私人事务既不合适，也可能违反公司的使用规定。

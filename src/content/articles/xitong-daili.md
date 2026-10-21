@@ -18,7 +18,7 @@ sources:
     url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Proxy_servers_and_tunneling
   - title: Microsoft Learn：Windows 代理设置
     url: https://learn.microsoft.com/en-us/windows/win32/winhttp/netsh-exe-commands
-relatedTopics: [tun-moshi, tun, app-buzou-daili, guan-tizi-meiwang, zhongduan-daili, juyuwang-gongxiang]
+relatedTopics: [tun-moshi, tun, app-buzou-daili, guan-tizi-meiwang, zhongduan-daili, juyuwang-gongxiang, clash-verge-rev-windows, claude-yongbuliao, tun-moshi-shibai]
 rankBlock: overall
 faqs:
   - q: 系统代理和 TUN 模式哪个更好？

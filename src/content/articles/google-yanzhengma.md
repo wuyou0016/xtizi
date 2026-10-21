@@ -14,7 +14,7 @@ limits:
   - "Google 如何判定异常流量没有公开细节，文中的解释是常见情形的归纳，不是官方规则。"
   - "本文不教任何自动通过或绕过验证的方法，验证是平台的防护措施。"
 rankBlock: overall
-relatedTopics: [google, yuansheng-ip, celue-zu, jiedian-diqu, chatgpt-dabukai, tizi-sudu-man]
+relatedTopics: [google, yuansheng-ip, celue-zu, jiedian-diqu, chatgpt-dabukai, tizi-sudu-man, gemini]
 symptom: Google 搜索频繁弹出人机验证，或提示检测到异常流量。
 faqs:
   - q: 为什么用梯子搜索谷歌，总是要点验证码？
