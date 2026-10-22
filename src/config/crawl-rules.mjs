@@ -2,6 +2,11 @@
 //
 // 背景：新站 8–16 天里只被抓取首页，其余页面从未被抓取；xtizi 与 tizidao 有 136 个完全相同的路径，两站对同一批查询互相蚕食。
 // 分工：xtizi = 选购 / 榜单 / 下载 / 避坑 / 场景指南；术语（cidian）、排错（paicha）、教程归 tizidao。
+// 2026-10-22 修正两处（依据 Google 效果数据，见 Desktop/tools/site-watch/data/google-protect.json）：
+//   ① /paicha/ 原先整栏目 noindex，但其中只有 12 篇与 tizidao 同路径；另 8 篇（app-buzou-daili、claude-yongbuliao、dingyue-gengxin-shibai、
+//     duankou-zhanyong、guan-tizi-meiwang、guanwang-dabukai、liuliang-xiaohao-kuai、netflix-daili-tishi）tizidao 没有，
+//     却被一并 noindex，其中 liuliang-xiaohao-kuai 在 Google 第 2 名并有点击。现在只对 12 篇同路径页与栏目页 noindex。
+//   ② tizidao 保留索引的 6 个 Google 已有排名的孪生页，这边同路径页改 noindex（每个话题只留一份）。
 // 做法：被收掉的页面保留在站内（用户仍可访问、站内链接不变），只加 noindex,follow 并移出 sitemap；不删除、不重定向。
 // 本文件同时被 astro.config.mjs（sitemap 过滤）与 SEOHead / FaqBlock（运行时）使用，改规则只改这一处。
 
@@ -9,11 +14,30 @@
 const NOINDEX_SECTIONS = [
   '/tag/', // 标签聚合页：与文章/栏目页重复，近重复度高
   '/cidian/', // 术语词条（与 tizidao 21 个路径相同）→ 归 tizidao
-  '/paicha/', // 排错文章（与 tizidao 13 个路径相同）→ 归 tizidao
 ];
 
-/** 单页 noindex（暂无） */
-const NOINDEX_PATHS = new Set([]);
+/** 单页 noindex：① 与 tizidao 同路径的排错文章（栏目页 /paicha/ 也在内）→ 归 tizidao；② tizidao 按 Google 实测保留索引的 6 个孪生页 */
+const NOINDEX_PATHS = new Set([
+  '/paicha/',
+  '/paicha/chatgpt-dabukai/',
+  '/paicha/dns-xielou/',
+  '/paicha/google-yanzhengma/',
+  '/paicha/guonei-wangzhan-man/',
+  '/paicha/jiedian-chaoshi/',
+  '/paicha/telegram-lianjiezhong/',
+  '/paicha/tizi-lianbushang/',
+  '/paicha/tizi-sudu-man/',
+  '/paicha/tun-moshi-shibai/',
+  '/paicha/wan-gaofeng-ka/',
+  '/paicha/youtube-kadun/',
+  '/paicha/zhengshu-shijian/',
+  '/jichang/xingdaomeng/',
+  '/jichang/feimao-cloud/',
+  '/jichang/jilian-cloud/',
+  '/changjing/x-twitter/',
+  '/changjing/gemini/',
+  '/zhinan/zhongzhuan-jichang/',
+]);
 
 /** @param {string} pathname */
 export function isNoindexPath(pathname) {
