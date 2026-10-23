@@ -17,7 +17,7 @@ sources:
   - title: X 帮助中心
     url: https://help.x.com/en
 rankBlock: cheap
-relatedTopics: [tizi-liuliang, jiedian-diqu, instagram, telegram, celue-zu, liuliang-xiaohao-kuai]
+relatedTopics: [tizi-liuliang, jiedian-diqu, instagram, telegram, celue-zu, liuliang-xiaohao-kuai, facebook]
 faqs:
   - q: 刷推特用哪个地区的节点？
     a: "X 对节点地区不敏感，不需要专门挑国家，选离你近、连接稳定的地区即可。地区主要影响趋势和部分推荐内容的倾向，如果你在意这一点，可以在应用的探索设置里手动指定位置。比选哪个地区更重要的是选定之后尽量别换。"

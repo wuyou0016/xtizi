@@ -14,7 +14,7 @@ limits:
   - 各电商平台的风控规则不公开且会调整，本文只讲原则，具体要求以平台官方帮助页面为准。
   - 本文不讨论多账号关联规避、批量注册这类做法，也不构成法律或合规意见。
 rankBlock: dedicated
-relatedTopics: [waimao-tizi, yuansheng-ip, facebook, yuancheng-bangong, celue-zu, zhongzhuan-jichang]
+relatedTopics: [waimao-tizi, yuansheng-ip, facebook, yuancheng-bangong, celue-zu, zhongzhuan-jichang, tiktok]
 faqs:
   - q: 跨境电商可以用机场登录亚马逊卖家后台吗？
     a: "选梯子无法替任何平台回答这个问题，平台的风控细节不公开，规则也会调整。能确定的原则是：机场节点由多人共用，出口会随节点切换而变化，而卖家后台通常更看重登录环境是否稳定、可解释。稳妥的方向是把店铺登录和日常翻墙分开，具体要求以平台官方帮助页面为准。"

@@ -17,7 +17,7 @@ sources:
   - title: Shadowsocks 官网
     url: https://shadowsocks.org/
 rankBlock: overall
-relatedTopics: [tizi-shi-shenme, jichang-zenme-xuan, dingyue-daoru, zijian-haishi-jichang, jichang, dingyue]
+relatedTopics: [tizi-shi-shenme, jichang-zenme-xuan, dingyue-daoru, zijian-haishi-jichang, jichang, dingyue, tizi-jichang]
 faqs:
   - q: 机场为什么叫机场？
     a: 通常的说法是，早期流行的代理工具 Shadowsocks 用一架纸飞机做图标，使用者把提供这类服务器的商家戏称为机场，把连接叫作起飞。这个叫法后来沿用下来，即使现在很多服务商已经改用其他协议，大家仍然把它们统称为机场。

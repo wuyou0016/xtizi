@@ -14,7 +14,7 @@ limits:
   - 账号验证、广告账户审核与限制规则由 Meta 制定且会变化，请以官方说明为准。
   - 本文不涉及多账号管理或规避平台规则的做法，也不提供广告投放教程。
 rankBlock: overseas
-relatedTopics: [instagram, kuajing-dianshang, yuansheng-ip, jichang-zenme-xuan, duo-shebei, dingyue-xielou]
+relatedTopics: [instagram, kuajing-dianshang, yuansheng-ip, jichang-zenme-xuan, duo-shebei, dingyue-xielou, whatsapp, tiktok]
 faqs:
   - q: 个人刷 Facebook，需要什么样的节点？
     a: "要求不高。选一个离你近、连接稳定的地区，长期固定使用就可以，不必追求专线或特殊 IP。刷视频会消耗流量，所以更要关注套餐流量和倍率。比起速度，稳定和固定更重要，不要今天一个国家、明天另一个国家。"

@@ -14,7 +14,7 @@ limits:
   - WhatsApp 内置代理支持的类型和填写方式以应用内说明与官方帮助为准，本文不列具体参数。
   - 手机号注册、验证码接收和账号被限制属于平台与运营商一侧，本文只点到为止。
 rankBlock: cheap
-relatedTopics: [telegram, waimao-tizi, beiyong-jichang, tizi-liuliang, liuliang-xiaohao-kuai, yanchi]
+relatedTopics: [telegram, waimao-tizi, beiyong-jichang, tizi-liuliang, liuliang-xiaohao-kuai, yanchi, facebook]
 faqs:
   - q: WhatsApp 一直显示连接中或等待网络，是梯子的问题吗？
     a: "有可能，也可能是手机自身的网络。先关掉梯子试一次，再打开梯子试一次，对比两种状态。如果只有开着梯子时才出现，检查规则是否让 WhatsApp 走了代理、客户端是否被系统回收了后台，还要看应用内是否残留了一个失效的代理设置。"

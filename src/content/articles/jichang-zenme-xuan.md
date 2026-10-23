@@ -14,7 +14,7 @@ limits:
   - 各机场对同一个参数的写法和计算口径并不统一，本文只给通用的读法，具体以官网说明为准。
   - 本文不评价具体机场，品牌与套餐资料以页面数据块和机场库为准。
 rankBlock: dedicated
-relatedTopics: [tizi-zenme-xuan, zhongzhuan-jichang, liuliang-beilv, iplc-iepl, jiedian-diqu, chaoshou-xiansu, beilv]
+relatedTopics: [tizi-zenme-xuan, zhongzhuan-jichang, liuliang-beilv, iplc-iepl, jiedian-diqu, chaoshou-xiansu, beilv, tizi-jichang, jichang-najia-hao-yong]
 faqs:
   - q: 套餐页上最需要先看哪个参数？
     a: 先看月流量和重置日，因为它们直接决定你一个月能用多少，也最容易看漏。其次是线路类型和倍率，这两项决定同样的流量能撑多久、晚上表现稳不稳。设备数和协议客户端相当于入场条件，不满足就没法用，要提前确认。

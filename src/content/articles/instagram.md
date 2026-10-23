@@ -14,7 +14,7 @@ limits:
   - Instagram 的登录验证与限制规则由平台决定且会变化，本文不承诺账号不受限制。
   - 应用内的菜单名称以当前版本为准，具体设置入口请看应用内的帮助页面。
 rankBlock: overseas
-relatedTopics: [facebook, kuajing-dianshang, yuansheng-ip, liuliang-beilv, app-buzou-daili, dns-xielou]
+relatedTopics: [facebook, kuajing-dianshang, yuansheng-ip, liuliang-beilv, app-buzou-daili, dns-xielou, whatsapp, tiktok]
 faqs:
   - q: Instagram 登录时一直要求验证，是梯子的问题吗？
     a: "不一定，但很可能和登录环境有关。平台会结合出口 IP、地区和设备判断是否正常，规则不公开。如果你的出口刚换过地区，或者所用 IP 被许多人共用，就更容易被要求验证。按应用内提示完成官方流程，期间不要反复切换节点重试。"

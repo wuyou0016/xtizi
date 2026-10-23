@@ -17,7 +17,7 @@ sources:
   - title: Disney+ 帮助中心
     url: https://help.disneyplus.com/
 rankBlock: overseas
-relatedTopics: [netflix, liumeiti-jiesuo, yuansheng-ip, dianshi-tizi, jiesuo, jiedian-diqu]
+relatedTopics: [netflix, liumeiti-jiesuo, yuansheng-ip, dianshi-tizi, jiesuo, jiedian-diqu, netflix-daili-tishi]
 faqs:
   - q: Disney+ 提示所在地区不可用，是梯子没连上吗？
     a: "不一定。先确认梯子已经生效，再看出口 IP 的归属地是否在 Disney+ 的服务范围内。如果地区没问题，可能是这个出口被识别成了代理，或者有一部分请求没有走代理。换同地区的其他节点、临时切到全局模式各试一次，就能大致分清是哪种情况。"

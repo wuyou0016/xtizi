@@ -23,7 +23,7 @@ sources:
   - title: Apple App Store：Shadowrocket
     url: https://apps.apple.com/us/app/shadowrocket/id932747118
 rankBlock: overall
-relatedTopics: [tizi-shi-shenme, jichang-zenme-xuan, tizi-duoshao-qian, tizi-liuliang, jiedian-diqu, nianfu-haishi-yuefu, tizi-he-jiasuqi]
+relatedTopics: [tizi-shi-shenme, jichang-zenme-xuan, tizi-duoshao-qian, tizi-liuliang, jiedian-diqu, nianfu-haishi-yuefu, tizi-he-jiasuqi, tizi-jichang, jichang-najia-hao-yong]
 faqs:
   - q: 第一次买梯子，先看价格还是先看流量？
     a: 先看自己的用途，再估算流量，最后才比价格。价格低但流量不够，中途用完要补买，实际成本反而更高。建议先用手机自带的流量统计，看看自己平时刷网页、看视频、用聊天工具大概各用多少，再带着这个数字去套餐页对照。

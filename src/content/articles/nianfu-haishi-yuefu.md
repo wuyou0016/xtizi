@@ -14,7 +14,7 @@ limits:
   - 本文不判断具体机场是否会停运，只教你从公开信号和自己的使用数据做核对。
   - 退款规则各家不同，能否按剩余时间退款必须以下单时的官网条款为准。
 rankBlock: monthly
-relatedTopics: [tizi-duoshao-qian, jichang-shiyong, beiyong-jichang, paolu, chaoshou, jichang-zenme-xuan]
+relatedTopics: [tizi-duoshao-qian, jichang-shiyong, beiyong-jichang, paolu, chaoshou, jichang-zenme-xuan, jichang-najia-hao-yong]
 faqs:
   - q: 第一次买机场，应该选年付还是月付？
     a: 建议月付。第一次买还不了解这家的线路、客服和你所在网络下的表现，月付的最大损失只是一个月的钱。用满一两个周期，确认流量够用、晚高峰可用、客服能回应，再考虑年付，把风险控制在自己能接受的范围内。

@@ -15,7 +15,7 @@ limits:
   - "TikTok 的服务地区会调整，本文不列名单，请以官方说明和应用内提示为准。"
   - "账号限流、封禁等属于平台规则范畴，本文无法判断具体原因，梯子也无法保证账号不受影响。"
 rankBlock: overseas
-relatedTopics: [yuansheng-ip, jiedian-diqu, kuajing-dianshang, instagram, luodi, dns-xielou]
+relatedTopics: [yuansheng-ip, jiedian-diqu, kuajing-dianshang, instagram, luodi, dns-xielou, facebook]
 faqs:
   - q: TikTok 用哪个地区的节点？
     a: "先确认节点落地的地区在 TikTok 的服务范围内，这一点以官方说明和应用内提示为准，离大陆近的地区不一定都在范围内。只看视频的话，在范围内选离你较近的地区即可；运营账号则应当选目标市场所在的地区，并且长期固定，不要来回切换。"

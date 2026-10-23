@@ -17,7 +17,7 @@ sources:
   - title: YouTube 帮助：YouTube Premium 提供的地区
     url: https://support.google.com/youtube/answer/6307365
 rankBlock: traffic
-relatedTopics: [youtube-kadun, tizi-liuliang, wan-gaofeng-ka, liuliang-beilv, wan-gaofeng, jiedian-cesu]
+relatedTopics: [youtube-kadun, tizi-liuliang, wan-gaofeng-ka, liuliang-beilv, wan-gaofeng, jiedian-cesu, netflix-daili-tishi, steam, tiktok]
 faqs:
   - q: 看 YouTube 用哪个地区的节点好？
     a: "YouTube 对地区基本不挑，所以不必为了它专门找某个国家的节点。一般优先选离你物理距离近的地区，路径短、延迟低，拖动进度条后恢复得快。真正拉开差距的是同一时段里各节点的可用带宽，这需要你自己换几个节点对比。"

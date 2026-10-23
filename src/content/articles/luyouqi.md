@@ -21,7 +21,7 @@ sources:
     url: https://wiki.metacubex.one/
 platform: luyouqi
 rankBlock: overall
-relatedTopics: [openclash, openclash-luyouqi, dianshi-tizi, juyuwang-gongxiang, duo-shebei]
+relatedTopics: [openclash, openclash-luyouqi, dianshi-tizi, juyuwang-gongxiang, duo-shebei, steam]
 faqs:
   - q: 普通家用路由器能直接装梯子吗？
     a: 多数原厂固件不提供安装第三方代理插件的入口，需要先把路由器刷成 OpenWrt 这类开放系统。能不能刷取决于具体型号和硬件版本，要以 OpenWrt 官方的硬件支持信息为准。运营商赠送的光猫路由一体机通常不在可刷范围内，这时可以在它后面加一台设备做旁路由。

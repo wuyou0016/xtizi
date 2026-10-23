@@ -14,7 +14,7 @@ limits:
   - 本文不提供线路的测速或延迟数据，直连、中转、专线的实际差别需要你在自己的网络下验证。
   - 本文不提供法律意见，也无法替你判断某家服务商是否会停止运营。
 rankBlock: cheap
-relatedTopics: [tizi-duoshao-qian, tizi-anquan-ma, tizi-zenme-xuan, zhongzhuan-jichang, jichang-paolu-qianzhao, paolu, tizi-he-jiasuqi]
+relatedTopics: [tizi-duoshao-qian, tizi-anquan-ma, tizi-zenme-xuan, zhongzhuan-jichang, jichang-paolu-qianzhao, paolu, tizi-he-jiasuqi, mofa-shangwang]
 faqs:
   - q: 翻墙梯子一个月大概要花多少钱？
     a: 没有统一的价格。花费主要由流量、线路类型和付费周期决定：小流量的直连套餐属于入门量级，中转线路居中，专线套餐通常是入门档的数倍。比较时把不同套餐折算成月均价和每 GB 价格再看。具体数字请查看榜单页的数据表和服务商官网的当前报价。

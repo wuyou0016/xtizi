@@ -19,7 +19,7 @@ sources:
   - title: Telegram 官方 FAQ
     url: https://telegram.org/faq
 rankBlock: overall
-relatedTopics: [telegram, app-buzou-daili, xitong-daili, tun-moshi, guize-quanju-zhilian, tizi-lianbushang]
+relatedTopics: [telegram, app-buzou-daili, xitong-daili, tun-moshi, guize-quanju-zhilian, tizi-lianbushang, whatsapp]
 symptom: 梯子已连接、网页能开，但 Telegram 顶部一直显示连接中或更新中。
 faqs:
   - q: 梯子和网页都正常，为什么 Telegram 还是一直连接中？

@@ -17,7 +17,7 @@ sources:
   - title: Discord 支持
     url: https://support.discord.com/hc/en-us
 rankBlock: overall
-relatedTopics: [tun-moshi-shibai, jiedian-cesu, yanchi, jichang-xieyi, wan-gaofeng-ka, telegram]
+relatedTopics: [tun-moshi-shibai, jiedian-cesu, yanchi, jichang-xieyi, wan-gaofeng-ka, telegram, steam]
 faqs:
   - q: Discord 文字能发，语音却一直连接中，怎么办？
     a: "这是典型的语音通道没有走通。先把梯子客户端切到 TUN 模式，再完全退出 Discord 重新打开。仍然不行，就换一个套餐里说明支持 UDP 转发的节点或协议。如果连文字都发不出，则是梯子本身的问题，按连不上的步骤排查。"

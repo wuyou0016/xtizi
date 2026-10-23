@@ -14,7 +14,7 @@ limits:
   - 本文不提供任何机场的测速结果或排名数据。
   - 本站的披露与方法说明，以页脚和方法页的内容为准。
 rankBlock: overall
-relatedTopics: [jiedian-cesu, jichang-paolu-qianzhao, chaoshou-xiansu, jichang-shiyong, jichang-zenme-xuan, wan-gaofeng-ka]
+relatedTopics: [jiedian-cesu, jichang-paolu-qianzhao, chaoshou-xiansu, jichang-shiyong, jichang-zenme-xuan, wan-gaofeng-ka, jichang-najia-hao-yong]
 faqs:
   - q: 机场测评能信吗？
     a: 不能整体信，也不必整体不信，要看它给出了哪些可以检验的东西。有披露、有测试时间和方法、写了缺点和没测到的部分，可信度相对高；只有优点、没有日期、没有方法、不断催你下单的，就要打折扣。最终仍然要靠自己的试用来验证。

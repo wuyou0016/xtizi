@@ -21,7 +21,7 @@ sources:
   - title: Disney+ 帮助中心
     url: https://help.disneyplus.com/
 rankBlock: overseas
-relatedTopics: [yuansheng-ip, jiedian-diqu, jiesuo, dns-xielou, zhongzhuan-jichang]
+relatedTopics: [yuansheng-ip, jiedian-diqu, jiesuo, dns-xielou, zhongzhuan-jichang, netflix-daili-tishi]
 faqs:
   - q: 流媒体解锁是官方说法吗？
     a: 不是。解锁是梯子圈的说法，平台自己不会这样称呼。它大致指通过代理或节点访问某个地区的平台内容库并正常播放。平台的规则、内容授权和账号地区都由平台决定，是否能看以平台当时的判断为准，节点标注的解锁只是服务商的描述。

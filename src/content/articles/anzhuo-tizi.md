@@ -25,7 +25,7 @@ sources:
   - title: Cloudflare 1.1.1.1 帮助（检查连接信息）
     url: https://one.one.one.one/help/
 rankBlock: overall
-relatedTopics: [shouji-tizi, iphone-tizi, hongmeng, v2rayng-android, flclash-android, pojie-kehuduan]
+relatedTopics: [shouji-tizi, iphone-tizi, hongmeng, v2rayng-android, flclash-android, pojie-kehuduan, clash-meta-android]
 faqs:
   - q: 安卓梯子的安装包应该去哪里下载？
     a: "优先去客户端开发者维护的代码仓库发布页，那里能看到发布者、更新记录和历史版本。不要用搜索结果里的下载站、网盘整合包，也不要装别人在群里转发的安装包。下载后可以对照发布页的文件名，有校验值的话再核对一次。"

@@ -19,7 +19,7 @@ sources:
 client: flclash
 platform: android
 rankBlock: clash
-relatedTopics: [dingyue-daoru, clash-shi-shenme, guize-quanju-zhilian, celue-zu, anzhuo-tizi, app-buzou-daili, tun-moshi]
+relatedTopics: [dingyue-daoru, clash-shi-shenme, guize-quanju-zhilian, celue-zu, anzhuo-tizi, app-buzou-daili, tun-moshi, clash-meta-android]
 faqs:
   - q: FlClash 订阅更新成功了，节点列表却是空的，原因是什么？
     a: "先看订阅格式。FlClash 以 Clash 配置为主，通用分享链接格式的订阅可能解析不出节点，向机场要一个 Clash 格式的地址再导入。其次检查链接是否复制完整、有没有过期，以及订阅域名在当前网络下能不能直接打开。这几项都排除了还是空的，才轮到去查订阅拉取失败的原因。"
