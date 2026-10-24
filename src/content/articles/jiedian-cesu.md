@@ -13,7 +13,7 @@ limits:
   - 选梯子目前没有任何自己的测速、延迟数据，本文只教方法，不给任何节点的结果。
   - 不同客户端的测试地址、超时设置和显示方式各不相同，数字之间不能直接横向比较。
   - 本文不给出延迟多少算好之类的数字标准，因为它取决于你的网络和用途。
-relatedTopics: [yanchi, tizi-sudu-man, jiedian-chaoshi, celue-zu, wan-gaofeng, wan-gaofeng-ka, bt-xiazai]
+relatedTopics: [yanchi, tizi-sudu-man, jiedian-chaoshi, celue-zu, wan-gaofeng, wan-gaofeng-ka, bt-xiazai, jichang-jiedian]
 rankBlock: overall
 faqs:
   - q: 节点延迟低就代表速度快吗？

@@ -14,7 +14,7 @@ limits:
   - 命令只能帮你判断节点的大致结构，无法确认入口与落地之间是否真的是专线。
   - 服务商对线路的命名并不统一，本文的归类是一般规律，个别产品可能不符。
 rankBlock: dedicated
-relatedTopics: [iplc-iepl, zhongzhuan, zhilian, luodi, wan-gaofeng-ka, jichang-zenme-xuan]
+relatedTopics: [iplc-iepl, zhongzhuan, zhilian, luodi, wan-gaofeng-ka, jichang-zenme-xuan, jichang-jiedian]
 faqs:
   - q: 中转机场和直连机场哪个更好？
     a: 没有统一答案。直连结构简单、故障点少，中转多了一个入口，用来改善你到入口那一段路径，也多了一个故障点。哪个更合适，取决于你的运营商、使用时段和对稳定性的要求。判断时别看名称，用短周期套餐在你的晚间时段自己试一试。

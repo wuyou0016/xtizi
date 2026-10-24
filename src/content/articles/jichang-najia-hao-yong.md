@@ -14,7 +14,7 @@ limits:
   - 文中的"看什么参数"是选购思路，不是对任何机场的评价。
   - 选梯子不提供法律意见；使用相关服务请遵守所在地法律法规。
 rankBlock: overall
-relatedTopics: [jichang-zenme-xuan, jichang-shiyong, nianfu-haishi-yuefu, zhongzhuan-jichang, iplc-iepl, jichang-paolu-qianzhao, tizi-zenme-xuan]
+relatedTopics: [jichang-zenme-xuan, jichang-shiyong, nianfu-haishi-yuefu, zhongzhuan-jichang, iplc-iepl, jichang-paolu-qianzhao, tizi-zenme-xuan, jichang-jiedian]
 faqs:
   - q: 榜单第一名的机场，就是最适合我的吗？
     a: 不一定。榜单反映的是资料是否完整、条款是否清楚、价格和线路写得是否具体，并不等于你的用途下实际好用。同一家机场，刷网页、看视频、玩游戏的体验可能差别很大。榜单适合用来缩小范围，最后仍要用月付或最小周期自己验证。

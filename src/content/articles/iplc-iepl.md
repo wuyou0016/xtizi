@@ -14,7 +14,7 @@ limits:
   - 两个缩写在不同运营商、不同年代的产品里含义略有出入，具体以服务商的书面说明为准。
   - 用户无法从外部确认机场是否真的租用了专线，也无法知道专线上共用的用户数。
 rankBlock: dedicated
-relatedTopics: [zhongzhuan-jichang, iplc, iepl, bgp, chaoshou, jichang-zenme-xuan]
+relatedTopics: [zhongzhuan-jichang, iplc, iepl, bgp, chaoshou, jichang-zenme-xuan, jichang-jiedian]
 faqs:
   - q: 专线机场是什么意思？
     a: 指线路标注为 IPLC、IEPL 等国际专线的机场，和“中转机场”“普通线路”相对。要注意专线只描述入口到落地之间的那一段，不是全程；它改善的主要是路径稳定性，不保证一定更快，也不代表没有晚高峰，仍要看带宽、限速和是否超售。

@@ -14,7 +14,7 @@ limits:
   - 倍率的取值、命名和是否上下行合计，各家规则不同，必须以机场官网说明为准。
   - 本文不给出哪家机场倍率高低的结论，需要你在官网和面板里自己核对。
 rankBlock: value
-relatedTopics: [tizi-liuliang, tizi-duoshao-qian, liuliang-xiaohao-kuai, beilv, zhongzhuan-jichang, celue-zu]
+relatedTopics: [tizi-liuliang, tizi-duoshao-qian, liuliang-xiaohao-kuai, beilv, zhongzhuan-jichang, celue-zu, jichang-jiedian]
 faqs:
   - q: 流量倍率 2 倍是什么意思？
     a: 意思是这个节点每实际传输 1 GB 数据，就会从你的套餐额度里扣除 2 GB。套餐页写的每月总流量是额度，不一定等于你能用的实际流量。如果你常用的节点是 2 倍，套餐写 300 GB，实际可用的大约只有一半，也就是 150 GB。

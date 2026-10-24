@@ -25,7 +25,7 @@ sources:
   - title: Netflix 帮助中心：Netflix 在哪些地区提供
     url: https://help.netflix.com/en/node/14164
 rankBlock: overseas
-relatedTopics: [yuansheng-ip, liumeiti-jiesuo, zhongzhuan-jichang, chatgpt, netflix, jiedian-cesu]
+relatedTopics: [yuansheng-ip, liumeiti-jiesuo, zhongzhuan-jichang, chatgpt, netflix, jiedian-cesu, jichang-jiedian]
 faqs:
   - q: 香港节点、日本节点、美国节点各适合做什么？
     a: 香港和日本离大陆较近，日常网页、社交和对延迟敏感的操作通常更顺手；新加坡位置折中；美国距离最远，但很多对地区要求严格的服务和内容库在美国地区，需要时才选。具体能不能用，要看你用的服务对地区和 IP 类型的要求。
