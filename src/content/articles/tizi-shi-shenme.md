@@ -14,7 +14,7 @@ limits:
   - 本文只解释概念和关系，不评价具体哪一家机场更适合你，品牌信息以页面数据块和机场库为准。
   - 各客户端的界面和菜单名称会随版本变化，具体操作以对应教程页和当前版本为准。
 rankBlock: overall
-relatedTopics: [jichang-shi-shenme, tizi-he-vpn, tizi-zenme-xuan, xinshou-mai-tizi, tizi, jiedian, tizi-he-jiasuqi, tizi-jichang, mofa-shangwang]
+relatedTopics: [jichang-shi-shenme, tizi-he-vpn, tizi-zenme-xuan, xinshou-mai-tizi, tizi, jiedian, tizi-he-jiasuqi, tizi-jichang, mofa-shangwang, laopai-gongju]
 faqs:
   - q: 梯子和机场是一回事吗？
     a: 不完全是。梯子是对“通过代理访问网络”这件事的口语叫法，机场是出售这种服务的商家。平时说“买梯子”，实际动作是在某家机场买套餐、拿到订阅链接，再导入客户端。所以两个词常常指向同一笔消费，只是一个说的是用途，一个说的是卖家。

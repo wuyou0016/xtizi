@@ -19,7 +19,7 @@ sources:
   - title: Steam 客服
     url: https://help.steampowered.com/en/
 rankBlock: overall
-relatedTopics: [tizi-shi-shenme, tizi-he-vpn, steam, tun-moshi, yanchi, tizi-zenme-xuan]
+relatedTopics: [tizi-shi-shenme, tizi-he-vpn, steam, tun-moshi, yanchi, tizi-zenme-xuan, warp-shi-shenme]
 faqs:
   - q: 游戏加速器能当梯子用来看视频、用 AI 吗？
     a: 一般不能。加速器的服务范围通常限定在它支持的游戏或应用列表里，列表以外的视频网站、AI 工具和社交平台不在它优化的流量之内。个别产品的说明里可能写了支持哪些网站，购买前以产品页的明确说明为准，不要靠别人转述去猜。

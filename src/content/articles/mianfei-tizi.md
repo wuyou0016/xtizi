@@ -19,7 +19,7 @@ sources:
   - title: Cloudflare：What is a VPN
     url: https://www.cloudflare.com/learning/access-management/what-is-a-vpn/
 rankBlock: cheap
-relatedTopics: [mianfei-jiedian-fengxian, jichang-shiyong, dijia-jichang, tizi-anquan-ma, tizi-zenme-xuan, jiedian]
+relatedTopics: [mianfei-jiedian-fengxian, jichang-shiyong, dijia-jichang, tizi-anquan-ma, tizi-zenme-xuan, jiedian, laopai-gongju, warp-shi-shenme]
 faqs:
   - q: 免费梯子安全吗？
     a: 要看来源。公开分享的节点由陌生人运营，技术上能看到你访问了哪些域名，对没有加密的网页还能看到甚至改动内容，来源和稳定性都没人负责。机场提供的限时试用相对可控，但也要看服务商本身是否可信。总的原则是不在免费线路上登录重要账号。

@@ -20,7 +20,7 @@ sources:
   - title: Cloudflare：What is DNS
     url: https://www.cloudflare.com/learning/dns/what-is-dns/
 rankBlock: cheap
-relatedTopics: [mianfei-tizi, tizi-anquan-ma, dingyue-xielou, dijia-jichang, yuansheng-ip, jichang-jiedian]
+relatedTopics: [mianfei-tizi, tizi-anquan-ma, dingyue-xielou, dijia-jichang, yuansheng-ip, jichang-jiedian, laopai-gongju]
 faqs:
   - q: 公益节点和免费节点是一回事吗？
     a: 在使用者眼里差别不大。公益节点是搭建者自称出于兴趣或互助、不收费地分享的节点，免费节点则是所有公开可取的免费节点和订阅的统称。问题在于“公益”是对方自己的说法，你无法核实运营者是谁、有没有记录连接信息，所以风险判断应按来源不明处理。
