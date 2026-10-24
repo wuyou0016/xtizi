@@ -19,7 +19,7 @@ sources:
   - title: sing-box 官方文档
     url: https://sing-box.sagernet.org/
 rankBlock: overall
-relatedTopics: [jichang-xieyi, yuansheng-ip, tizi-anquan-ma, tizi-zenme-xuan, jichang-shi-shenme, luodi]
+relatedTopics: [jichang-xieyi, yuansheng-ip, tizi-anquan-ma, tizi-zenme-xuan, jichang-shi-shenme, luodi, haoyong-de-vpn]
 faqs:
   - q: 自建梯子一定比买机场便宜吗？
     a: 不一定。自建要付服务器租金，如果你只有一个人用、只需要一个地区，成本可能确实更低；但要多个地区，就得租多台，成本很快上升，还要加上你花在搭建和维护上的时间。算账时把时间也算进去，才是公平的对比。

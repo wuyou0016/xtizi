@@ -21,7 +21,7 @@ sources:
   - title: Cloudflare：What is a VPN
     url: https://www.cloudflare.com/learning/access-management/what-is-a-vpn/
 rankBlock: overall
-relatedTopics: [tizi-he-vpn, vpn-jichang, tun-moshi, xitong-daili, tun, tizi-he-jiasuqi, warp-shi-shenme]
+relatedTopics: [tizi-he-vpn, vpn-jichang, tun-moshi, xitong-daili, tun, tizi-he-jiasuqi, warp-shi-shenme, haoyong-de-vpn]
 faqs:
   - q: VPN 梯子和梯子 VPN 是一个意思吗？
     a: 是一个意思。两种写法只是词序不同，日常都用来指能访问境外网络服务的工具。严格来说它们把技术名称和口语叫法拼在了一起，并不对应某种特定产品。遇到这类说法，先弄清对方指的是商业 VPN 服务还是机场订阅，再去比较。

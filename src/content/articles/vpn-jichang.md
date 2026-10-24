@@ -19,7 +19,7 @@ sources:
   - title: OpenVPN 官网
     url: https://openvpn.net/
 rankBlock: overall
-relatedTopics: [tizi-he-vpn, vpn-tizi, jichang-xieyi, jichang-shi-shenme, fenliu]
+relatedTopics: [tizi-he-vpn, vpn-tizi, jichang-xieyi, jichang-shi-shenme, fenliu, haoyong-de-vpn]
 faqs:
   - q: VPN 机场和普通机场有区别吗？
     a: 没有区别。VPN 机场只是有人习惯把机场叫作 VPN 而形成的说法，指的仍然是出售订阅、按流量计费的代理服务商。如果一个服务自称 VPN 机场，判断它属于哪一类，看它给你的是订阅链接还是只能登录的专用 App 就清楚了。
