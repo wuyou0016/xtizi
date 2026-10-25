@@ -3,12 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import FaqBlock from '../../components/FaqBlock.astro';
 import { getBoard } from '../../data/utils/board';
-import { PAIR_COUNT_TOP, comparePair, pairSlug } from '../../data/utils/compare';
+import { comparePair, pairBrands, pairOrdered, pairSlug } from '../../data/utils/compare';
 import { MONITOR, STATE_LABEL, fmtDate, fmtDateTime, monitorFor } from '../../data/utils/live';
 
 export async function getStaticPaths() {
   const board = await getBoard();
-  const top = board.rows.slice(0, PAIR_COUNT_TOP);
+  const top = pairBrands(board.rows);
   const paths = [];
   for (let i = 0; i < top.length; i++) for (let j = i + 1; j < top.length; j++) paths.push({ params: { pair: pairSlug(top[i]!.provider.data.slug, top[j]!.provider.data.slug) }, props: { a: top[i]!.provider.data.slug, b: top[j]!.provider.data.slug } });
   return paths;
@@ -26,10 +26,10 @@ const nb = b.provider.data.name;
 const result = comparePair(a, b);
 const href = `/duibi/${pairSlug(a.provider.data.slug, b.provider.data.slug)}/`;
 const snapshot = fmtDate(board.snapshotAt);
-const top = board.rows.slice(0, PAIR_COUNT_TOP);
+const top = pairBrands(board.rows);
 const others = top
   .filter((r) => r !== a && r !== b)
-  .flatMap((r) => [a, b].map((x) => (x.rank < r.rank ? [x, r] : [r, x])))
+  .flatMap((r) => [a, b].map((x) => pairOrdered(x, r)))
   .map(([x, y]) => ({ label: `${x!.provider.data.name} vs ${y!.provider.data.name}`, href: `/duibi/${pairSlug(x!.provider.data.slug, y!.provider.data.slug)}/` }))
   .slice(0, 12);
 const ma = monitorFor(a.provider.id);

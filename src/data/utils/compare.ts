@@ -3,9 +3,23 @@
 import type { BoardRow } from './board';
 import { bestPerGb, cheapestMonthly, cheapestMonthlyBilled, cleanList, completeness, largestPlan } from './provider-facts';
 
-// 对比页覆盖推荐榜前 N 名之间的所有组合（N=4 → 6 对）。2026-10 由 8 名 28 对收敛：新域名先放少量有区分度的配对页，
+// 对比页固定在这 4 家之间的所有组合（4 → 6 对）。2026-10 由 8 家 28 对收敛：新域名先放少量有区分度的配对页，
 // 其余配对互相相似度高（0.6 以上）且每页只有极少入链，放出来只会稀释整站质量。
-export const PAIR_COUNT_TOP = 4;
+// 这 4 家不再跟着榜单名次走：2026-10-25 调整榜单第 2–9 名时为保住已有对比页的网址而固定下来。
+// 数组顺序就是对比页网址里 A-vs-B 的先后（沿用原来的名次顺序），改动前先想清楚网址会不会变。
+export const PAIR_BRAND_SLUGS = ['wuyou-lianjie', 'weifeng-network', 'feimao-cloud', 'twilight'] as const;
+export const PAIR_COUNT_TOP = PAIR_BRAND_SLUGS.length;
+
+/** 从榜单里取出固定的对比品牌，顺序与 PAIR_BRAND_SLUGS 一致。 */
+export function pairBrands(rows: BoardRow[]): BoardRow[] {
+  return PAIR_BRAND_SLUGS.map((slug) => rows.find((r) => r.provider.data.slug === slug)).filter((r): r is BoardRow => r !== undefined);
+}
+
+/** 按固定顺序排好一对品牌，用来生成对比页网址。 */
+export function pairOrdered(x: BoardRow, y: BoardRow): [BoardRow, BoardRow] {
+  const order = (r: BoardRow) => PAIR_BRAND_SLUGS.indexOf(r.provider.data.slug as (typeof PAIR_BRAND_SLUGS)[number]);
+  return order(x) <= order(y) ? [x, y] : [y, x];
+}
 
 export function pairSlug(a: string, b: string): string {
   return `${a}-vs-${b}`;

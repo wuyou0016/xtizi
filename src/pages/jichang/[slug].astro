@@ -9,7 +9,7 @@ import { resolveCanonicalUrl } from '../../config/seo';
 import { isDemoEntry } from '../../data/utils/demo-filter';
 import { getBoard } from '../../data/utils/board';
 import { bestPerGb, cheapestMonthly, cleanList, completeness, planFacts } from '../../data/utils/provider-facts';
-import { PAIR_COUNT_TOP, pairSlug } from '../../data/utils/compare';
+import { pairBrands, pairOrdered, pairSlug } from '../../data/utils/compare';
 import { getArticleHref } from '../../data/utils/article-routing';
 import { COUPONS, buildProviderFaq } from '../../data/seo/provider-faq';
 import { getTagsForProvider } from '../../data/seo/seo-tags';
@@ -80,13 +80,13 @@ if (clients.length === 0) gaps.push({ title: '客户端与订阅格式', hint: '
 if (plans.length > 0 && !plans.some((plan) => plan.cycleId === 'monthly')) gaps.push({ title: '有没有月付', hint: '资料里的档位都是年付。想先试一个月的话，到官网看是否有月付或短周期套餐。' });
 gaps.push({ title: '退款与续费规则', hint: '资料里没有收录各家的退款条款和续费价格，这两项一律以官网服务条款和结算页为准。' });
 
-const top = board.rows.slice(0, PAIR_COUNT_TOP);
+const top = pairBrands(board.rows);
 const inTop = top.some((r) => r.provider.data.slug === slug);
 const pairLinks = inTop
   ? top
       .filter((r) => r.provider.data.slug !== slug)
       .map((r) => {
-        const [a, b] = row.rank < r.rank ? [row, r] : [r, row];
+        const [a, b] = pairOrdered(row, r);
         return { label: `${a.provider.data.name} vs ${b.provider.data.name}`, href: `/duibi/${pairSlug(a.provider.data.slug, b.provider.data.slug)}/` };
       })
   : [];

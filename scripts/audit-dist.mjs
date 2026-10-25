@@ -140,7 +140,7 @@ if (!w.includes(WUYOU.replace(/&/g, '&amp;')) && !w.includes(WUYOU)) problems.pu
 if (!textOf(w).includes('¥6.6/月')) problems.push('无忧链接资料页缺少 ¥6.6/月');
 const home = read('index.html');
 if (!/badge--gold/.test(home)) problems.push('首页缺少金色渐变徽章');
-const order = ['无忧链接', '微风网络', '飞猫云', '暮光加速', 'Firefly'];
+const order = ['无忧链接', '暮光加速', '微风网络', '飞猫云', 'Firefly']; // 2026-10-25 起的榜单前五
 const board = textOf(read('tuijian/index.html'));
 let last = -1;
 for (const name of order) {
