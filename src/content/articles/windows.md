@@ -20,7 +20,7 @@ sources:
     url: https://github.com/2dust/v2rayN
 platform: windows
 rankBlock: overall
-relatedTopics: [clash-verge-rev, v2rayn, clash-verge-rev-windows, v2rayn-windows, diannao-tizi, tun-moshi-shibai]
+relatedTopics: [clash-verge-rev, v2rayn, clash-verge-rev-windows, v2rayn-windows, diannao-tizi, tun-moshi-shibai, tizi-ruanjian-nage-haoyong]
 faqs:
   - q: Windows 梯子软件要花钱吗？
     a: 页面数据表里支持 Windows 的客户端都可以从官方仓库免费下载，客户端本身不带任何节点。需要花钱的是机场订阅，也就是节点和流量。凡是向你收“客户端下载费”“激活码”的页面，都不是这些项目的官方渠道。

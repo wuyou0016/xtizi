@@ -22,7 +22,7 @@ sources:
     url: https://apps.apple.com/us/app/stash-rule-based-proxy/id1596063349
 platform: iphone
 rankBlock: overall
-relatedTopics: [shadowrocket, stash, waiqu-apple-id, shadowrocket-iphone, iphone-tizi]
+relatedTopics: [shadowrocket, stash, waiqu-apple-id, shadowrocket-iphone, iphone-tizi, tizi-ruanjian-nage-haoyong]
 faqs:
   - q: 为什么在 App Store 里搜不到小火箭？
     a: 因为你登录的是中国大陆区的 Apple ID。Shadowrocket、Stash 这类代理客户端不在中国大陆区商店上架，搜索只会出现名字相近的其他应用。需要在 App Store 里换成其他国家或地区的 Apple ID 登录，再通过官方商店地址打开应用页面。

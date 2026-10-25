@@ -14,7 +14,7 @@ limits:
   - 四种方法的成本只做定性比较，具体价格请以榜单数据表和服务商官网为准。
   - 各客户端的详细操作不在本文展开，请到对应的下载页和教程页查看。
 rankBlock: overall
-relatedTopics: [tizi-gongju, xinshou-mai-tizi, tizi-shi-shenme, mofa-shangwang, zijian-haishi-jichang, mianfei-tizi, tizi-he-jiasuqi, laopai-gongju, warp-shi-shenme]
+relatedTopics: [tizi-gongju, xinshou-mai-tizi, tizi-shi-shenme, mofa-shangwang, zijian-haishi-jichang, mianfei-tizi, tizi-he-jiasuqi, laopai-gongju, warp-shi-shenme, tizi-ruanjian-nage-haoyong]
 faqs:
   - q: 科学上网和翻墙、梯子是一回事吗？
     a: 是同一件事的不同叫法。翻墙描述的是动作，梯子描述的是工具，科学上网是比较委婉的说法，近年还多了魔法上网这个词。无论用哪个词搜索，最后都会落到同样的几样东西上：一家提供服务器的服务商、一条订阅链接和一个代理客户端。

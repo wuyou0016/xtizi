@@ -21,7 +21,7 @@ sources:
   - title: Apple 支持：更改 Apple 账户的国家或地区
     url: https://support.apple.com/en-us/118283
 rankBlock: monthly
-relatedTopics: [tizi-shi-shenme, tizi-zenme-xuan, dingyue-daoru, tizi-lianbushang, dingyue, jichang-shiyong, mofa-shangwang, jichang-najia-hao-yong]
+relatedTopics: [tizi-shi-shenme, tizi-zenme-xuan, dingyue-daoru, tizi-lianbushang, dingyue, jichang-shiyong, mofa-shangwang, jichang-najia-hao-yong, tizi-ruanjian-nage-haoyong]
 faqs:
   - q: 第一次买梯子，应该选月付还是年付？
     a: 建议选月付或者最短的周期。第一次接触，你还不清楚线路在自己的宽带和手机网络下表现如何，也不确定流量够不够用。用一两周确认没有问题再续费或换更长周期，比一开始就买年付更稳妥，万一服务商出问题，损失也小。

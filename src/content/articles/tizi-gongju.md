@@ -21,7 +21,7 @@ sources:
   - title: sing-box 官方文档
     url: https://sing-box.sagernet.org/
 rankBlock: clash
-relatedTopics: [tizi-shi-shenme, clash-shi-shenme, v2ray-shi-shenme, neihe, dingyue, jichang-shi-shenme]
+relatedTopics: [tizi-shi-shenme, clash-shi-shenme, v2ray-shi-shenme, neihe, dingyue, jichang-shi-shenme, tizi-ruanjian-nage-haoyong]
 faqs:
   - q: 梯子工具是免费的吗？
     a: 内核和主流的开源客户端本身免费，源码公开，由社区维护。需要付费的有两类：一是机场订阅，它提供真正的服务器和流量；二是少数付费客户端，比如 iPhone 上的部分应用，价格以 App Store 页面为准。注意付费客户端买的只是软件，仍然需要另外准备订阅。

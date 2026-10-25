@@ -35,6 +35,9 @@ const faqs = [
   { q: '页面上的版本号是怎么来的？', a: '由脚本定时调用 GitHub 官方接口读取各仓库的最新发布版本、发布日期和仓库状态，并记录核验时间。页面上显示的就是那一次核验的结果，如果仓库在那之后发布了新版本，以官方发布页为准。' },
   { q: '国内打不开 GitHub，怎么下载梯子？', a: '这是常见的先有鸡还是先有蛋的问题。可行的办法是：请已经能访问的朋友帮忙下载官方安装包，换一个网络环境再试，或者先用手机流量尝试访问。不建议为了省事去下载来路不明的整合包。' },
   { q: '装了客户端为什么还是不能用？', a: '客户端只是工具，本身不带节点。你还需要一家机场的订阅链接，把它导入客户端、选好节点并开启代理后才能使用。导入方法见使用教程栏目里的订阅链接怎么用。' },
+  { q: '梯子工具有哪些，和机场是什么关系？', a: '梯子工具由三层配合：内核负责转发，客户端提供界面，机场提供订阅，也就是节点列表。本页收录的是前两层，也就是客户端和内核；节点要从机场订阅里来，所以两样都需要。三层各管什么，可以看“梯子工具有哪些”一篇。' },
+  { q: '电脑梯子和手机梯子分别装什么？', a: '电脑上常见的是 Clash 系图形客户端（如 Clash Verge Rev）和 v2rayN；安卓常见的是 FlClash、v2rayNG；iPhone 以 Shadowrocket、Stash 这类付费应用为主，需要外区 Apple ID。Hiddify、sing-box、Karing 是多平台客户端，在多个系统上都有版本。具体按设备对照，见“梯子软件哪个好用”一篇。' },
+  { q: '“挂梯子”是什么意思？', a: '这是口语说法，指打开梯子软件，让设备的网络通过代理去访问境外网站，“挂着”就是保持开启。它不是某一款软件的名字，具体用哪个客户端，取决于你的设备和机场给的订阅格式。' },
 ];
 
 const listJsonLd = {
@@ -132,6 +135,22 @@ const listJsonLd = {
         </section>
       ))
   }
+
+  <section class="section section--tight prose" style="max-width:52rem">
+    <h2 id="nage-haoyong">梯子软件哪个好用：先按设备缩小范围</h2>
+    <p>
+      没有哪款梯子软件对所有人都最好，更实际的做法是先按设备缩小范围，再看机场给的订阅格式。常见的选择如下，更完整的对照表见<a href="/zhinan/tizi-ruanjian-nage-haoyong/">梯子软件哪个好用</a>一篇。
+    </p>
+    <ul>
+      <li><strong>Windows 和 Mac：</strong>Clash 系图形客户端（如 Clash Verge Rev）上手相对容易，拿通用节点链接可以看 v2rayN。各系统的下载对照见<a href="/xiazai/windows/">Windows 梯子下载</a>、<a href="/xiazai/mac/">Mac 梯子下载</a>。</li>
+      <li><strong>安卓：</strong>FlClash、v2rayNG 是常见选择，见<a href="/xiazai/android/">安卓梯子下载</a>。</li>
+      <li><strong>iPhone：</strong>Shadowrocket、Stash 等付费应用为主，需要外区 Apple ID，见<a href="/xiazai/iphone/">iPhone 梯子下载</a>。</li>
+      <li><strong>路由器：</strong>OpenClash 是 OpenWrt 上的常见插件，见<a href="/xiazai/luyouqi/">路由器梯子下载</a>。</li>
+    </ul>
+    <p>
+      这些信息只说明类型和平台，没有速度或稳定性的测试数据。梯子工具由内核、客户端和机场订阅三层组成，整体构成见<a href="/zhinan/tizi-gongju/">梯子工具有哪些</a>。
+    </p>
+  </section>
 
   <section class="section section--tight prose" style="max-width:52rem">
     <h2>下载梯子软件之前，先弄清三件事</h2>

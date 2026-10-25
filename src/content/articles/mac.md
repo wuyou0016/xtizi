@@ -22,7 +22,7 @@ sources:
     url: https://apps.apple.com/us/app/stash-rule-based-proxy/id1596063349
 platform: mac
 rankBlock: overall
-relatedTopics: [clash-verge-rev, clashx-meta, clash-verge-rev-mac, stash, diannao-tizi]
+relatedTopics: [clash-verge-rev, clashx-meta, clash-verge-rev-mac, stash, diannao-tizi, tizi-ruanjian-nage-haoyong]
 faqs:
   - q: M 系列芯片的 Mac 应该下载哪个安装包？
     a: 选文件名里带 aarch64、arm64 或 apple-silicon 字样的安装包，带 universal 字样的通用包也可以。带 x64、x86_64、intel 字样的是给 Intel 机型准备的，不要选。拿不准自己是哪种机型时，点苹果菜单里的“关于本机”，看显示的是芯片还是处理器。
