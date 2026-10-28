@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-27T22:15:35.100Z",
+  "checkedAt": "2026-10-28T05:44:43.833Z",
   "firstCheckedAt": "2026-10-08T05:34:35.054Z",
   "vantage": "GitHub Actions 海外检测点",
   "results": [
@@ -8,197 +8,196 @@
       "host": "vip02.worryfreeaff.com",
       "state": "up",
       "status": 200,
-      "ms": 554
+      "ms": 530
     },
     {
       "id": "xingdaomeng",
       "host": "kfccbb.xingdaomeng.com",
       "state": "up",
       "status": 200,
-      "ms": 671
+      "ms": 645
     },
     {
       "id": "firefly",
       "host": "vip02.fireflyaff.com",
       "state": "up",
       "status": 200,
-      "ms": 583
+      "ms": 549
     },
     {
       "id": "guangsu-cloud",
       "host": "sahude.gsyvipaff.com",
-      "state": "down",
-      "status": 0,
-      "ms": 374,
-      "error": "CERT_HAS_EXPIRED"
+      "state": "up",
+      "status": 200,
+      "ms": 491
     },
     {
       "id": "weifeng-network",
       "host": "wep01.breezenetaff.com",
       "state": "up",
       "status": 200,
-      "ms": 585
+      "ms": 557
     },
     {
       "id": "sogo-cloud",
       "host": "wzjc.sogoyunaff.cc",
       "state": "up",
       "status": 200,
-      "ms": 392
+      "ms": 403
     },
     {
       "id": "feimao-cloud",
       "host": "flycat1.flycatvipaff.cc",
       "state": "up",
       "status": 200,
-      "ms": 663
+      "ms": 622
     },
     {
       "id": "lingdong-cloud",
       "host": "varnexa.lingdongaff.com",
       "state": "up",
       "status": 200,
-      "ms": 998
+      "ms": 1733
     },
     {
       "id": "kuajie-cloud",
       "host": "vip02.kuajieaff.com",
       "state": "up",
       "status": 200,
-      "ms": 399
+      "ms": 389
     },
     {
       "id": "laddercloud",
       "host": "varnexa.ladderaff.com",
       "state": "up",
       "status": 200,
-      "ms": 930
+      "ms": 939
     },
     {
       "id": "ermao-cloud",
       "host": "waaa.2maoyunaff.cc",
       "state": "up",
       "status": 200,
-      "ms": 381
+      "ms": 360
     },
     {
       "id": "guangnian-ladder",
       "host": "ggmq.gntaff.com",
       "state": "up",
       "status": 200,
-      "ms": 99
+      "ms": 112
     },
     {
       "id": "flyv",
       "host": "varnexa.flyvaff.com",
       "state": "up",
       "status": 200,
-      "ms": 712
+      "ms": 719
     },
     {
       "id": "u1s1",
       "host": "pkdj7.vipaff.cc",
       "state": "up",
       "status": 200,
-      "ms": 515
+      "ms": 483
     },
     {
       "id": "twilight",
       "host": "varnexa.twilightaff.com",
       "state": "up",
       "status": 200,
-      "ms": 591
+      "ms": 532
     },
     {
       "id": "kuaili",
       "host": "yiyige.kuailiaff.com",
       "state": "up",
       "status": 200,
-      "ms": 405
+      "ms": 372
     },
     {
       "id": "shanyue",
       "host": "wep01.flashleapaff.com",
       "state": "up",
       "status": 200,
-      "ms": 553
+      "ms": 540
     },
     {
       "id": "kexin-cloud",
       "host": "work.kosingaff.com",
       "state": "up",
       "status": 200,
-      "ms": 591
+      "ms": 564
     },
     {
       "id": "speedworld",
       "host": "work.speedworldaff.cc",
       "state": "up",
       "status": 200,
-      "ms": 395
+      "ms": 390
     },
     {
       "id": "jilian-cloud",
       "host": "kdjhao.jlyvipaff.com",
       "state": "up",
       "status": 200,
-      "ms": 371
+      "ms": 362
     },
     {
       "id": "lingmao-network",
       "host": "kshare.civetnettttt.homes",
       "state": "up",
       "status": 200,
-      "ms": 427
+      "ms": 616
     },
     {
       "id": "yuzhou-cloud",
       "host": "wzjc.yuzoucloud.cc",
       "state": "up",
       "status": 200,
-      "ms": 375
+      "ms": 390
     },
     {
       "id": "edge-node",
       "host": "work.edgenovaaff.cc",
       "state": "up",
       "status": 200,
-      "ms": 410
+      "ms": 420
     },
     {
       "id": "yifan-cloud",
       "host": "wzjc.1flyunaff.cc",
       "state": "up",
       "status": 200,
-      "ms": 370
+      "ms": 386
     },
     {
       "id": "weitu-cloud",
       "host": "fast.v2yunvipaff.com",
       "state": "up",
       "status": 200,
-      "ms": 477
+      "ms": 513
     },
     {
       "id": "wavenet",
       "host": "varnexa.wavenetaff.com",
       "state": "up",
       "status": 200,
-      "ms": 959
+      "ms": 2180
     },
     {
       "id": "invisible",
       "host": "varnexa.invisibleaff.com",
       "state": "up",
       "status": 200,
-      "ms": 701
+      "ms": 886
     },
     {
       "id": "quanqiu-cloud",
       "host": "sswdh.gcvipaff.com",
       "state": "up",
       "status": 200,
-      "ms": 583
+      "ms": 587
     }
   ],
   "history": {
@@ -302,6 +301,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "xingdaomeng": [
@@ -404,6 +408,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "firefly": [
@@ -506,6 +515,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "guangsu-cloud": [
@@ -608,6 +622,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 0
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "weifeng-network": [
@@ -710,6 +729,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "sogo-cloud": [
@@ -812,6 +836,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "feimao-cloud": [
@@ -914,6 +943,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "lingdong-cloud": [
@@ -1016,6 +1050,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "kuajie-cloud": [
@@ -1118,6 +1157,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "laddercloud": [
@@ -1220,6 +1264,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "ermao-cloud": [
@@ -1322,6 +1371,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "guangnian-ladder": [
@@ -1424,6 +1478,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "flyv": [
@@ -1526,6 +1585,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 3
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "u1s1": [
@@ -1628,6 +1692,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "twilight": [
@@ -1730,6 +1799,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "kuaili": [
@@ -1832,6 +1906,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "shanyue": [
@@ -1934,6 +2013,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "kexin-cloud": [
@@ -2036,6 +2120,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "speedworld": [
@@ -2138,6 +2227,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "jilian-cloud": [
@@ -2240,6 +2334,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "lingmao-network": [
@@ -2342,6 +2441,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "yuzhou-cloud": [
@@ -2444,6 +2548,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "edge-node": [
@@ -2546,6 +2655,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "yifan-cloud": [
@@ -2648,6 +2762,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "weitu-cloud": [
@@ -2750,6 +2869,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "wavenet": [
@@ -2852,6 +2976,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "invisible": [
@@ -2954,6 +3083,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ],
     "quanqiu-cloud": [
@@ -3056,6 +3190,11 @@
         "day": "2026-10-27",
         "checks": 4,
         "reachable": 4
+      },
+      {
+        "day": "2026-10-28",
+        "checks": 1,
+        "reachable": 1
       }
     ]
   }
